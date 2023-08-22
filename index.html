@@ -30,8 +30,7 @@
         top: 274px;
         right: 300px;
       }
-      .fastButton
-      .result {
+      .fastButton .result {
         margin-top: 20px;
         font-weight: bold;
         white-space: pre-line;
@@ -93,10 +92,13 @@
             var formattedNumbers = numbers.map(function (numberWithUnit) {
               var number = numberWithUnit.match(/\d+\.?\d*/)[0];
               var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
-              return formatNumberWithUnits(number, unit);   
+              return formatNumberWithUnits(number, unit);
             });
-
             resultHTML += formattedNumbers.join(", ") + "<br>";
+          } else if (line.trim() === "") {
+            resultHTML += " <br>";
+          } else {
+            resultHTML += " <br>";
           }
         });
 
@@ -119,6 +121,10 @@
           var numbers = line.match(/\d+\.?\d*/g); // Tách số
           if (numbers) {
             resultHTML += numbers.join(", ") + "<br>";
+          } else if (line.trim() === "") {
+            resultHTML += " <br>";
+          } else {
+            resultHTML += " <br>";
           }
         });
 
