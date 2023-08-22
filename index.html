@@ -78,7 +78,31 @@
         }
       }
 
-      //   Tách lấy số và ký tự dimentions
+      // Đếm số kết quả trước L, W, H
+      function countDimensions(numbers) {
+        var countL = 0;
+        var countW = 0;
+        var countH = 0;
+
+        numbers.forEach(function (numberWithUnit) {
+          var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
+          switch (unit) {
+            case "L":
+              countL++;
+              break;
+            case "W":
+              countW++;
+              break;
+            case "H":
+              countH++;
+              break;
+          }
+        });
+
+        return { countL, countW, countH };
+      }
+
+      // Tách lấy số và ký tự dimentions
       function splitNumbers() {
         var inputText = document.getElementById("inputText").value;
         var lines = inputText.split("\n"); // Tách các dòng văn bản
@@ -89,16 +113,49 @@
         lines.forEach(function (line) {
           var numbers = line.match(/\d+\.?\d*\s?([LWHlbs]+)/g); // Tách số và đơn vị
           if (numbers) {
+            var dimensionsCount = countDimensions(numbers);
+
             var formattedNumbers = numbers.map(function (numberWithUnit) {
               var number = numberWithUnit.match(/\d+\.?\d*/)[0];
               var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
               return formatNumberWithUnits(number, unit);
             });
-            resultHTML += formattedNumbers.join(", ") + "<br>";
+
+            var countLabel = "";
+            if (
+              dimensionsCount.countL === 5 ||
+              dimensionsCount.countW === 5 ||
+              dimensionsCount.countH === 5
+            ) {
+              countLabel = "5,  ";
+            } else if (
+              dimensionsCount.countL === 4 ||
+              dimensionsCount.countW === 4 ||
+              dimensionsCount.countH === 4
+            ) {
+              countLabel = "4,  ";
+            } else if (
+              dimensionsCount.countL === 3 ||
+              dimensionsCount.countW === 3 ||
+              dimensionsCount.countH === 3
+            ) {
+              countLabel = "3,  ";
+            } else if (
+              dimensionsCount.countL === 2 ||
+              dimensionsCount.countW === 2 ||
+              dimensionsCount.countH === 2
+            ) {
+              countLabel = "2,  ";
+            } else {
+              countLabel = "1,  ";
+            }
+
+            resultHTML +=
+              countLabel + " " + formattedNumbers.join(", ") + "<br>";
           } else if (line.trim() === "") {
-            resultHTML += " <br>";
+            resultHTML += "<br>";
           } else {
-            resultHTML += " <br>";
+            resultHTML += "<br>";
           }
         });
 
@@ -109,7 +166,7 @@
         }
       }
 
-      //   Tách chỉ lấy số
+      // Tách chỉ lấy số
       function splitNumbersWithComma() {
         var inputText = document.getElementById("inputText").value;
         var lines = inputText.split("\n"); // Tách các dòng văn bản
@@ -122,16 +179,16 @@
           if (numbers) {
             resultHTML += numbers.join(", ") + "<br>";
           } else if (line.trim() === "") {
-            resultHTML += " <br>";
+            resultHTML += "<br>";
           } else {
-            resultHTML += " <br>";
+            resultHTML += "<br>";
           }
         });
 
         resultDiv.innerHTML = resultHTML;
       }
 
-      //   Copy kết quả
+      // Copy kết quả
       function copyResult() {
         var resultText = document.getElementById("result").innerText;
         if (resultText) {
@@ -145,8 +202,7 @@
             });
         }
       }
-
-      //   Xóa text area
+      // Xóa text area
       function clearTextarea() {
         document.getElementById("inputText").value = "";
         document.getElementById("result").innerHTML = "";
