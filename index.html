@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tách số từ văn bản và định dạng kết quả</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  textarea {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+  }
+  button {
+    display: block;
+    margin: 0 auto;
+  }
+  .result {
+    margin-top: 20px;
+    font-weight: bold;
+    white-space: pre-line;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Tách số từ văn bản và định dạng kết quả</h1>
+  <textarea id="inputText" placeholder="Nhập nhiều dòng văn bản..."></textarea>
+  <button onclick="splitNumbers()">Tách số</button>
+  <div class="result" id="result"></div>
+</div>
+<script>
+function formatNumberWithUnits(number, unit) {
+  switch (unit) {
+    case "L":
+      return number + "L";
+    case "W":
+      return number + "W";
+    case "H":
+      return number + "H";
+    case "lbs":
+      return number + "lbs";
+    default:
+      return number;
+  }
+}
+
+function splitNumbers() {
+  var inputText = document.getElementById("inputText").value;
+  var lines = inputText.split('\n'); // Tách các dòng văn bản
+  var resultDiv = document.getElementById("result");
+
+  var resultHTML = "";
+
+  lines.forEach(function(line) {
+    var numbers = line.match(/\d+\.?\d*\s?([LWHlbs]+)/g); // Tách số và đơn vị
+    if (numbers) {
+      var formattedNumbers = numbers.map(function(numberWithUnit) {
+        var number = numberWithUnit.match(/\d+\.?\d*/)[0];
+        var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
+        return formatNumberWithUnits(number, unit);
+      });
+
+      resultHTML += formattedNumbers.join(", ") + "<br>";
+    }
+  });
+
+  if (lines.length === 0 || resultHTML === "") {
+    resultDiv.innerHTML = "<p>Không tìm thấy kết quả nào.</p>";
+  } else {
+    resultDiv.innerHTML = resultHTML;
+  }
+}
+</script>
+</body>
+</html>
