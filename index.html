@@ -13,10 +13,11 @@
         margin: 0 auto;
         padding: 20px;
       }
-      .box{
+      .box {
         position: absolute;
         top: 10px;
         left: 20px;
+        width: 300px;
       }
       textarea {
         width: 100%;
@@ -47,7 +48,8 @@
       <h1>Tách Dimensions nhanh</h1>
       <script src="script.js"></script>
       <div class="box">
-        <h1>Note: </h1>
+        <h1>Note:</h1>
+        <h3>Hiện tại mới chỉ đếm được tối đa 10 bộ</h3>
       </div>
       <textarea
         id="inputText"
@@ -120,6 +122,86 @@
 
         var resultHTML = "";
 
+        // lines.forEach(function (line) {
+        //   var numbers = line.match(/\d+\.?\d*\s?([LWHlbs]+)/g); // Tách số và đơn vị
+        //   if (numbers) {
+        //     var dimensionsCount = countDimensions(numbers);
+
+        //     var formattedNumbers = numbers.map(function (numberWithUnit) {
+        //       var number = numberWithUnit.match(/\d+\.?\d*/)[0];
+        //       var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
+        //       return formatNumberWithUnits(number, unit);
+        //     });
+
+        //     var countLabel = "";
+        //     if (
+        //       dimensionsCount.countL === 10 ||
+        //       dimensionsCount.countW === 10 ||
+        //       dimensionsCount.countH === 10
+        //     ) {
+        //       countLabel = "10 bộ,  ";
+        //     } else if (
+        //       dimensionsCount.countL === 9 ||
+        //       dimensionsCount.countW === 9 ||
+        //       dimensionsCount.countH === 9
+        //     ) {
+        //       countLabel = "9 bộ,  ";
+        //     }
+        //     } else if (
+        //       dimensionsCount.countL === 8 ||
+        //       dimensionsCount.countW === 8 ||
+        //       dimensionsCount.countH === 8
+        //     ) {
+        //       countLabel = "8 bộ,  ";
+        //     }
+        //     else if (
+        //       dimensionsCount.countL === 7 ||
+        //       dimensionsCount.countW === 7 ||
+        //       dimensionsCount.countH === 7
+        //     ) {
+        //       countLabel = "7 bộ,  ";
+        //     }else if (
+        //       dimensionsCount.countL === 6 ||
+        //       dimensionsCount.countW === 6 ||
+        //       dimensionsCount.countH === 6
+        //     ) {
+        //       countLabel = "6 bộ,  ";
+        //     }else if (
+        //       dimensionsCount.countL === 5 ||
+        //       dimensionsCount.countW === 5 ||
+        //       dimensionsCount.countH === 5
+        //     ) {
+        //       countLabel = "5 bộ,  ";
+        //     }else if (
+        //       dimensionsCount.countL === 4 ||
+        //       dimensionsCount.countW === 4 ||
+        //       dimensionsCount.countH === 4
+        //     ) {
+        //       countLabel = "4 bộ,  ";
+        //     }
+        //     else if (
+        //       dimensionsCount.countL === 3 ||
+        //       dimensionsCount.countW === 3 ||
+        //       dimensionsCount.countH === 3
+        //     ) {
+        //       countLabel = "3 bộ,  ";
+        //     } else if (
+        //       dimensionsCount.countL === 2 ||
+        //       dimensionsCount.countW === 2 ||
+        //       dimensionsCount.countH === 2
+        //     ) {
+        //       countLabel = "2 bộ,  ";
+        //     } else {
+        //       countLabel = "1 bộ,  ";
+        //     }
+        //     resultHTML +=
+        //       countLabel + " " + formattedNumbers.join(", ") + "<br>";
+        //   } else if (line.trim() === "") {
+        //     resultHTML += "<br>";
+        //   } else {
+        //     resultHTML += "<br>";
+        //   }
+        // });
         lines.forEach(function (line) {
           var numbers = line.match(/\d+\.?\d*\s?([LWHlbs]+)/g); // Tách số và đơn vị
           if (numbers) {
@@ -133,6 +215,36 @@
 
             var countLabel = "";
             if (
+              dimensionsCount.countL === 10 ||
+              dimensionsCount.countW === 10 ||
+              dimensionsCount.countH === 10
+            ) {
+              countLabel = "10 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 9 ||
+              dimensionsCount.countW === 9 ||
+              dimensionsCount.countH === 9
+            ) {
+              countLabel = "9 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 8 ||
+              dimensionsCount.countW === 8 ||
+              dimensionsCount.countH === 8
+            ) {
+              countLabel = "8 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 7 ||
+              dimensionsCount.countW === 7 ||
+              dimensionsCount.countH === 7
+            ) {
+              countLabel = "7 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 6 ||
+              dimensionsCount.countW === 6 ||
+              dimensionsCount.countH === 6
+            ) {
+              countLabel = "6 bộ,  ";
+            } else if (
               dimensionsCount.countL === 5 ||
               dimensionsCount.countW === 5 ||
               dimensionsCount.countH === 5
@@ -159,7 +271,6 @@
             } else {
               countLabel = "1 bộ,  ";
             }
-
             resultHTML +=
               countLabel + " " + formattedNumbers.join(", ") + "<br>";
           } else if (line.trim() === "") {
