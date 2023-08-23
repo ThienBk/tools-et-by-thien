@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dimensions Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .box{
+        position: absolute;
+        top: 4px;
+        left: 20px;
+        width: 300px;
+      }
+      .box > img{
+        width: 300px;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 10px;
+      }
+      button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+      .fastButton {
+        position: absolute;
+        top: 274px;
+        right: 300px;
+      }
+      .result {
+        margin-top: 20px;
+        font-weight: bold;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Schematags Converter</h1>
+      <div class="box">
+        <h1>Note: </h1>
+        <h3>Khi copy giá trị từ SchemaTags phải copy 2 cột cạnh nhau</h3>
+        <img src="noteSchemaTags.png" alt="">
+        <h4>Khi Paste giá trị vào lại excel để cách thêm 1 cột bên phải cột muốn Paste</h4>
+      </div>
+      <textarea id="inputText" placeholder="Nhập vào Tag Name của file Product SchemaTags..."></textarea>
+      <a href="index.html">Tools tách Dimensions nhanh</a>
+      <button onclick="convertDimensions()">Tách Dimensions</button>
+      <button onclick="extractNumbers()">Tách Số</button>
+      <div class="fastButton">
+        <button
+          style="background-color: rgb(43, 120, 254); color: white"
+          onclick="copyResults()"
+        >
+          Copy
+        </button>
+        <button
+          style="background-color: rgb(254, 43, 43); color: white"
+          onclick="clearAll()"
+        >
+          Clear All
+        </button>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+    <script>
+      function convertDimensions() {
+        var inputText = document.getElementById("inputText").value;
+        var lines = inputText.split("\n");
+        var resultDiv = document.getElementById("result");
+
+        var resultHTML = "";
+
+        lines.forEach(function (line) {
+          var parts = line.split("\t");
+          if (parts.length === 2) {
+            var label = parts[0].replace(/\s+/g, '');
+            var value = parts[1].trim();
+
+            switch (label) {
+              case "OverallHeight-ToptoBottom":
+                resultHTML += value + "H<br>";
+                break;
+              case "Overall Height - Top to Bottom":
+                resultHTML += value + "H<br>";
+                break;
+              case "OverallWidth-SidetoSide":
+                resultHTML += value + "W<br>";
+                break;
+              case "Overall Width - Side to Side":
+                resultHTML += value + "W<br>";
+                break;
+              case "OverallDepth-FronttoBack":
+                resultHTML += value + "L<br>";
+                break;
+              case "Overall Depth - Front to Back":
+                resultHTML += value + "L<br>";
+                break;
+              case "OverallProductWeight":
+                resultHTML += value + "lbs<br>";
+                break;
+              case "Overall Product Weight":
+                resultHTML += value + "lbs<br>";
+                break;
+              default:
+                resultHTML += "<br>";
+                break;
+            }
+          } else if (line.trim() === "") {
+            resultHTML += "<br>";
+          } else {
+            resultHTML += "<br>";
+          }
+        });
+
+        if (lines.length === 0 || resultHTML === "") {
+          resultDiv.innerHTML = "<p>No results found.</p>";
+        } else {
+          resultDiv.innerHTML = resultHTML;
+        }
+      }
+
+      // Tách chỉ lấy số
+      function extractNumbers() {
+        var inputText = document.getElementById("inputText").value;
+        var lines = inputText.split("\n");
+        var resultDiv = document.getElementById("result");
+
+        var resultHTML = "";
+
+        lines.forEach(function (line) {
+          var numbers = line.match(/\d+\.?\d*/g); // Extract numbers
+          if (numbers) {
+            resultHTML += numbers.join(", ") + "<br>";
+          } else if (line.trim() === "") {
+            resultHTML += "<br>";
+          } else {
+            resultHTML += "<br>";
+          }
+        });
+
+        if (lines.length === 0 || resultHTML === "") {
+          resultDiv.innerHTML = "<p>No results found.</p>";
+        } else {
+          resultDiv.innerHTML = resultHTML;
+        }
+      }
+
+      // Copy kết quả
+      function copyResults() {
+        var resultText = document.getElementById("result").innerText;
+        if (resultText) {
+          navigator.clipboard
+            .writeText(resultText)
+            .then(function () {
+              alert("Results copied to clipboard.");
+            })
+            .catch(function (error) {
+              console.error("Error copying: ", error);
+            });
+        }
+      }
+
+      // Xóa toàn bộ dữ liệu
+      function clearAll() {
+        document.getElementById("inputText").value = "";
+        document.getElementById("result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>
