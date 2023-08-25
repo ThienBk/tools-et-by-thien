@@ -1,1 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Area Example</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  #output {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    white-space: pre-line;
+  }
+  #copyButton {
+    margin-top: 10px;
+    cursor: pointer;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Text Area Example</h1>
+  <p>Enter multiple lines of text below:</p>
+  <textarea id="input" rows="10"></textarea>
+  <button id="copyButton" data-clipboard-target="#output" disabled>Copy Result</button>
+  <button onclick="formatText()">Format</button>
+  <div id="output"></div>
+</div>
+<script>
+  // Initialize Clipboard.js
+  new ClipboardJS("#copyButton");
 
+  function formatText() {
+    const input = document.getElementById("input").value;
+    const lines = input.split("\n");
+    let formattedOutput = "";
+    for (let i = 0; i < lines.length; i++) {
+      formattedOutput += lines[i] + "\n";
+      if ((i + 1) % 300 === 0) {
+        formattedOutput += "\n"; // Add an extra empty line after every 300 lines
+      }
+    }
+    document.getElementById("output").textContent = formattedOutput;
+    document.getElementById("copyButton").removeAttribute("disabled");
+  }
+</script>
+</body>
+</html>
