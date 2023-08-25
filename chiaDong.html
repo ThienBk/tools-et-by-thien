@@ -35,13 +35,18 @@
   <h1>Text Area Example</h1>
   <p>Enter multiple lines of text below:</p>
   <textarea id="input" rows="10"></textarea>
-  <button id="copyButton" data-clipboard-target="#output" disabled>Copy Result</button>
+  <button id="copyButton" onclick="copyResult()" disabled>Copy Result</button>
   <button onclick="formatText()">Format</button>
   <div id="output"></div>
 </div>
 <script>
   // Initialize Clipboard.js
-  new ClipboardJS("#copyButton");
+  const copyButton = new ClipboardJS("#copyButton", {
+    text: function() {
+      const output = document.getElementById("output").textContent;
+      return output + "\u200B"; // Add a zero-width space character
+    }
+  });
 
   function formatText() {
     const input = document.getElementById("input").value;
@@ -55,6 +60,11 @@
     }
     document.getElementById("output").textContent = formattedOutput;
     document.getElementById("copyButton").removeAttribute("disabled");
+  }
+
+  function copyResult() {
+    // Nothing needed here as Clipboard.js handles copying
+    alert("Result copied to clipboard!");
   }
 </script>
 </body>
