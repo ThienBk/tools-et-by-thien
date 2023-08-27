@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xử lý dữ liệu từ Textarea</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+
+      textarea {
+        width: 80%;
+        height: 150px;
+        margin: 10px auto;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      #output {
+        margin-top: 20px;
+        text-align: left;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Xử lý dữ liệu từ Textarea</h1>
+    <textarea id="inputData" placeholder="Nhập dữ liệu vào đây"></textarea>
+    <a href="index.html">Tools Tách Dimensions</a>
+    <button id="processButton">Xử lý</button>
+    <button id="copyButton">Copy</button>
+    <button id="clearButton">Clear</button>
+    <div id="output"></div>
+    <script>
+      document
+        .getElementById("processButton")
+        .addEventListener("click", function () {
+          var inputData = document.getElementById("inputData").value;
+          var lines = inputData.split("\n");
+
+          var output = document.getElementById("output");
+          output.innerHTML = "";
+
+          var result = {};
+
+          for (var i = 0; i < lines.length; i++) {
+            var columns = lines[i].split(" ");
+            var productName = columns[0];
+            var productInfo = columns.slice(1).join(" ");
+
+            if (!result[productName]) {
+              result[productName] = [productInfo];
+            } else {
+              result[productName].push(productInfo);
+            }
+          }
+
+          for (var product in result) {
+            var productData = result[product].join(" "); // Sử dụng dấu cách để nối thông số
+            var productDiv = document.createElement("div");
+            productDiv.textContent = product + " " + productData; // Sử dụng dấu cách ở đây
+            output.appendChild(productDiv);
+          }
+        });
+
+      document
+        .getElementById("copyButton")
+        .addEventListener("click", function () {
+          var outputText = document.getElementById("output").textContent;
+          var tempTextarea = document.createElement("textarea");
+          tempTextarea.value = outputText;
+          document.body.appendChild(tempTextarea);
+          tempTextarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempTextarea);
+        });
+
+      document
+        .getElementById("clearButton")
+        .addEventListener("click", function () {
+          document.getElementById("output").innerHTML = "";
+          document.getElementById("inputData").value = "";
+        });
+      document
+        .getElementById("copyButton")
+        .addEventListener("click", function () {
+          var outputText = "";
+          var products = document.querySelectorAll("#output div");
+
+          products.forEach(function (productDiv) {
+            outputText += productDiv.textContent.replace(/\n/g, ",") + "\n";
+          });
+
+          var tempTextarea = document.createElement("textarea");
+          tempTextarea.value = outputText;
+          document.body.appendChild(tempTextarea);
+          tempTextarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempTextarea);
+        });
+    </script>
+  </body>
+</html>
