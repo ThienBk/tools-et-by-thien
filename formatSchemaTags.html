@@ -59,8 +59,7 @@
           var result = {};
 
           for (var i = 0; i < lines.length; i++) {
-            var cleanedLine = lines[i].replace(/\s+/g, ' '); // Loại bỏ khoảng trắng thừa
-            var columns = lines[i].split(" ");
+            var columns = lines[i].split(/\s+/);
             var productName = columns[0];
             var productInfo = columns.slice(1).join(" ");
 
