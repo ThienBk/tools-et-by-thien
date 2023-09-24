@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Processing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 10px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <textarea id="inputData" placeholder="Nhập giá trị vào đây"></textarea
+      ><br />
+      <button onclick="clearData()">Xóa Toàn Bộ Dữ Liệu</button>
+      <button onclick="copyData()">Copy Toàn Bộ Dữ Liệu</button>
+      <button onclick="processData()">Chuyển Đổi</button>
+      <a href="index.html">Về trang dimentions</a>
+      <br /><br />
+      <table id="resultTable">
+        <!-- Kết quả sẽ được thêm vào đây -->
+      </table>
+    </div>
+    <script>
+      function clearData() {
+        document.getElementById("inputData").value = "";
+        document.getElementById("resultTable").innerHTML = "";
+      }
+
+      function copyData() {
+        const resultTable = document.getElementById("resultTable");
+        const resultText = Array.from(resultTable.querySelectorAll("td"))
+          .map((cell) => cell.textContent)
+          .join("\n");
+        const tempTextarea = document.createElement("textarea");
+        tempTextarea.value = resultText;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+      };
+
+      function processData() {
+        const inputText = document.getElementById("inputData").value;
+        const dataRows = inputText.split("\n");
+
+        const resultTable = document.getElementById("resultTable");
+        resultTable.innerHTML = "";
+
+        dataRows.forEach((rowText) => {
+          const rowData = rowText.split("\t");
+          const sku = rowData[0];
+          for (let i = 1; i < rowData.length; i++) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.textContent = sku + "\t" + rowData[i];
+            row.appendChild(cell);
+            resultTable.appendChild(row);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
