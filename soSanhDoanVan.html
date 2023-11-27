@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textarea Demo</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        textarea {
+            width: 45%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .column {
+            width: 50%;
+            float: left;
+        }
+
+        #output {
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .result-column {
+            width: 48%;
+            margin: 10px;
+            vertical-align: top;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: justify;
+        }
+
+        .result-paragraph {
+            margin-bottom: 10px;
+        }
+
+        .similarity {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .added-word {
+            background-color: red;
+            display: inline-block;
+        }
+
+        .missing-word {
+            background-color: lightblue;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column">
+            <textarea id="inputTextarea" rows="10" cols="50"></textarea>
+        </div>
+        <div class="column">
+            <textarea id="comparisonTextarea" rows="10" cols="50"></textarea>
+        </div>
+    </div>
+    <button onclick="compareText()">So sánh</button>
+    <div id="comparisonResult"></div>
+
+    <script>
+        function compareText() {
+            var inputTextarea = document.getElementById("inputTextarea");
+            var comparisonTextarea = document.getElementById("comparisonTextarea");
+            var outputDiv = document.getElementById("comparisonResult");
+            var inputText = inputTextarea.value;
+            var comparisonText = comparisonTextarea.value;
+
+            var inputParagraphs = inputText.split("\n\n");
+            var comparisonParagraphs = comparisonText.split("\n\n");
+
+            outputDiv.innerHTML = "";
+
+            inputParagraphs.forEach(function(paragraph, index) {
+                var resultColumn = document.createElement("div");
+                resultColumn.classList.add("result-column");
+
+                var pElement1 = document.createElement("p");
+                pElement1.classList.add("result-paragraph");
+                pElement1.innerText = "Đoạn văn " + (index + 1) + ":";
+
+                var contentElement1 = document.createElement("p");
+                contentElement1.classList.add("result-paragraph");
+
+                var similarityElement = document.createElement("p");
+                similarityElement.classList.add("similarity");
+
+                var pElement2 = document.createElement("p");
+                pElement2.classList.add("result-paragraph");
+                pElement2.innerText = "Đoạn văn " + (index + 1) + ":";
+
+                var contentElement2 = document.createElement("p");
+                contentElement2.classList.add("result-paragraph");
+                contentElement2.innerText = comparisonParagraphs[index] || "";
+
+                var addedWords = findAddedWords(paragraph, comparisonParagraphs[index]);
+                var missingWords = findMissingWords(paragraph, comparisonParagraphs[index]);
+
+                contentElement1.innerHTML = highlightWords(paragraph, addedWords, missingWords);
+                contentElement2.innerHTML = highlightWords(comparisonParagraphs[index], missingWords, addedWords);
+
+                var similarity = compareSimilarity(paragraph, comparisonParagraphs[index]);
+                similarityElement.innerText = "Phần trăm giống nhau: " + similarity.toFixed(2) + "%";
+
+                resultColumn.appendChild(pElement1);
+                resultColumn.appendChild(contentElement1);
+                resultColumn.appendChild(similarityElement);
+                resultColumn.appendChild(pElement2);
+                resultColumn.appendChild(contentElement2);
+
+                outputDiv.appendChild(resultColumn);
+            });
+        }
+
+        function findAddedWords(text1, text2) {
+            var words1 = text1.toLowerCase().match(/\b\w+\b/g);
+            var words2 = text2.toLowerCase().match(/\b\w+\b/g);
+
+            var addedWords = words1.filter(word => !words2.includes(word));
+            return addedWords;
+        }
+
+        function findMissingWords(text1, text2) {
+            var words1 = text1.toLowerCase().match(/\b\w+\b/g);
+            var words2 = text2.toLowerCase().match(/\b\w+\b/g);
+
+            var missingWords = words2.filter(word => !words1.includes(word));
+            return missingWords;
+        }
+
+        function highlightWords(text, addedWords, missingWords) {
+            var words = text.split(/(\b\w+\b)/);
+
+            var result = words.map(function(word) {
+                var lowerWord = word.toLowerCase();
+                if (addedWords.includes(lowerWord)) {
+                    return '<span class="added-word">' + word + '</span>';
+                } else if (missingWords.includes(lowerWord)) {
+                    return '<span class="missing-word">' + word + '</span>';
+                }
+                return word;
+            });
+
+            return result.join('');
+        }
+
+        function compareSimilarity(text1, text2) {
+            var words1 = text1.toLowerCase().match(/\b\w+\b/g);
+            var words2 = text2.toLowerCase().match(/\b\w+\b/g);
+
+            var intersection = words1.filter(word => words2.includes(word));
+
+            var similarity = (intersection.length / Math.sqrt(words1.length * words2.length)) * 100;
+            return similarity;
+        }
+    </script>
+</body>
+</html>

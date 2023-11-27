@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Phân loại dãy ký tự</title>
+  <style>
+    /* CSS */
+    #container {
+        margin-left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    .buttons {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <textarea id="inputText" placeholder="Nhập dãy ký tự vào đây..." rows="10" cols="30"></textarea>
+    
+    <div>
+        <button onclick="copyShortStrings()">Copy SKUs</button>
+        <button onclick="copyLongStrings()">Copy PartNUmbers</button>
+        <button onclick="clearAll()">Xóa Toàn Bộ Dữ Liệu</button>
+    </div>
+    <div>
+      <table id="shortStrings">
+        <caption>SKU (≤ 8 ký tự)</caption>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Chuỗi</th>
+          </tr>
+        </thead>
+        <tbody id="shortStringsBody">
+        </tbody>
+      </table>
+      <table id="longStrings">
+        <caption>PartNUmbers (&gt; 8 ký tự)</caption>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Chuỗi</th>
+          </tr>
+        </thead>
+        <tbody id="longStringsBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    // JavaScript
+    function processStrings() {
+      const inputText = document.getElementById('inputText').value.split('\n');
+      const shortStringsTable = document.getElementById('shortStringsBody');
+      const longStringsTable = document.getElementById('longStringsBody');
+
+      shortStringsTable.innerHTML = '';
+      longStringsTable.innerHTML = '';
+
+      inputText.forEach((str, index) => {
+        const trimmedStr = str.trim();
+        const row = document.createElement('tr');
+        const cellIndex = document.createElement('td');
+        const cellValue = document.createElement('td');
+
+        cellIndex.textContent = index + 1;
+        cellValue.textContent = trimmedStr;
+
+        if (trimmedStr.length <= 8) {
+          row.appendChild(cellIndex);
+          row.appendChild(cellValue);
+          shortStringsTable.appendChild(row);
+        } else {
+          row.appendChild(cellIndex);
+          row.appendChild(cellValue);
+          longStringsTable.appendChild(row);
+        }
+      });
+    }
+
+    function copyShortStrings() {
+      const shortStringsContent = document.getElementById('shortStrings').outerHTML;
+      copyToClipboard(shortStringsContent);
+    }
+
+    function copyLongStrings() {
+      const longStringsContent = document.getElementById('longStrings').outerHTML;
+      copyToClipboard(longStringsContent);
+    }
+
+    function copyToClipboard(content) {
+      const el = document.createElement('textarea');
+      el.value = content;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      alert('Đã sao chép vào clipboard!');
+    }
+
+    function clearAll() {
+      document.getElementById('inputText').value = '';
+      const shortStringsTable = document.getElementById('shortStringsBody');
+      const longStringsTable = document.getElementById('longStringsBody');
+      shortStringsTable.innerHTML = '';
+      longStringsTable.innerHTML = '';
+    }
+
+    document.getElementById('inputText').addEventListener('input', processStrings);
+    processStrings(); // Initial processing if there's default text
+  </script>
+</body>
+</html>
