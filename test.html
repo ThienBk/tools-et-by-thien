@@ -1,73 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Extract SKU from URLs</title>
+  <meta charset="UTF-8">
+  <title>Phân loại dãy ký tự</title>
   <style>
-    /* CSS để căn giữa và định dạng trang */
-    body {
-      display: flex;
+    /* CSS */
+    #container {
+      margin-left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
+      margin-top: 20px;
     }
-    #container {
+
+    .list-container {
+      display: flex;
+      justify-content: space-between;
       width: 80%;
-      max-height: 400px; /* Chiều cao tối đa của box kết quả */
-      overflow-y: auto; /* Cho phép thanh cuộn nếu nội dung vượt quá kích thước */
-      border: 1px solid #ccc;
-      padding: 10px;
-      box-sizing: border-box;
-      margin-bottom: 10px;
+      margin-top: 20px;
     }
-    textarea {
-      width: 100%;
-      height: 200px;
-      margin-bottom: 10px;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      border: 1px solid black;
+      width: 45%;
+      text-align: left;
     }
-    button {
-      margin-bottom: 10px;
+
+    ul li {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .buttons {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <textarea id="urls" placeholder="Nhập các liên kết ở đây..." spellcheck="false"></textarea>
-  <button onclick="showResults()">Hiện kết quả</button>
-  <button onclick="clearData()">Xóa dữ liệu</button>
-  <button onclick="copyResults()">Sao chép kết quả</button>
   <div id="container">
-    <p id="result"></p>
-  </div>
+    <textarea id="inputText" placeholder="Nhập dãy ký tự vào đây..." rows="10" cols="30"></textarea>
 
+    <div class="buttons">
+        <button onclick="copyShortStrings()">Copy SKUs</button>
+        <button onclick="copyLongStrings()">Copy PartNUmbers</button>
+        <button onclick="clearAll()">Xóa Toàn Bộ Dữ Liệu</button>
+    </div>
+    <div class="list-container">
+      <ul id="shortStrings">
+        <caption>SKU (≤ 8 ký tự)</caption>
+      </ul>
+      <ul id="longStrings">
+        <caption>PartNUmbers (&gt; 8 ký tự)</caption>
+      </ul>
+    </div>
+  </div>
   <script>
-    function showResults() {
-        const urls = document.getElementById('urls').value.split('\n');
-        const result = document.getElementById('result');
-        let skuList = '';
-  
-        urls.forEach(url => {
-          const urlParts = url.split('-');
-          const sku = urlParts[urlParts.length - 1].split('.')[0];
-          skuList += `${sku}<br>`;
+    // JavaScript
+    function processStrings() {
+        const inputText = document.getElementById('inputText').value.split('\n');
+        const shortStringsList = document.getElementById('shortStrings');
+        const longStringsList = document.getElementById('longStrings');
+      
+        shortStringsList.innerHTML = '';
+        longStringsList.innerHTML = '';
+      
+        inputText.forEach((str, index) => {
+          const trimmedStr = str.trim().toUpperCase().replace(/-/g, '').replace(/\./g, ''); // Loại bỏ dấu ".";
+          const listItem = document.createElement('li');
+      
+          listItem.textContent = trimmedStr;
+      
+          if (trimmedStr.length <= 8) {
+            shortStringsList.appendChild(listItem);
+          } else {
+            longStringsList.appendChild(listItem);
+          }
         });
-  
-        result.innerHTML = skuList;
       }
       
-    
-    function clearData() {
-      document.getElementById('urls').value = '';
-      document.getElementById('result').innerHTML = '';
+
+    function copyShortStrings() {
+      const shortStringsContent = document.getElementById('shortStrings').innerText;
+      copyToClipboard(shortStringsContent);
     }
 
-    function copyResults() {
-      const result = document.getElementById('result').innerText;
-      if (result !== '') {
-        navigator.clipboard.writeText(result);
-        alert('Kết quả đã được sao chép!');
-      }
+    function copyLongStrings() {
+      const longStringsContent = document.getElementById('longStrings').innerText;
+      copyToClipboard(longStringsContent);
     }
+
+    function copyToClipboard(content) {
+      const el = document.createElement('textarea');
+      el.value = content;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      alert('Đã sao chép vào clipboard!');
+    }
+
+    function clearAll() {
+      document.getElementById('inputText').value = '';
+      const shortStringsList = document.getElementById('shortStrings');
+      const longStringsList = document.getElementById('longStrings');
+      shortStringsList.innerHTML = '<caption>SKU (≤ 8 ký tự)</caption>';
+      longStringsList.innerHTML = '<caption>PartNUmbers (&gt; 8 ký tự)</caption>';
+    }
+
+    document.getElementById('inputText').addEventListener('input', processStrings);
+    processStrings(); // Initial processing if there's default text
   </script>
 </body>
 </html>
