@@ -1,117 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Phân loại dãy ký tự</title>
+  <title>Extract Product IDs</title>
   <style>
-    /* CSS */
-    #container {
-      margin-left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
     }
 
-    .list-container {
-      display: flex;
-      justify-content: space-between;
-      width: 80%;
-      margin-top: 20px;
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      border: 1px solid black;
-      width: 45%;
-      text-align: left;
+    button {
+      padding: 8px 16px;
+      margin-right: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 14px;
     }
 
-    ul li {
-      padding: 8px;
-      border-bottom: 1px solid #ccc;
+    button:hover {
+      background-color: #0056b3;
     }
 
-    .buttons {
-      margin-top: 10px;
+    #result {
+      width: 100%;
+      height: 150px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <textarea id="inputText" placeholder="Nhập dãy ký tự vào đây..." rows="10" cols="30"></textarea>
+  <textarea id="inputData" placeholder="Nhập các URL vào đây"></textarea>
+  <br>
+  <button onclick="extractIDs()">Tách kết quả</button>
+  <button onclick="copyConvertedData()">Sao chép kết quả</button>
+  <button onclick="clearAll()">Xóa dữ liệu trên trang</button>
+  <br>
+  <textarea id="result" placeholder="Kết quả sẽ xuất hiện ở đây" readonly></textarea>
 
-    <div class="buttons">
-        <button onclick="copyShortStrings()">Copy SKUs</button>
-        <button onclick="copyLongStrings()">Copy PartNUmbers</button>
-        <button onclick="clearAll()">Xóa Toàn Bộ Dữ Liệu</button>
-    </div>
-    <div class="list-container">
-      <ul id="shortStrings">
-        <caption>SKU (≤ 8 ký tự)</caption>
-      </ul>
-      <ul id="longStrings">
-        <caption>PartNUmbers (&gt; 8 ký tự)</caption>
-      </ul>
-    </div>
-  </div>
   <script>
-    // JavaScript
-    function processStrings() {
-        const inputText = document.getElementById('inputText').value.split('\n');
-        const shortStringsList = document.getElementById('shortStrings');
-        const longStringsList = document.getElementById('longStrings');
-      
-        shortStringsList.innerHTML = '';
-        longStringsList.innerHTML = '';
-      
-        inputText.forEach((str, index) => {
-          const trimmedStr = str.trim().toUpperCase().replace(/-/g, '').replace(/\./g, ''); // Loại bỏ dấu ".";
-          const listItem = document.createElement('li');
-      
-          listItem.textContent = trimmedStr;
-      
-          if (trimmedStr.length <= 8) {
-            shortStringsList.appendChild(listItem);
-          } else {
-            longStringsList.appendChild(listItem);
-          }
-        });
-      }
-      
-
-    function copyShortStrings() {
-      const shortStringsContent = document.getElementById('shortStrings').innerText;
-      copyToClipboard(shortStringsContent);
+    function extractIDs() {
+      const inputData = document.getElementById('inputData').value;
+      const productIDs = extractProductIDs(inputData.split('\n'));
+      const result = document.getElementById('result');
+      result.value = productIDs.join('\n').toUpperCase(); // Chuyển đổi kết quả thành chữ hoa
     }
 
-    function copyLongStrings() {
-      const longStringsContent = document.getElementById('longStrings').innerText;
-      copyToClipboard(longStringsContent);
+    function extractProductIDs(urls) {
+      const productIDs = [];
+      const regex = /-(\w+)\.html/g;
+
+      urls.forEach(url => {
+        const matches = url.match(regex);
+        
+        if (matches) {
+          matches.forEach(match => {
+            const parts = match.split('-');
+            if (parts.length === 2) {
+              const productID = parts[1].replace('.html', '');
+              productIDs.push(productID);
+            }
+          });
+        }
+      });
+
+      return productIDs;
     }
 
-    function copyToClipboard(content) {
-      const el = document.createElement('textarea');
-      el.value = content;
-      document.body.appendChild(el);
-      el.select();
+    function copyConvertedData() {
+      const result = document.getElementById('result');
+      result.select();
       document.execCommand('copy');
-      document.body.removeChild(el);
-      alert('Đã sao chép vào clipboard!');
+      alert('Đã sao chép kết quả sau khi chuyển đổi!');
     }
 
     function clearAll() {
-      document.getElementById('inputText').value = '';
-      const shortStringsList = document.getElementById('shortStrings');
-      const longStringsList = document.getElementById('longStrings');
-      shortStringsList.innerHTML = '<caption>SKU (≤ 8 ký tự)</caption>';
-      longStringsList.innerHTML = '<caption>PartNUmbers (&gt; 8 ký tự)</caption>';
+      document.getElementById('inputData').value = '';
+      document.getElementById('result').value = '';
     }
-
-    document.getElementById('inputText').addEventListener('input', processStrings);
-    processStrings(); // Initial processing if there's default text
   </script>
 </body>
 </html>
