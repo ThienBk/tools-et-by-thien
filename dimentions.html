@@ -1,1 +1,334 @@
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThienBK Creations</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      } 
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .box {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        width: 300px;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 10px;
+      }
+      button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+      .fastButton {
+        position: absolute;
+        top: 274px;
+        right: 300px;
+        position: absolute;
+        left: 300px;
+      }
+      .fastButton .result {
+        margin-top: 20px;
+        font-weight: bold;
+        white-space: pre-line;
+      }
+      a{
+        display: flex;
+        position: relative;
+        left: -300px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tách Dimensions nhanh</h1>
+      <script src="script.js"></script>
+      <div class="box">
+        <h1>Note:</h1>
+        <h3>Hiện tại mới chỉ đếm được tối đa 10 bộ</h3>
+      </div>
+      <textarea
+        id="inputText"
+        placeholder="Nhập vào Description Value..."
+      ></textarea>
+      <a href="schemaTags.html">Tools tách Dimentions từ Schematags</a>
+      <a href="formatSchemaTags.html">Tool xử lý Schematags</a></br>
+      <a href="chiaDong.html">Tools chia 300 dòng</a>
+      <a href="toolsTach2000Dong.html">Tools tách 2000 dòng </a></br>
+      <a href="index.html">Link nhanh </a>
+      <a href="xuLyFeatureAndTags.html">Xư lý FEATURES </a>
+      <a href="phanLoai.html">Phân Loại SKU - PNBs </a>
+      <a href="TachSKU.html">Tách SKU, PNB từ link </a>
+      <a href="inchConvert.html">Convert to Inch </a>
+      <button onclick="splitNumbers()">Tách Dimensions</button>
+      <button onclick="splitNumbersWithComma()">Tách số</button>
+      <div class="fastButton">
+        <button
+          style="background-color: rgb(43, 120, 254); color: white"
+          onclick="copyResult()"
+        >
+          Copy kết quả
+        </button>
+        <button
+          style="background-color: rgb(254, 43, 43); color: white"
+          onclick="clearTextarea()"
+        >
+          Xóa toàn bộ nội dung
+        </button>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+    <script>
+      function formatNumberWithUnits(number, unit) {
+        switch (unit) {
+          case "L":
+            return number + "L";
+          case "W":
+            return number + "W";
+          case "H":
+            return number + "H";
+          case "lbs":
+            return number + "lbs";
+          default:
+            return number;
+        }
+      }
+      // Đếm số kết quả trước L, W, H
+      function countDimensions(numbers) {
+        var countL = 0;
+        var countW = 0;
+        var countH = 0;
+        numbers.forEach(function (numberWithUnit) {
+          var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
+          switch (unit) {
+            case "L":
+              countL++;
+              break;
+            case "W":
+              countW++;
+              break;
+            case "H":
+              countH++;
+              break;
+          }
+        });
+        return { countL, countW, countH };
+      }
+      // Tách lấy số và ký tự dimentions
+      function splitNumbers() {
+        var inputText = document.getElementById("inputText").value;
+        var lines = inputText.split("\n"); // Tách các dòng văn bản
+        var resultDiv = document.getElementById("result");
+        var resultHTML = "";
+        // lines.forEach(function (line) {
+        //   var numbers = line.match(/\d+\.?\d*\s?([LWHlbs]+)/g); // Tách số và đơn vị
+        //   if (numbers) {
+        //     var dimensionsCount = countDimensions(numbers);
+        //     var formattedNumbers = numbers.map(function (numberWithUnit) {
+        //       var number = numberWithUnit.match(/\d+\.?\d*/)[0];
+        //       var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
+        //       return formatNumberWithUnits(number, unit);
+        //     });
+        //     var countLabel = "";
+        //     if (
+        //       dimensionsCount.countL === 10 ||
+        //       dimensionsCount.countW === 10 ||
+        //       dimensionsCount.countH === 10
+        //     ) {
+        //       countLabel = "10 bộ,  ";
+        //     } else if (
+        //       dimensionsCount.countL === 9 ||
+        //       dimensionsCount.countW === 9 ||
+        //       dimensionsCount.countH === 9
+        //     ) {
+        //       countLabel = "9 bộ,  ";
+        //     }
+        //     } else if (
+        //       dimensionsCount.countL === 8 ||
+        //       dimensionsCount.countW === 8 ||
+        //       dimensionsCount.countH === 8
+        //     ) {
+        //       countLabel = "8 bộ,  ";
+        //     }
+        //     else if (
+        //       dimensionsCount.countL === 7 ||
+        //       dimensionsCount.countW === 7 ||
+        //       dimensionsCount.countH === 7
+        //     ) {
+        //       countLabel = "7 bộ,  ";
+        //     }else if (
+        //       dimensionsCount.countL === 6 ||
+        //       dimensionsCount.countW === 6 ||
+        //       dimensionsCount.countH === 6
+        //     ) {
+        //       countLabel = "6 bộ,  ";
+        //     }else if (
+        //       dimensionsCount.countL === 5 ||
+        //       dimensionsCount.countW === 5 ||
+        //       dimensionsCount.countH === 5
+        //     ) {
+        //       countLabel = "5 bộ,  ";
+        //     }else if (
+        //       dimensionsCount.countL === 4 ||
+        //       dimensionsCount.countW === 4 ||
+        //       dimensionsCount.countH === 4
+        //     ) {
+        //       countLabel = "4 bộ,  ";
+        //     }
+        //     else if (
+        //       dimensionsCount.countL === 3 ||
+        //       dimensionsCount.countW === 3 ||
+        //       dimensionsCount.countH === 3
+        //     ) {
+        //       countLabel = "3 bộ,  ";
+        //     } else if (
+        //       dimensionsCount.countL === 2 ||
+        //       dimensionsCount.countW === 2 ||
+        //       dimensionsCount.countH === 2
+        //     ) {
+        //       countLabel = "2 bộ,  ";
+        //     } else {
+        //       countLabel = "1 bộ,  ";
+        //     }
+        //     resultHTML +=
+        //       countLabel + " " + formattedNumbers.join(", ") + "<br>";
+        //   } else if (line.trim() === "") {
+        //     resultHTML += "<br>";
+        //   } else {
+        //     resultHTML += "<br>";
+        //   }
+        // });
+        lines.forEach(function (line) {
+          var numbers = line.match(/\d+\.?\d*\s?([LWHlbs]+)/g); // Tách số và đơn vị
+          if (numbers) {
+            var dimensionsCount = countDimensions(numbers);
+            var formattedNumbers = numbers.map(function (numberWithUnit) {
+              var number = numberWithUnit.match(/\d+\.?\d*/)[0];
+              var unit = numberWithUnit.match(/[LWHlbs]+/)[0];
+              return formatNumberWithUnits(number, unit);
+            });
+            var countLabel = "";
+            if (
+              dimensionsCount.countL === 10 ||
+              dimensionsCount.countW === 10 ||
+              dimensionsCount.countH === 10
+            ) {
+              countLabel = "10 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 9 ||
+              dimensionsCount.countW === 9 ||
+              dimensionsCount.countH === 9
+            ) {
+              countLabel = "9 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 8 ||
+              dimensionsCount.countW === 8 ||
+              dimensionsCount.countH === 8
+            ) {
+              countLabel = "8 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 7 ||
+              dimensionsCount.countW === 7 ||
+              dimensionsCount.countH === 7
+            ) {
+              countLabel = "7 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 6 ||
+              dimensionsCount.countW === 6 ||
+              dimensionsCount.countH === 6
+            ) {
+              countLabel = "6 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 5 ||
+              dimensionsCount.countW === 5 ||
+              dimensionsCount.countH === 5
+            ) {
+              countLabel = "5 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 4 ||
+              dimensionsCount.countW === 4 ||
+              dimensionsCount.countH === 4
+            ) {
+              countLabel = "4 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 3 ||
+              dimensionsCount.countW === 3 ||
+              dimensionsCount.countH === 3
+            ) {
+              countLabel = "3 bộ,  ";
+            } else if (
+              dimensionsCount.countL === 2 ||
+              dimensionsCount.countW === 2 ||
+              dimensionsCount.countH === 2
+            ) {
+              countLabel = "2 bộ,  ";
+            } else {
+              countLabel = "1 bộ,  ";
+            }
+            resultHTML +=
+              countLabel + " " + formattedNumbers.join(", ") + "<br>";
+          } else if (line.trim() === "") {
+            resultHTML += "<br>";
+          } else {
+            resultHTML += "<br>";
+          }
+        });
+        if (lines.length === 0 || resultHTML === "") {
+          resultDiv.innerHTML = "<p>Không tìm thấy kết quả nào.</p>";
+        } else {
+          resultDiv.innerHTML = resultHTML;
+        }
+      }
+      // Tách chỉ lấy số
+      function splitNumbersWithComma() {
+        var inputText = document.getElementById("inputText").value;
+        var lines = inputText.split("\n"); // Tách các dòng văn bản
+        var resultDiv = document.getElementById("result");
+        var resultHTML = "";
+        lines.forEach(function (line) {
+          var numbers = line.match(/\d+\.?\d*/g); // Tách số
+          if (numbers) {
+            resultHTML += numbers.join(", ") + "<br>";
+          } else if (line.trim() === "") {
+            resultHTML += "<br>";
+          } else {
+            resultHTML += "<br>";
+          }
+        });
+        resultDiv.innerHTML = resultHTML;
+      }
+      // Copy kết quả
+      function copyResult() {
+        var resultText = document.getElementById("result").innerText;
+        if (resultText) {
+          navigator.clipboard
+            .writeText(resultText)
+            .then(function () {
+              alert("Kết quả đã được sao chép.");
+            })
+            .catch(function (error) {
+              console.error("Lỗi khi sao chép: ", error);
+            });
+        }
+      }
+      // Xóa text area
+      function clearTextarea() {
+        document.getElementById("inputText").value = "";
+        document.getElementById("result").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>
