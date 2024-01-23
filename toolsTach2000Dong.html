@@ -40,11 +40,11 @@
   button:hover {
     background-color: #2b78fe;
   }
-  #copyButton, #clearButton {
+  #copyButton, #clearButton, #formatButton {
     margin-top: 10px;
     background-color: #2b78fe;
   }
-  #copyButton:disabled, #clearButton:disabled {
+  #copyButton:disabled, #clearButton:disabled, #formatButton:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
@@ -63,7 +63,7 @@
   <h1>Text Area Example</h1>
   <p>Enter multiple lines of text below:</p>
   <textarea id="input" rows="10"></textarea>
-  <button onclick="formatText()">Format</button>
+  <button id="formatButton" onclick="formatText()">Format</button>
   <button id="copyButton" onclick="copyResult()" disabled>Copy Result</button>
   <button id="clearButton" onclick="clearData()">Clear Data</button>
   </br>
