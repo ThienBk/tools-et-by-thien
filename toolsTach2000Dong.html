@@ -8,13 +8,45 @@
   body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    margin: 0;
   }
   .container {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
     background-color: white;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+  }
+  p {
+    text-align: center;
+  }
+  #input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  button {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #2b78fe;
+  }
+  #copyButton, #clearButton {
+    margin-top: 10px;
+    background-color: #2b78fe;
+  }
+  #copyButton:disabled, #clearButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
   #output {
     margin-top: 20px;
@@ -22,10 +54,6 @@
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     white-space: pre-line;
-  }
-  #copyButton {
-    margin-top: 10px;
-    cursor: pointer;
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
@@ -36,9 +64,10 @@
   <p>Enter multiple lines of text below:</p>
   <textarea id="input" rows="10"></textarea>
   <button onclick="formatText()">Format</button>
-  <button style="background-color: rgb(43, 120, 254); color: white" id="copyButton" onclick="copyResult()" disabled>Copy Result</button>
-    </br>
-    <a href="tools.html">Tools tách Dimensions nhanh</a>
+  <button id="copyButton" onclick="copyResult()" disabled>Copy Result</button>
+  <button id="clearButton" onclick="clearData()">Clear Data</button>
+  </br>
+  <a href="tools.html">Tools tách Dimensions nhanh</a>
   <div id="output"></div>
 </div>
 <script>
@@ -67,6 +96,12 @@
   function copyResult() {
     // Nothing needed here as Clipboard.js handles copying
     alert("Result copied to clipboard!");
+  }
+
+  function clearData() {
+    document.getElementById("input").value = "";
+    document.getElementById("output").textContent = "";
+    document.getElementById("copyButton").setAttribute("disabled", "true");
   }
 </script>
 </body>
