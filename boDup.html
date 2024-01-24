@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #inputTextarea, #resultText {
+            width: 300px;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #removeDuplicatesBtn, #copyResultBtn, #clearAllBtn {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <title>Remove Duplicate Strings</title>
+</head>
+<body>
+    <h2>Remove Duplicate Strings</h2>
+    <textarea id="inputTextarea" placeholder="Enter multiple lines"></textarea>
+    <br>
+    <button id="removeDuplicatesBtn" onclick="removeDuplicates()">Remove Duplicates</button>
+    <button id="copyResultBtn" onclick="copyResult()">Copy Result</button>
+    <button id="clearAllBtn" onclick="clearAll()">Clear All</button>
+    <br>
+    <p id="resultText"></p>
+
+    <script>
+        function removeDuplicates() {
+            var inputTextarea = document.getElementById("inputTextarea").value;
+            var resultText = document.getElementById("resultText");
+
+            // Sử dụng regular expression để loại bỏ chuỗi lặp lại
+            var regex = /(.+?)\1+/g;
+            var cleanedString = inputTextarea.replace(regex, '$1');
+
+            resultText.textContent = cleanedString;
+        }
+
+        function copyResult() {
+            var resultText = document.getElementById("resultText").textContent;
+
+            // Tạo một textarea ẩn để sao chép kết quả
+            var tempTextarea = document.createElement("textarea");
+            tempTextarea.value = resultText;
+            document.body.appendChild(tempTextarea);
+
+            // Chọn và sao chép nội dung của textarea
+            tempTextarea.select();
+            document.execCommand("copy");
+
+            // Xóa textarea ẩn
+            document.body.removeChild(tempTextarea);
+        }
+
+        function clearAll() {
+            document.getElementById("inputTextarea").value = "";
+            document.getElementById("resultText").textContent = "";
+        }
+    </script>
+</body>
+</html>
