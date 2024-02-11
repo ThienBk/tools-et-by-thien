@@ -33,6 +33,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    resize: vertical;
   }
 
   button {
@@ -43,6 +44,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin-right: 10px;
   }
 
   button:hover {
@@ -52,7 +54,7 @@
   #formattedCode {
     display: none;
     width: 100%;
-    height: 200px;
+    min-height: 200px;
     margin-top: 20px;
     padding: 8px;
     border: 1px solid #ccc;
@@ -68,11 +70,17 @@
 
 <div class="container">
   <h2>Code Formatter</h2>
-  <input type="text" id="tag2Input" placeholder="Enter tag2 value"><br>
-  <textarea id="titlesInput" placeholder="Enter titles, separated by new lines"></textarea><br>
-  <button id="formatButton">Format Code</button>
-  <button id="copyButton">Copy Formatted Code</button>
+  <input type="text" id="tag2Input" placeholder="Giá trị cần link to"><br>
+  <textarea id="titlesInput" placeholder="Tag cần Link To"></textarea><br>
+  <button id="formatButton">GET Code</button>
+  <button id="copyButton">Copy Code</button>
+  <button id="clearButton">Clear All</button>
   <textarea id="formattedCode" readonly></textarea>
+
+  <div style="margin-top: 10px">
+    <a href="tools.html">Tổng hợp Tools</a>
+    <a href="index.html">Về trang chủ </a>
+  </div>
 </div>
 
 <script>
@@ -80,6 +88,7 @@
   var titlesInput = document.getElementById("titlesInput");
   var formatButton = document.getElementById("formatButton");
   var copyButton = document.getElementById("copyButton");
+  var clearButton = document.getElementById("clearButton");
   var formattedCodeArea = document.getElementById("formattedCode");
 
   var tag2 = "";
@@ -96,6 +105,13 @@
 
   copyButton.addEventListener("click", function() {
     copyToClipboard(formattedCodeArea.value);
+  });
+
+  clearButton.addEventListener("click", function() {
+    tag2Input.value = "";
+    titlesInput.value = "";
+    formattedCodeArea.value = "";
+    formattedCodeArea.style.display = "none";
   });
 
   function formatCode() {
