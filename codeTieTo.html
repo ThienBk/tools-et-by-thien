@@ -20,6 +20,16 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+  ul{
+    list-style: none;
+  }
+  li{
+    margin: 0 10px;
+    background: #d4d7d3;
+  }
+  li:hover{
+    cursor: pointer;
+  }
 
   h2 {
     margin-top: 0;
@@ -70,6 +80,14 @@
 
 <div class="container">
   <h2>Code Formatter</h2>
+  <div>
+    <ul style="display: flex">
+      <li>Color</li>
+      <li>Size</li>
+      <li>Finish</li>
+      <li>Upholstery Color</li>
+    </ul>
+  </div>
   <input type="text" id="tag2Input" placeholder="Giá trị cần link to"><br>
   <textarea id="titlesInput" placeholder="Tag cần Link To"></textarea><br>
   <button id="formatButton">GET Code</button>
