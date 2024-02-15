@@ -207,6 +207,16 @@ for (var i = 0; i < inputs.length; i++) {
     document.execCommand('copy');
     document.body.removeChild(textarea);
   }
+  
+    document.addEventListener("DOMContentLoaded", function() {
+    var listItems = document.querySelectorAll("ul li");
+
+    listItems.forEach(function(item) {
+      item.addEventListener("click", function() {
+        tag2Input.value = item.textContent;
+      });
+    });
+  });
 </script>
 
 </body>
