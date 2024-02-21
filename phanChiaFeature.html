@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Formatting</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 10px;
+    }
+    button {
+        margin-right: 10px;
+    }
+</style>
+</head>
+<body>
+<textarea id="inputText" placeholder="Nhập đoạn văn vào đây..."></textarea>
+<button onclick="formatText()">Format</button>
+<button onclick="copyText()">Copy</button>
+<button onclick="clearText()">Clear</button>
+<div id="output"></div>
+
+<script>
+function formatText() {
+    var inputText = document.getElementById("inputText").value;
+    var lines = inputText.split('\n');
+    var output = "";
+
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (line !== "") {
+            var parts = line.split('<ul><li>');
+            if (parts.length === 2) {
+                if (i !== 0) {
+                    output += "<br>";
+                }
+                var id = parts[0].trim();
+                var content = parts[1].replace('</li><li>', '\n').replace('</li></ul>', '').trim();
+                output += id + '<br>' + content + '<br>';
+            }
+        }
+    }
+
+    document.getElementById("output").innerHTML = output;
+}
+
+function copyText() {
+    var outputText = document.getElementById("output").innerText;
+    navigator.clipboard.writeText(outputText).then(function() {
+        alert("Đã sao chép kết quả!");
+    }, function(err) {
+        console.error('Lỗi khi sao chép: ', err);
+    });
+}
+
+function clearText() {
+    document.getElementById("inputText").value = "";
+    document.getElementById("output").innerHTML = "";
+}
+</script>
+</body>
+</html>
