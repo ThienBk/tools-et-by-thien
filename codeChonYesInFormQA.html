@@ -3,13 +3,36 @@
 
 <head>
   <title>Page Title</title>
+  <style>
+    #paragraphContent {
+      min-width: 800px;
+      min-height: 200px;
+      resize: none; /* Không cho phép thay đổi kích thước */
+      border: 1px solid #ccc; /* Viền */
+      padding: 10px; /* Khoảng cách bên trong */
+      font-family: Arial, sans-serif; /* Font chữ */
+    }
+
+    #copyButton {
+      background-color: #4CAF50; /* Màu nền */
+      color: white; /* Màu chữ */
+      border: none; /* Không có viền */
+      padding: 10px 20px; /* Kích thước */
+      text-align: center; /* Căn giữa văn bản */
+      text-decoration: none; /* Không gạch chân */
+      display: inline-block; /* Hiển thị là khối mở rộng */
+      font-size: 16px; /* Kích thước chữ */
+      margin: 10px 0; /* Khoảng cách trên và dưới */
+      cursor: pointer; /* Con trỏ chuột */
+      border-radius: 5px; /* Đường cong góc */
+    }
+
+    #copyButton:hover {
+      background-color: #45a049; /* Màu nền khi rê chuột vào */
+    }
+  </style>
 </head>
-<style>
-  #paragraphContent {
-    min-width: 800px;
-    min-height: 200px;
-  }
-</style>
+
 <body>
 
   <h1>Code chọn toàn bộ Yes trong form QA</h1>
@@ -30,7 +53,7 @@ selectYesForAllGroups();
   </textarea>
 
   <!-- Button to copy content to clipboard -->
-  <button onclick="copyText()">Copy to Clipboard</button>
+  <button id="copyButton" onclick="copyText()">Copy to Clipboard</button>
 
   <script>
     // Function to copy content of <textarea> element to clipboard
