@@ -1,39 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Page Title</title>
+  <title>Page Title</title>
 </head>
+<style>
+  #paragraphContent {
+    min-width: 800px;
+    min-height: 200px;
+  }
+</style>
 <body>
 
-<h1>Code chọn toàn bộ Yes trong form QA</h1>
-<p>// Function to automatically select "Yes" for all radio button groups
-function selectYesForAllGroups() {
-    // Define an array containing all the values corresponding to "Yes"
+  <h1>Code chọn toàn bộ Yes trong form QA</h1>
+  <textarea id="paragraphContent">
+    function selectYesForAllGroups() {
     var yesValues = ["45101", "45105", "45103", "45107", "45109", "45111", "45113", "45115", "45117", "45119", "45121", "45123", "45125", "45127", "45129", "45131"];
-
-    // Find all groups of radio buttons
     var radioGroups = document.querySelectorAll('.sc-esOvli.jGysYX');
-
-    // Loop through each group
     radioGroups.forEach(function(group) {
-        // Find all radio buttons in the group
         var radioButtons = group.querySelectorAll('input[type="radio"]');
-
-        // Loop through each radio button in the group
         radioButtons.forEach(function(radioButton) {
-            // Check if the value of the radio button is in the yesValues array
             if (yesValues.includes(radioButton.value)) {
-                // Set the radio button to be checked (selected)
                 radioButton.checked = true;
             }
         });
     });
 }
-
-// Call the function to automatically select "Yes" for all groups
 selectYesForAllGroups();
-</p>
+  </textarea>
+
+  <!-- Button to copy content to clipboard -->
+  <button onclick="copyText()">Copy to Clipboard</button>
+
+  <script>
+    // Function to copy content of <textarea> element to clipboard
+    function copyText() {
+      var textareaContent = document.getElementById('paragraphContent').value;
+      navigator.clipboard.writeText(textareaContent)
+        .then(() => {
+          console.log('Text copied to clipboard successfully');
+        })
+        .catch(err => {
+          console.error('Unable to copy text to clipboard', err);
+        });
+    }
+  </script>
 
 </body>
-</html>
 
+</html>
