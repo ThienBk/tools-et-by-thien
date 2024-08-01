@@ -73,7 +73,7 @@
           for (var product in result) {
             var productData = result[product].join(" "); // Sử dụng dấu cách để nối thông số
             var productDiv = document.createElement("div");
-            productDiv.textContent = product + " " + productData.replace(/\s+/g, " / "); // Sử dụng dấu cách ở đây
+            productDiv.textContent = product + " " + productData.replace(/\s+/g, " , "); // Sử dụng dấu cách ở đây
             output.appendChild(productDiv);
           }
         });
