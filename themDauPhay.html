@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Dấu Phẩy</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        textarea {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin: 10px;
+        }
+
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        p {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            white-space: pre-wrap; /* Preserve line breaks */
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <textarea id="input" rows="10" cols="50" placeholder="Nhập dữ liệu vào đây..."></textarea>
+        <div class="buttons">
+            <button onclick="addCommas()">Thêm dấu phẩy</button>
+            <button onclick="copyToClipboard()">Sao chép kết quả</button>
+            <button onclick="clearAll()">Xóa dữ liệu</button>
+        </div>
+        <p id="output" placeholder="Kết quả sẽ hiển thị ở đây..."></p>
+    </div>
+    <script>
+        function addCommas() {
+            const input = document.getElementById('input').value.trim();
+            const lines = input.split('\n');
+            const output = lines.map(line => `${line.trim()},`).join('\n');
+            document.getElementById('output').innerText = output;
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output').innerText;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = output;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Đã sao chép kết quả!');
+        }
+
+        function clearAll() {
+            document.getElementById('input').value = '';
+            document.getElementById('output').innerText = '';
+        }
+    </script>
+</body>
+</html>
 
