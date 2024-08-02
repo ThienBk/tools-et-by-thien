@@ -31,16 +31,6 @@
             font-size: 16px;
             cursor: pointer;
         }
-
-        p {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            width: 80%;
-            white-space: pre-wrap; /* Preserve line breaks */
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
     </style>
 </head>
 <body>
@@ -52,31 +42,27 @@
             <button onclick="clearAll()">Xóa dữ liệu</button>
         </div>
        <a href="tools.html">tools</a>
-        <p id="output" placeholder="Kết quả sẽ hiển thị ở đây..."></p>
+        <textarea id="output" rows="10" cols="50" placeholder="Kết quả sẽ hiển thị ở đây..."></textarea>
     </div>
     <script>
         function addCommas() {
             const input = document.getElementById('input').value.trim();
             const lines = input.split('\n');
-            const output = lines.map(line => `${line.trim()},`).join('\n');
-            document.getElementById('output').innerText = output;
+            const output = lines.map(line => line.trim() + ', ').join('\n');
+            document.getElementById('output').value = output;
         }
 
         function copyToClipboard() {
-            const output = document.getElementById('output').innerText;
-            const tempInput = document.createElement('textarea');
-            tempInput.value = output;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            const output = document.getElementById('output');
+            output.select();
+            output.setSelectionRange(0, 99999); // For mobile devices
             document.execCommand('copy');
-            document.body.removeChild(tempInput);
             alert('Đã sao chép kết quả!');
         }
 
         function clearAll() {
             document.getElementById('input').value = '';
-            document.getElementById('output').innerText = '';
+            document.getElementById('output').value = '';
         }
     </script>
 </body>
