@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangle Checker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        button.action {
+            background-color: #28a745;
+            color: #fff;
+        }
+        button.copy {
+            background-color: #007bff;
+            color: #fff;
+        }
+        button.clear {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .result p {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rectangle Checker</h1>
+        <textarea id="inputData" placeholder="Nhập các dòng ở đây..."></textarea>
+        <button class="action" onclick="processRectangles()">Action</button>
+        <button class="copy" onclick="copyResult()">Copy kết quả</button>
+        <button class="clear" onclick="clearAll()">Xóa dữ liệu</button>
+        <a href="tools.html">Tổng hợp Tools</a>
+        <div class="result" id="result"></div>
+    </div>
 
+    <script>
+        function processRectangles() {
+            const input = document.getElementById("inputData").value.trim();
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = ''; // Xóa kết quả cũ
+
+            if (!input) {
+                resultDiv.innerHTML = "Vui lòng nhập dữ liệu.";
+                return;
+            }
+
+            // Tách mỗi dòng thành một phần tử
+            const lines = input.split('\n');
+            lines.forEach((line, index) => {
+                const match = line.match(/Rectangle (\d+\.\d+) x (\d+\.\d+)/);
+                if (match) {
+                    const firstValue = parseFloat(match[1]);
+                    const secondValue = parseFloat(match[2]);
+
+                    // Tính tỷ lệ
+                    const ratio = secondValue / firstValue;
+
+                    // Xác định Yes/No theo yêu cầu
+                    const result = ratio >= 2 ? "No" : "Yes";
+                    resultDiv.innerHTML += `<p>${result}: ${line}</p>`;
+                } else {
+                    resultDiv.innerHTML += `<p>Không hợp lệ: ${line}</p>`;
+                }
+            });
+        }
+
+        function copyResult() {
+            const resultDiv = document.getElementById("result");
+            if (!resultDiv.innerText) {
+                alert("Không có kết quả để sao chép!");
+                return;
+            }
+
+            // Tạo một thẻ textarea tạm thời để copy
+            const tempTextarea = document.createElement("textarea");
+            tempTextarea.value = resultDiv.innerText;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextarea);
+
+            alert("Kết quả đã được sao chép vào clipboard!");
+        }
+
+        function clearAll() {
+            document.getElementById("inputData").value = '';
+            document.getElementById("result").innerHTML = '';
+        }
+    </script>
+</body>
+</html>
