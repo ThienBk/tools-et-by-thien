@@ -3,118 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Dấu Phẩy</title>
+    <title>Value Separator Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        /* Ripple effect styles */
+        .ripple-btn {
+            position: relative;
+            overflow: hidden;
+            transform: translate3d(0,0,0);
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 900px;
+        
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.7);
+            transform: scale(0);
+            animation: ripple 600ms linear;
+            pointer-events: none;
         }
-
-        textarea {
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-            width: calc(100% - 20px);
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
-
-        textarea:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-
+        
+        /* Button styles */
         button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-
+        
         button:hover {
-            background-color: #0056b3;
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
         }
-
-        button:active {
-            background-color: #004085;
-            transform: translateY(0);
+        
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 16px;
-            transition: color 0.3s ease;
-        }
-
-        a:hover {
-            color: #0056b3;
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <textarea id="input" rows="10" placeholder="Nhập dữ liệu vào đây..."></textarea>
-        <div class="buttons">
-            <button onclick="addCommas()">Thêm dấu phẩy</button>
-            <button onclick="copyToClipboard()">Sao chép kết quả</button>
-            <button onclick="clearAll()">Xóa dữ liệu</button>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Value Separator Tool</h1>
+        
+        <div class="space-y-4">
+            <!-- Input Textarea -->
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-sm font-medium text-gray-700">Input Values</label>
+                    <span id="line-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 lines</span>
+                </div>
+                <textarea id="input-values" class="w-full border border-gray-300 rounded px-3 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" placeholder="Enter values separated by new lines"></textarea>
+            </div>
+
+            <!-- Options -->
+            <div class="space-y-2">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Separator</label>
+                    <select id="separator" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value=",">Comma ( , )</option>
+                        <option value=";">Semicolon ( ; )</option>
+                        <option value="|">Pipe ( | )</option>
+                        <option value=" ">Space (   )</option>
+                        <option value="\t">Tab (    )</option>
+                        <option value="-">Hyphen ( - )</option>
+                        <option value="\n">New Line</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div id="custom-separator-container" class="hidden">
+                    <input type="text" id="custom-separator" placeholder="Enter custom separator" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="numerical-order" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="numerical-order" class="ml-2 block text-sm text-gray-700">Numerical Order</label>
+                </div>
+            </div>
+
+            <!-- Output -->
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-sm font-medium text-gray-700">Result</label>
+                    <div class="flex items-center gap-2">
+                        <span id="value-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 values</span>
+                        <button onclick="reverseConversion()" class="text-gray-600 hover:text-blue-500 transition-colors" title="Reverse conversion">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <textarea id="output" readonly class="w-full border border-gray-300 rounded px-3 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
+                    <div class="absolute right-2 top-2 flex flex-col gap-1">
+                        <button onclick="copyToClipboard()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button onclick="reverseConversion()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded" title="Reverse conversion">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="generateOutput(event)" class="ripple-btn bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Generate
+                </button>
+                <button onclick="copyToClipboard(event)" class="ripple-btn bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <button onclick="clearAll(event)" class="ripple-btn bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+            </div>
         </div>
-        <a href="tools.html">tools</a>
-        <textarea id="output" rows="10" placeholder="Kết quả sẽ hiển thị ở đây..."></textarea>
     </div>
+
     <script>
-        function addCommas() {
-            const input = document.getElementById('input').value.trim();
-            const lines = input.split('\n');
-            const output = lines.map(line => line.trim() + ', ').join('\n');
-            document.getElementById('output').value = output;
+        function clearAll(event) {
+            createRipple(event);
+            const inputArea = document.getElementById('input-values');
+            const outputArea = document.getElementById('output');
+            
+            // Add fade out effect
+            inputArea.classList.add('opacity-0');
+            outputArea.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                inputArea.value = '';
+                outputArea.value = '';
+                document.getElementById('line-count').classList.add('hidden');
+                document.getElementById('value-count').classList.add('hidden');
+                document.getElementById('numerical-order').checked = false;
+                
+                // Add fade in effect
+                inputArea.classList.remove('opacity-0');
+                outputArea.classList.remove('opacity-0');
+            }, 300);
         }
+        // Update line count when input changes
+        document.getElementById('input-values').addEventListener('input', function() {
+            const lines = this.value.split('\n').filter(line => line.trim() !== '');
+            const lineCount = document.getElementById('line-count');
+            lineCount.textContent = `${lines.length} line${lines.length !== 1 ? 's' : ''}`;
+            lineCount.classList.toggle('hidden', lines.length === 0);
+        });
 
-        function copyToClipboard() {
+        // Toggle custom separator input
+        document.getElementById('separator').addEventListener('change', function() {
+            const customContainer = document.getElementById('custom-separator-container');
+            if (this.value === 'custom') {
+                customContainer.classList.remove('hidden');
+            } else {
+                customContainer.classList.add('hidden');
+            }
+        });
+
+        // Generate the output
+        function generateOutput(event) {
+            createRipple(event);
+            const inputs = document.querySelectorAll('.input-field');
+            const separatorSelect = document.getElementById('separator');
+            const customSeparator = document.getElementById('custom-separator');
+            const numericalOrder = document.getElementById('numerical-order').checked;
             const output = document.getElementById('output');
-            output.select();
-            output.setSelectionRange(0, 99999); // For mobile devices
-            document.execCommand('copy');
-            alert('Đã sao chép kết quả!');
+
+            // Get input values and split by new lines
+            const inputText = document.getElementById('input-values').value;
+            let lines = inputText.split('\n').filter(line => line.trim() !== '');
+            
+            // For display in textarea (shows line numbers)
+            if (numericalOrder) {
+                document.getElementById('input-values').value = 
+                    lines.map((line, i) => `${i+1}. ${line}`).join('\n');
+            }
+
+            // For processing (remove line numbers if present)
+            let values = lines.map(line => line.replace(/^\d+\.\s*/, '').trim())
+                            .filter(value => value !== '');
+
+            // Apply numerical order to output if enabled
+            if (numericalOrder) {
+                values.sort((a, b) => {
+                    const numA = parseFloat(a);
+                    const numB = parseFloat(b);
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        return numA - numB;
+                    }
+                    return a.localeCompare(b);
+                });
+            }
+
+            // Determine separator
+            let separator = separatorSelect.value;
+            if (separator === 'custom') {
+                separator = customSeparator.value;
+            } else if (separator === '\\n') {
+                separator = '\n';
+            } else if (separator === '\\t') {
+                separator = '\t';
+            }
+
+            // Join with separator
+            output.value = values.join(separator);
+            
+            // Count values in output (may be different due to empty values)
+            const outputValues = output.value.split(separator).filter(v => v.trim() !== '');
+            document.getElementById('value-count').textContent = 
+                `${outputValues.length} value${outputValues.length !== 1 ? 's' : ''}`;
+            document.getElementById('value-count').classList.toggle('hidden', outputValues.length === 0);
         }
 
-        function clearAll() {
-            document.getElementById('input').value = '';
-            document.getElementById('output').value = '';
+        // Copy to clipboard
+        // Ripple effect function
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement("span");
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+            
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
+            circle.classList.add("ripple-effect");
+            
+            const ripple = button.getElementsByClassName("ripple-effect")[0];
+            if (ripple) {
+                ripple.remove();
+            }
+            
+            button.appendChild(circle);
         }
+
+        function copyToClipboard(event) {
+            createRipple(event);
+            const output = document.getElementById('output');
+            if (output.value.trim() === '') return;
+            
+            // Add pulse effect
+            output.classList.add('pulse');
+            setTimeout(() => output.classList.remove('pulse'), 500);
+            
+            output.select();
+            document.execCommand('copy');
+            
+            // Show feedback with animation
+            const copyButton = document.querySelector('button.bg-green-500');
+            copyButton.classList.add('pulse');
+            const originalHTML = copyButton.innerHTML;
+            copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                copyButton.innerHTML = originalHTML;
+                copyButton.classList.remove('pulse');
+            }, 2000);
+        }
+
+        // Reverse conversion function
+        function reverseConversion() {
+            const output = document.getElementById('output').value;
+            if (!output.trim()) return;
+            
+            // Get current separator
+            const separatorSelect = document.getElementById('separator');
+            let separator = separatorSelect.value;
+            if (separator === 'custom') {
+                separator = document.getElementById('custom-separator').value;
+            } else if (separator === '\\n') {
+                separator = '\n';
+            } else if (separator === '\\t') {
+                separator = '\t';
+            }
+            
+            // Convert back to space-separated
+            const values = output.split(separator).filter(v => v.trim());
+            document.getElementById('input-values').value = values.join(' ');
+            
+            // Update line count
+            const lineCount = document.getElementById('line-count');
+            lineCount.textContent = `${values.length} line${values.length !== 1 ? 's' : ''}`;
+            lineCount.classList.remove('hidden');
+        }
+
+        // Add fade-in effect on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('div.bg-white').classList.add('fade-in');
+        });
     </script>
 </body>
 </html>
