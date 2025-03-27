@@ -54,10 +54,12 @@
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Value Separator Tool</h1>
         
-        <div class="space-y-4">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Left Column -->
+            <div class="flex-1 space-y-4">
             <!-- Input Textarea -->
             <div>
                 <div class="flex justify-between items-center mb-1">
@@ -65,7 +67,6 @@
                     <span id="line-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 lines</span>
                 </div>
                 <textarea id="input-values" class="w-full border border-gray-300 rounded px-3 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" placeholder="Enter values separated by new lines"></textarea>
-               <a href="index.html">Về trang chủ </a> 
             </div>
 
             <!-- Options -->
@@ -89,35 +90,42 @@
                 <div class="flex items-center">
                     <input type="checkbox" id="numerical-order" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                     <label for="numerical-order" class="ml-2 block text-sm text-gray-700">Numerical Order</label>
+                  <a style="margin-left: 20px" href="index.html">Home </a>
                 </div>
             </div>
 
-            <!-- Output -->
-            <div>
-                <div class="flex justify-between items-center mb-1">
-                    <label class="block text-sm font-medium text-gray-700">Result</label>
-                    <div class="flex items-center gap-2">
-                        <span id="value-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 values</span>
-                        <button onclick="reverseConversion()" class="text-gray-600 hover:text-blue-500 transition-colors" title="Reverse conversion">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
+            </div>
+
+            <!-- Right Column -->
+            <div class="flex-1 space-y-4">
+                <!-- Output -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-sm font-medium text-gray-700">Result</label>
+                        <div class="flex items-center gap-2">
+                            <span id="value-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 values</span>
+                            <button onclick="reverseConversion()" class="text-gray-600 hover:text-blue-500 transition-colors" title="Reverse conversion">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="relative">
-                    <textarea id="output" readonly class="w-full border border-gray-300 rounded px-3 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
-                    <div class="absolute right-2 top-2 flex flex-col gap-1">
-                        <button onclick="copyToClipboard()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button onclick="reverseConversion()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded" title="Reverse conversion">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
+                    <div class="relative">
+                        <textarea id="output" readonly class="w-full border border-gray-300 rounded px-3 py-2 h-64 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
+                        <div class="absolute right-2 top-2 flex flex-col gap-1">
+                            <button onclick="copyToClipboard()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button onclick="reverseConversion()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded" title="Reverse conversion">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Action Buttons -->
-            <div class="grid grid-cols-3 gap-2">
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-3 gap-2 mt-6">
                 <button onclick="generateOutput(event)" class="ripple-btn bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     Generate
                 </button>
@@ -286,13 +294,15 @@
                 separator = '\t';
             }
             
-            // Convert back to space-separated
+            // Convert back while maintaining separator consistency
             const values = output.split(separator).filter(v => v.trim());
-            document.getElementById('input-values').value = values.join(' ');
+            // Use the same separator that was used for output
+            document.getElementById('input-values').value = values.join(separator);
             
-            // Update line count
+            // Update line count based on actual lines
+            const lines = document.getElementById('input-values').value.split('\n').filter(line => line.trim());
             const lineCount = document.getElementById('line-count');
-            lineCount.textContent = `${values.length} line${values.length !== 1 ? 's' : ''}`;
+            lineCount.textContent = `${lines.length} line${lines.length !== 1 ? 's' : ''}`;
             lineCount.classList.remove('hidden');
         }
 
