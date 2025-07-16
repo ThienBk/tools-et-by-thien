@@ -60,7 +60,8 @@
       text-align: center;
       z-index: 1;
     }
-    textarea, pre {
+
+    textarea {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
@@ -73,11 +74,21 @@
       transition: box-shadow 0.3s ease, background 0.3s ease;
       margin-bottom: 15px;
     }
-    textarea:focus, pre:focus {
+
+    textarea:focus {
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
       outline: none;
       background: #252525;
     }
+
+    #outputCode {
+      resize: vertical;
+      max-height: 400px;
+      min-height: 100px;
+      overflow: auto;
+      white-space: pre;
+    }
+
     button, .link-btn {
       margin: 8px 8px 8px 0;
       padding: 10px 18px;
@@ -93,12 +104,14 @@
       transform: translateY(-2px);
       box-shadow: 0 0 5px rgba(255,255,255,0.2);
     }
+
     #generateBtn { background: #0d6efd; color: #fff; }
     #generateBtn:hover { background: #0b5ed7; }
     #copyBtn { background: #198754; color: #fff; }
     #copyBtn:hover { background: #157347; }
     #clearBtn { background: #dc3545; color: #fff; }
     #clearBtn:hover { background: #bb2d3b; }
+
     .link-btn {
       background: #6c757d;
       color: #fff;
@@ -107,26 +120,12 @@
     .link-btn:hover {
       background: #5a6268;
     }
+
     .actions {
       margin-top: 10px;
       margin-bottom: 10px;
     }
-    pre {
-      background: #1e1e1e;
-      border: 1px solid #333;
-      border-radius: 6px;
-      min-height: 100px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      white-space: pre-wrap;
-      word-break: break-word;
-      text-align: left;
-    }
-    pre.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+
     .fade-message {
       display: inline-block;
       margin-left: 10px;
@@ -135,15 +134,18 @@
       opacity: 0;
       animation: fadeInOut 2s forwards;
     }
+
     @keyframes fadeInOut {
       0% { opacity: 0; }
       10% { opacity: 1; }
       90% { opacity: 1; }
       100% { opacity: 0; }
     }
+
     h2, h3, p {
       color: #f1f1f1;
     }
+
     code {
       background: #252525;
       padding: 2px 6px;
@@ -174,7 +176,7 @@ Handmade | Yes"></textarea>
     <a href="toggleNA.html" class="link-btn">✅ Chọn N/A cho Toggle</a>
 
     <h3>Kết quả JavaScript:</h3>
-    <pre id="outputCode"></pre>
+    <textarea id="outputCode" readonly></textarea>
   </div>
 
   <script>
@@ -195,6 +197,7 @@ Handmade | Yes"></textarea>
         });
       }
     }
+
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
@@ -279,25 +282,23 @@ Handmade | Yes"></textarea>
 
       code += `}\n\nautoSelectAll();`;
 
-      output.textContent = code;
-      output.classList.add("show");
+      output.value = code;
       showMessage("✅ Đã tạo code!");
     });
 
     copyBtn.addEventListener("click", () => {
-      if (!output.textContent.trim()) {
+      if (!output.value.trim()) {
         alert("Chưa có mã để copy!");
         return;
       }
-      navigator.clipboard.writeText(output.textContent)
+      navigator.clipboard.writeText(output.value)
         .then(() => showMessage("📋 Đã copy vào clipboard!"))
         .catch(err => alert("Lỗi copy: " + err));
     });
 
     clearBtn.addEventListener("click", () => {
       input.value = "";
-      output.textContent = "";
-      output.classList.remove("show");
+      output.value = "";
       showMessage("🗑️ Đã xóa dữ liệu!");
     });
 
