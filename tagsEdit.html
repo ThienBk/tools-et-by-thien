@@ -22,6 +22,7 @@
       border-radius: 8px;
       background: #1a1a1a;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      text-align: center;
     }
     textarea, pre {
       width: 100%;
@@ -34,22 +35,25 @@
       background: #1e1e1e;
       color: #eee;
       transition: box-shadow 0.3s ease, background 0.3s ease;
+      margin-bottom: 15px;
     }
     textarea:focus, pre:focus {
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
       outline: none;
       background: #252525;
     }
-    button {
-      margin: 8px 12px 8px 0;
+    button, .link-btn {
+      margin: 8px 8px 8px 0;
       padding: 10px 18px;
       font-size: 14px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      display: inline-block;
       transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
     }
-    button:hover {
+    button:hover, .link-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 0 5px rgba(255,255,255,0.2);
     }
@@ -59,8 +63,19 @@
     #copyBtn:hover { background: #157347; }
     #clearBtn { background: #dc3545; color: #fff; }
     #clearBtn:hover { background: #bb2d3b; }
+
+    .link-btn {
+      background: #6c757d;
+      color: #fff;
+      margin-top: 10px;
+    }
+    .link-btn:hover {
+      background: #5a6268;
+    }
+
     .actions {
       margin-top: 10px;
+      margin-bottom: 10px;
     }
     pre {
       background: #1e1e1e;
@@ -72,6 +87,7 @@
       transition: opacity 0.5s ease, transform 0.5s ease;
       white-space: pre-wrap;
       word-break: break-word;
+      text-align: left;
     }
     pre.show {
       opacity: 1;
@@ -116,6 +132,9 @@ Handmade | Yes"></textarea>
       <button id="clearBtn">Xóa Dữ Liệu</button>
       <span id="message"></span>
     </div>
+
+    <a href="index.html" class="link-btn">🏠 Về Trang Chính</a>
+    <a href="toggleNA.html" class="link-btn">✅ Chọn N/A cho Toggle</a>
 
     <h3>Kết quả JavaScript:</h3>
     <pre id="outputCode"></pre>
