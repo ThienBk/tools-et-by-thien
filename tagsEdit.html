@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dropdown Automation Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    textarea, pre {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    button {
+      margin: 5px 10px 5px 0;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .actions {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Dropdown Automation Code Generator</h2>
+  <p>Mỗi dòng theo cú pháp:<br><code>Tên Tag | Giá trị chọn</code></p>
+  <textarea id="inputData" rows="8" placeholder="Ví dụ:
+Iron Safe | Does Not Apply
+Handmade | Yes"></textarea>
+
+  <div class="actions">
+    <button id="generateBtn">Tạo Code</button>
+    <button id="copyBtn">Copy Code</button>
+    <button id="clearBtn">Xóa Dữ Liệu</button>
+  </div>
+
+  <h3>Kết quả JavaScript:</h3>
+  <pre id="outputCode"></pre>
+
+  <script>
+    const input = document.getElementById("inputData");
+    const output = document.getElementById("outputCode");
+    const generateBtn = document.getElementById("generateBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const clearBtn = document.getElementById("clearBtn");
+
+    generateBtn.addEventListener("click", () => {
+      const lines = input.value.trim().split("\n").filter(line => line.trim() !== "");
+      if (lines.length === 0) {
+        alert("Hãy nhập ít nhất 1 dòng!");
+        return;
+      }
+
+      let code = `function autoSelectAll() {\n`;
+
+      lines.forEach((line, idx) => {
+        const parts = line.split("|");
+        if (parts.length !== 2) {
+          code += `  // ⚠️ Dòng ${idx+1} không hợp lệ: "${line.trim()}"\n`;
+          return;
+        }
+        const label = parts[0].trim();
+        const option = parts[1].trim();
+
+        code += `
+  (function() {
+    const labels = document.querySelectorAll('p');
+    let targetInput = null;
+    labels.forEach(labelEl => {
+      if (labelEl.textContent.trim() === "${label}") {
+        const parent = labelEl.closest('[data-hb-id="Grid.Item"]');
+        const nextGridItem = parent?.nextElementSibling;
+        if (nextGridItem) {
+          targetInput = nextGridItem.querySelector('input[type="text"]');
+        }
+      }
+    });
+    if (targetInput) {
+      targetInput.click();
+      setTimeout(() => {
+        const listItems = document.querySelectorAll('[role="option"], li, div.x7csk99');
+        listItems.forEach(item => {
+          if (item.textContent.trim() === "${option}") {
+            item.click();
+          }
+        });
+      }, 500);
+    } else {
+      console.warn("Không tìm thấy input cho tag: ${label}");
+    }
+  })();
+`;
+      });
+
+      code += `}\n\nautoSelectAll();`;
+
+      output.textContent = code;
+    });
+
+    copyBtn.addEventListener("click", () => {
+      if (!output.textContent.trim()) {
+        alert("Chưa có mã để copy!");
+        return;
+      }
+      navigator.clipboard.writeText(output.textContent)
+        .then(() => alert("Đã copy vào clipboard!"))
+        .catch(err => alert("Lỗi copy: " + err));
+    });
+
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      output.textContent = "";
+    });
+  </script>
+</body>
+</html>
