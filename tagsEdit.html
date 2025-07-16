@@ -5,47 +5,121 @@
   <title>Dropdown Automation Generator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
       max-width: 800px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #f0f0f0;
+      width: 90%;
+      padding: 30px;
+      border-radius: 8px;
+      background: #1a1a1a;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
     textarea, pre {
       width: 100%;
       box-sizing: border-box;
-      padding: 10px;
-      font-family: monospace;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
       font-size: 14px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: #1e1e1e;
+      color: #eee;
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+    textarea:focus, pre:focus {
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+      outline: none;
+      background: #252525;
     }
     button {
-      margin: 5px 10px 5px 0;
-      padding: 8px 16px;
+      margin: 8px 12px 8px 0;
+      padding: 10px 18px;
       font-size: 14px;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
     }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 5px rgba(255,255,255,0.2);
+    }
+    #generateBtn { background: #0d6efd; color: #fff; }
+    #generateBtn:hover { background: #0b5ed7; }
+    #copyBtn { background: #198754; color: #fff; }
+    #copyBtn:hover { background: #157347; }
+    #clearBtn { background: #dc3545; color: #fff; }
+    #clearBtn:hover { background: #bb2d3b; }
     .actions {
       margin-top: 10px;
+    }
+    pre {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 6px;
+      min-height: 100px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-message {
+      display: inline-block;
+      margin-left: 10px;
+      color: #28a745;
+      font-weight: bold;
+      opacity: 0;
+      animation: fadeInOut 2s forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    h2, h3, p {
+      color: #f1f1f1;
+    }
+    code {
+      background: #252525;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #ffcc00;
     }
   </style>
 </head>
 <body>
-  <h2>Dropdown Automation Code Generator</h2>
-  <p>Mỗi dòng theo cú pháp:<br><code>Tên Tag | Giá trị chọn</code></p>
-  <textarea id="inputData" rows="8" placeholder="Ví dụ:
+  <div class="container">
+    <h2>🎯 Dropdown Automation Code Generator</h2>
+    <p>Mỗi dòng theo cú pháp:<br><code>Tên Tag | Giá trị chọn</code></p>
+    <textarea id="inputData" rows="8" placeholder="Ví dụ:
 Iron Safe | Does Not Apply
 Handmade | Yes"></textarea>
 
-  <div class="actions">
-    <button id="generateBtn">Tạo Code</button>
-    <button id="copyBtn">Copy Code</button>
-    <button id="clearBtn">Xóa Dữ Liệu</button>
+    <div class="actions">
+      <button id="generateBtn">Tạo Code</button>
+      <button id="copyBtn">Copy Code</button>
+      <button id="clearBtn">Xóa Dữ Liệu</button>
+      <span id="message"></span>
+    </div>
+
+    <h3>Kết quả JavaScript:</h3>
+    <pre id="outputCode"></pre>
   </div>
-
-  <a href="index.html"> Back to home </a>
-
-  <h3>Kết quả JavaScript:</h3>
-  <pre id="outputCode"></pre>
 
   <script>
     const input = document.getElementById("inputData");
@@ -53,6 +127,7 @@ Handmade | Yes"></textarea>
     const generateBtn = document.getElementById("generateBtn");
     const copyBtn = document.getElementById("copyBtn");
     const clearBtn = document.getElementById("clearBtn");
+    const message = document.getElementById("message");
 
     generateBtn.addEventListener("click", () => {
       const lines = input.value.trim().split("\n").filter(line => line.trim() !== "");
@@ -105,6 +180,8 @@ Handmade | Yes"></textarea>
       code += `}\n\nautoSelectAll();`;
 
       output.textContent = code;
+      output.classList.add("show");
+      showMessage("✅ Đã tạo code!");
     });
 
     copyBtn.addEventListener("click", () => {
@@ -113,14 +190,20 @@ Handmade | Yes"></textarea>
         return;
       }
       navigator.clipboard.writeText(output.textContent)
-        .then(() => alert("Đã copy vào clipboard!"))
+        .then(() => showMessage("📋 Đã copy vào clipboard!"))
         .catch(err => alert("Lỗi copy: " + err));
     });
 
     clearBtn.addEventListener("click", () => {
       input.value = "";
       output.textContent = "";
+      output.classList.remove("show");
+      showMessage("🗑️ Đã xóa dữ liệu!");
     });
+
+    function showMessage(text) {
+      message.innerHTML = `<span class="fade-message">${text}</span>`;
+    }
   </script>
 </body>
 </html>
