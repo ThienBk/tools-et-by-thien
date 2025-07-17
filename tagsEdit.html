@@ -4,258 +4,140 @@
   <meta charset="UTF-8" />
   <title>Dropdown Automation Generator</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100%;
-      width: 100%;
-    }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #e0e0e0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background: black;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    .galaxy {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.9) 70%),
-                  radial-gradient(circle at 30% 30%, rgba(255,255,255,0.03), transparent 40%),
-                  radial-gradient(circle at 70% 70%, rgba(255,255,255,0.02), transparent 40%);
-      background-repeat: no-repeat;
-      background-size: cover;
-      animation: galaxyMove 60s linear infinite alternate;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    @keyframes galaxyMove {
-      0% { transform: translate(0,0) rotate(0deg); }
-      100% { transform: translate(-25%,-25%) rotate(360deg); }
-    }
-
-    .container {
-      position: relative;
+      font-family: 'Segoe UI', sans-serif;
       max-width: 800px;
-      width: 90%;
+      margin: 30px auto;
       padding: 30px;
-      border-radius: 8px;
-      background: rgba(26,26,26,0.95);
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      text-align: center;
-      z-index: 1;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      color: #333;
     }
-
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    p {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
     textarea {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'Fira Code', monospace;
       font-size: 14px;
-      border: 1px solid #333;
-      border-radius: 6px;
-      background: #1e1e1e;
-      color: #eee;
-      transition: box-shadow 0.3s ease, background 0.3s ease;
-      margin-bottom: 15px;
-    }
-
-    textarea:focus {
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
-      outline: none;
-      background: #252525;
-    }
-
-    #outputCode {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s ease;
       resize: vertical;
-      max-height: 400px;
-      min-height: 100px;
-      overflow: auto;
-      white-space: pre;
     }
-
-    button, .link-btn {
-      margin: 8px 8px 8px 0;
+    textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #3498db;
+    }
+    button {
+      margin-right: 10px;
       padding: 10px 18px;
       font-size: 14px;
       border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-block;
-      transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
-      text-decoration: none;
-    }
-    button:hover, .link-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 5px rgba(255,255,255,0.2);
-    }
-
-    #generateBtn { background: #0d6efd; color: #fff; }
-    #generateBtn:hover { background: #0b5ed7; }
-    #copyBtn { background: #198754; color: #fff; }
-    #copyBtn:hover { background: #157347; }
-    #clearBtn { background: #dc3545; color: #fff; }
-    #clearBtn:hover { background: #bb2d3b; }
-
-    .link-btn {
-      background: #6c757d;
+      border-radius: 6px;
+      background-color: #3498db;
       color: #fff;
-      margin-top: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+    .actions {
+      margin-top: 15px;
+    }
+    h3 {
+      margin-top: 30px;
+      color: #34495e;
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .link-btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 8px 14px;
+      background-color: #2ecc71;
+      color: white;
+      border-radius: 6px;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      font-size: 14px;
     }
     .link-btn:hover {
-      background: #5a6268;
+      background-color: #27ae60;
     }
-
-    .actions {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-
-    .fade-message {
-      display: inline-block;
-      margin-left: 10px;
-      color: #28a745;
-      font-weight: bold;
-      opacity: 0;
-      animation: fadeInOut 2s forwards;
-    }
-
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    h2, h3, p {
-      color: #f1f1f1;
-    }
-
-    code {
-      background: #252525;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #ffcc00;
+    .link-btn:active {
+      transform: scale(0.97);
     }
   </style>
 </head>
 <body>
-  <canvas id="stars"></canvas>
-  <div class="galaxy"></div>
 
-  <div class="container">
-    <h2>🎯 Dropdown Automation Code Generator</h2>
-    <p>Mỗi dòng theo cú pháp:<br><code>Tên Tag | Giá trị chọn</code></p>
-    <textarea id="inputData" rows="8" placeholder="Ví dụ:
-Iron Safe | Does Not Apply
-Handmade | Yes"></textarea>
+  <h2>Dropdown Automation Code Generator</h2>
+  <p>Nhập mỗi dòng theo cú pháp:<br><code>Tên Tag | Giá trị chọn</code></p>
+  <textarea id="inputData" rows="10" placeholder="Ví dụ:
+Subject | Math
+Style | Glam
+Color | Red
+Durability | No Durability Features"></textarea>
 
-    <div class="actions">
-      <button id="generateBtn">Tạo Code</button>
-      <button id="copyBtn">Copy Code</button>
-      <button id="clearBtn">Xóa Dữ Liệu</button>
-      <span id="message"></span>
-    </div>
-
+  <div class="actions">
+    <button id="generateBtn">Tạo Code</button>
+    <button id="copyBtn">Copy Code</button>
+    <button id="clearBtn">Xóa Dữ Liệu</button>
+  </div>
+  
+    <div class="nav-links">
     <a href="index.html" class="link-btn">🏠 Về Trang Chính</a>
     <a href="toggleNA.html" class="link-btn">✅ Chọn N/A cho Toggle</a>
-
-    <h3>Kết quả JavaScript:</h3>
-    <textarea id="outputCode" readonly></textarea>
   </div>
 
+
+  <h3>Mã JavaScript sinh ra:</h3>
+  <textarea id="outputCode" rows="20" readonly></textarea>
+
   <script>
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      stars = [];
-      for (let i = 0; i < 200; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 1.5,
-          d: Math.random() * 0.5 + 0.05
-        });
-      }
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    function drawStars() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.fillStyle = '#ffffff';
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-        ctx.fill();
-      });
-      moveStars();
-      requestAnimationFrame(drawStars);
-    }
-
-    function moveStars() {
-      stars.forEach(star => {
-        star.y += star.d;
-        if (star.y > canvas.height) {
-          star.y = 0;
-          star.x = Math.random() * canvas.width;
-        }
-      });
-    }
-
-    drawStars();
-
     const input = document.getElementById("inputData");
     const output = document.getElementById("outputCode");
     const generateBtn = document.getElementById("generateBtn");
     const copyBtn = document.getElementById("copyBtn");
     const clearBtn = document.getElementById("clearBtn");
-    const message = document.getElementById("message");
 
     generateBtn.addEventListener("click", () => {
-      const lines = input.value.trim().split("\n").filter(line => line.trim() !== "");
-      if (lines.length === 0) {
-        alert("Hãy nhập ít nhất 1 dòng!");
-        return;
-      }
+      generateBtn.textContent = "🔄 Đang tạo...";
+      setTimeout(() => {
+        const lines = input.value.trim().split("\n");
+        let code = `\nasync function autoSelectAll() {`;
 
-      let code = `function autoSelectAll() {\n`;
-
-      lines.forEach((line, idx) => {
-        const parts = line.split("|");
-        if (parts.length !== 2) {
-          code += `  // ⚠️ Dòng ${idx+1} không hợp lệ: "${line.trim()}"\n`;
-          return;
-        }
-        const label = parts[0].trim();
-        const option = parts[1].trim();
-
-        code += `
-  (function() {
+        lines.forEach((line, index) => {
+          const [label, option] = line.split("|").map(s => s.trim());
+          if (label && option) {
+            code += `\n  // Dòng ${index + 1}: ${label} => ${option}
+  await (async () => {
     const labels = document.querySelectorAll('p');
     let targetInput = null;
+
     labels.forEach(labelEl => {
-      if (labelEl.textContent.trim() === "${label}") {
+      const firstText = Array.from(labelEl.childNodes)
+        .filter(n => n.nodeType === Node.TEXT_NODE)
+        .map(n => n.textContent.trim())
+        .join("");
+
+      if (firstText === "${label}") {
         const parent = labelEl.closest('[data-hb-id="Grid.Item"]');
         const nextGridItem = parent?.nextElementSibling;
         if (nextGridItem) {
@@ -263,48 +145,46 @@ Handmade | Yes"></textarea>
         }
       }
     });
+
     if (targetInput) {
       targetInput.click();
-      setTimeout(() => {
-        const listItems = document.querySelectorAll('[role="option"], li, div.x7csk99');
-        listItems.forEach(item => {
-          if (item.textContent.trim() === "${option}") {
-            item.click();
-          }
-        });
-      }, 500);
+      await new Promise(r => setTimeout(r, 300));
+      const listItems = document.querySelectorAll('[role="option"], li, div.x7csk99');
+      let clicked = false;
+      listItems.forEach(item => {
+        if (item.textContent.trim() === "${option}") {
+          item.click();
+          clicked = true;
+        }
+      });
+      if (!clicked) {
+        console.warn("Không tìm thấy option: ${option} cho tag ${label}");
+      }
     } else {
       console.warn("Không tìm thấy input cho tag: ${label}");
     }
-  })();
-`;
-      });
 
-      code += `}\n\nautoSelectAll();`;
+    await new Promise(r => setTimeout(r, 500));
+  })();`;
+          }
+        });
 
-      output.value = code;
-      showMessage("✅ Đã tạo code!");
+        code += `\n}\nautoSelectAll();`;
+        output.value = code;
+        generateBtn.textContent = "Tạo Code";
+      }, 300);
     });
 
     copyBtn.addEventListener("click", () => {
-      if (!output.value.trim()) {
-        alert("Chưa có mã để copy!");
-        return;
-      }
       navigator.clipboard.writeText(output.value)
-        .then(() => showMessage("📋 Đã copy vào clipboard!"))
+        .then(() => alert("Đã copy vào clipboard!"))
         .catch(err => alert("Lỗi copy: " + err));
     });
 
     clearBtn.addEventListener("click", () => {
       input.value = "";
       output.value = "";
-      showMessage("🗑️ Đã xóa dữ liệu!");
     });
-
-    function showMessage(text) {
-      message.innerHTML = `<span class="fade-message">${text}</span>`;
-    }
   </script>
 </body>
 </html>
