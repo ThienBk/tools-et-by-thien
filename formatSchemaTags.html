@@ -1,118 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Xử lý dữ liệu từ Textarea</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gộp giá trị theo dòng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    textarea {
+      width: 80%;
+      height: 150px;
+      margin: 10px auto;
+      display: block;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    #processButton { background-color: #007bff; }
+    #copyButton { background-color: #28a745; }
+    #clearButton { background-color: #dc3545; }
+    #outputArea {
+      width: 80%;
+      height: 200px;
+      margin: 20px auto;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Gộp dữ liệu theo dòng</h2>
+  <textarea id="inputData" placeholder="Nhập dữ liệu (tab giữa các cột)"></textarea>
+  <button id="processButton">Xử lý</button>
+  <button id="copyButton">Copy</button>
+  <button id="clearButton">Clear</button>
+  <textarea id="outputArea" readonly></textarea>
+
+  <script>
+    document.getElementById("processButton").addEventListener("click", function () {
+      const input = document.getElementById("inputData").value.trim();
+      const lines = input.split("\n");
+      const map = {};
+
+      lines.forEach(line => {
+        const [col1, col2, ...rest] = line.trim().split(/\t+/); // Tách theo tab
+        const col3 = rest.join(" ").trim(); // Trường hợp value chứa khoảng trắng
+
+        if (!col1 || !col2 || !col3) return; // Bỏ dòng không đủ 3 cột
+
+        const key = `${col1}\t${col2}`;
+
+        if (!map[key]) {
+          map[key] = [col3];
+        } else {
+          map[key].push(col3);
+        }
+      });
+
+      let result = "";
+      for (let key in map) {
+        result += `${key}\t${map[key].join(";")}\n`;
       }
 
-      textarea {
-        width: 50%;
-        height: 150px;
-        margin: 10px auto;
-        display: block;
-      }
-      a{
-        display: block;
-        margin-bottom: 20px;
-      }
-      button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        margin: 5px;
-      }
+      const outputArea = document.getElementById("outputArea");
+      outputArea.style.display = "block";
+      outputArea.value = result.trim();
+    });
 
-      #output {
-        margin-top: 20px;
-        text-align: left;
-        white-space: pre-line;
-        margin-left: 60%;
-        transform: translateX(-50%);
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Xử lý dữ liệu từ Textarea</h1>
-    <textarea id="inputData" placeholder="Nhập dữ liệu vào đây"></textarea>
-    <a href="tools.html">Tools Tách Dimensions</a>
-    <button id="processButton">Xử lý</button>
-    <button style="background-color: rgb(43, 120, 254); color: white" id="copyButton">Copy</button>
-    <button style="background-color: rgb(254, 43, 43); color: white" id="clearButton">Clear</button>
-    <div id="output"></div>
-    <script>
-      document
-        .getElementById("processButton")
-        .addEventListener("click", function () {
-          var inputData = document.getElementById("inputData").value;
-          var lines = inputData.split("\n");
+    document.getElementById("copyButton").addEventListener("click", function () {
+      const output = document.getElementById("outputArea");
+      output.select();
+      document.execCommand("copy");
+    });
 
-          var output = document.getElementById("output");
-          output.innerHTML = "";
-
-          var result = {};
-
-          for (var i = 0; i < lines.length; i++) {
-            var columns = lines[i].split(/\s+/);
-            var productName = columns[0];
-            var productInfo = columns.slice(1).join(" ");
-
-            if (!result[productName]) {
-              result[productName] = [productInfo];
-            } else {
-              result[productName].push(productInfo);
-            }
-          }
-
-          for (var product in result) {
-            var productData = result[product].join(" "); // Sử dụng dấu cách để nối thông số
-            var productDiv = document.createElement("div");
-            productDiv.textContent = product + " " + productData.replace(/\s+/g, " , "); // Sử dụng dấu cách ở đây
-            output.appendChild(productDiv);
-          }
-        });
-
-      document
-        .getElementById("copyButton")
-        .addEventListener("click", function () {
-          var outputText = document.getElementById("output").textContent;
-          var tempTextarea = document.createElement("textarea");
-          tempTextarea.value = outputText;
-          document.body.appendChild(tempTextarea);
-          tempTextarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(tempTextarea);
-        });
-
-      document
-        .getElementById("clearButton")
-        .addEventListener("click", function () {
-          document.getElementById("output").innerHTML = "";
-          document.getElementById("inputData").value = "";
-        });
-      document
-        .getElementById("copyButton")
-        .addEventListener("click", function () {
-          var outputText = "";
-          var products = document.querySelectorAll("#output div");
-
-          products.forEach(function (productDiv) {
-            outputText += productDiv.textContent.replace(/\n/g, ",") + "\n";
-          });
-
-          var tempTextarea = document.createElement("textarea");
-          tempTextarea.value = outputText;
-          document.body.appendChild(tempTextarea);
-          tempTextarea.select();
-          document.execCommand("copy");
-          document.body.removeChild(tempTextarea);
-        });
-    </script>
-  </body>
+    document.getElementById("clearButton").addEventListener("click", function () {
+      document.getElementById("inputData").value = "";
+      document.getElementById("outputArea").value = "";
+      document.getElementById("outputArea").style.display = "none";
+    });
+  </script>
+</body>
 </html>
