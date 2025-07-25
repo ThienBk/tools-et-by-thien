@@ -110,23 +110,23 @@ Durability | No Durability Features"></textarea>
   <h3>Mã JavaScript sinh ra:</h3>
   <textarea id="outputCode" rows="20" readonly></textarea>
 
-  <script>
-    const input = document.getElementById("inputData");
-    const output = document.getElementById("outputCode");
-    const generateBtn = document.getElementById("generateBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const clearBtn = document.getElementById("clearBtn");
+<script>
+  const input = document.getElementById("inputData");
+  const output = document.getElementById("outputCode");
+  const generateBtn = document.getElementById("generateBtn");
+  const copyBtn = document.getElementById("copyBtn");
+  const clearBtn = document.getElementById("clearBtn");
 
-    generateBtn.addEventListener("click", () => {
-      generateBtn.textContent = "🔄 Đang tạo...";
-      setTimeout(() => {
-        const lines = input.value.trim().split("\n");
-        let code = `\nasync function autoSelectAll() {`;
+  generateBtn.addEventListener("click", () => {
+    generateBtn.textContent = "🔄 Đang tạo...";
+    setTimeout(() => {
+      const lines = input.value.trim().split("\n");
+      let code = `\nasync function autoSelectAll() {`;
 
-        lines.forEach((line, index) => {
-          const [label, option] = line.split("|").map(s => s.trim());
-          if (label && option) {
-            code += `\n  // Dòng ${index + 1}: ${label} => ${option}
+      lines.forEach((line, index) => {
+        const [label, option] = line.split("|").map(s => s.trim());
+        if (label && option) {
+          code += `\n  // Dòng ${index + 1}: ${label} => ${option}
   await (async () => {
     const labels = document.querySelectorAll('p');
     let targetInput = null;
@@ -147,12 +147,15 @@ Durability | No Durability Features"></textarea>
     });
 
     if (targetInput) {
+      targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
       targetInput.click();
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 600));
       const listItems = document.querySelectorAll('[role="option"], li, div.x7csk99');
       let clicked = false;
       listItems.forEach(item => {
-        if (item.textContent.trim() === "${option}") {
+        const text = item.querySelector("p")?.textContent?.trim();
+        if (text === "${option}") {
+          item.scrollIntoView({ behavior: "smooth", block: "center" });
           item.click();
           clicked = true;
         }
@@ -166,25 +169,31 @@ Durability | No Durability Features"></textarea>
 
     await new Promise(r => setTimeout(r, 500));
   })();`;
-          }
-        });
+        }
+      });
 
-        code += `\n}\nautoSelectAll();`;
-        output.value = code;
-        generateBtn.textContent = "Tạo Code";
-      }, 300);
-    });
+      // ✅ In ra console khi hoàn tất
+      code += `\n  console.log("✅ Done code running!");`;
+      code += `\n}\nautoSelectAll();`;
 
-    copyBtn.addEventListener("click", () => {
-      navigator.clipboard.writeText(output.value)
-        .then(() => alert("Đã copy vào clipboard!"))
-        .catch(err => alert("Lỗi copy: " + err));
-    });
+      output.value = code;
+      generateBtn.textContent = "Tạo Code";
+    }, 300);
+  });
 
-    clearBtn.addEventListener("click", () => {
-      input.value = "";
-      output.value = "";
-    });
-  </script>
+  copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(output.value)
+      .then(() => alert("Đã copy vào clipboard!"))
+      .catch(err => alert("Lỗi copy: " + err));
+  });
+
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    output.value = "";
+  });
+</script>
+
+
+
 </body>
 </html>
