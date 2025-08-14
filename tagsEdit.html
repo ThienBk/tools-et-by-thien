@@ -9,8 +9,8 @@
       max-width: 800px;
       margin: 30px auto;
       padding: 30px;
-      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
       color: #333;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
     }
     h2 {
       text-align: center;
@@ -101,14 +101,16 @@ Durability | No Durability Features"></textarea>
     <button id="clearBtn">Xóa Dữ Liệu</button>
   </div>
   
-    <div class="nav-links">
+  <div class="nav-links">
     <a href="index.html" class="link-btn">🏠 Về Trang Chính</a>
     <a href="toggleNA.html" class="link-btn">✅ Chọn N/A cho Toggle</a>
   </div>
 
-
   <h3>Mã JavaScript sinh ra:</h3>
   <textarea id="outputCode" rows="20" readonly></textarea>
+
+  <!-- Thêm thư viện confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
   const input = document.getElementById("inputData");
@@ -178,6 +180,14 @@ Durability | No Durability Features"></textarea>
 
       output.value = code;
       generateBtn.textContent = "Tạo Code";
+
+      // 🎉 Hiệu ứng confetti
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+
     }, 300);
   });
 
@@ -192,8 +202,6 @@ Durability | No Durability Features"></textarea>
     output.value = "";
   });
 </script>
-
-
 
 </body>
 </html>
