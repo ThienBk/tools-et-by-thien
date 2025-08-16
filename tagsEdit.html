@@ -83,11 +83,37 @@
     .link-btn:active {
       transform: scale(0.97);
     }
+
+    /* 👉 Style cho video */
+    .video-box {
+      position: absolute;  
+      top: 100px;
+      right: 20px;
+      position: fixed;
+    }
+    .video-box video {
+      border-radius: 10px;       
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
   </style>
 </head>
 <body>
 
   <h2>Dropdown Automation Code Generator</h2>
+  
+  <!-- 👉 Đưa video vào khung căn phải -->
+  <div class="video-box">
+    <video controls width="250">
+      <source src="/shared-assets/videos/flower.webm" type="video/webm" />
+      <source src="/shared-assets/videos/flower.mp4" type="video/mp4" />
+      Download the
+      <a href="/shared-assets/videos/flower.webm">WEBM</a>
+      or
+      <a href="/shared-assets/videos/flower.mp4">MP4</a>
+      video.
+    </video>
+  </div>
+
   <p>Nhập mỗi dòng theo cú pháp:<br><code>Tên Tag | Giá trị chọn</code></p>
   <textarea id="inputData" rows="10" placeholder="Ví dụ:
 Subject | Math
