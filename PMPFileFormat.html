@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copy Text Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .btn {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #45a049;
+    }
+    .msg {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Copy Text Nhanh</h1>
+  <button class="btn" onclick="copyText('
+Sub CleanTemplateSheets()
+    Dim ws As Worksheet
+    Dim attrCol As Long
+    Dim c As Range
+    Dim deleteStartCol As Long
+    Dim lastCol As Long
+    Dim sheetName As String
+    Dim toDelete As Variant
+    Dim i As Long
 
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
+    ' Loop through all sheets
+    For Each ws In ThisWorkbook.Worksheets
+        sheetName = ws.Name
+
+        ' Skip the sheet "DropDownOptions" (delete it at the end instead)
+        If sheetName <> "DropDownOptions" Then
+            With ws
+                ' Unhide all rows and columns
+                .Rows.Hidden = False
+                .Columns.Hidden = False
+
+                ' Delete rows 2, 5, 6, and 7
+                On Error Resume Next
+                .Rows(7).Delete
+                .Rows(6).Delete
+                .Rows(5).Delete
+                .Rows(2).Delete
+                On Error GoTo 0
+
+                ' Delete columns A, B, F
+                .Columns(6).Delete ' F
+                .Columns(2).Delete ' B
+                .Columns(1).Delete ' A
+
+                ' Recalculate last column
+                lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+
+                ' Look for the column that has "attributesWhy" in row 1
+                For attrCol = 1 To lastCol
+                    If Trim(LCase(.Cells(1, attrCol).Value)) = "attributeswhy" Then
+                        deleteStartCol = attrCol
+                        Exit For
+                    End If
+                Next attrCol
+
+                ' If found, delete all columns from that point onward
+                If deleteStartCol > 0 Then
+                    .Range(.Cells(1, deleteStartCol), .Cells(1, .Columns.Count)).EntireColumn.Delete
+                End If
+            End With
+        End If
+    Next ws
+
+    ' Delete the DropDownOptions sheet if it exists
+    On Error Resume Next
+    ThisWorkbook.Sheets("DropDownOptions").Delete
+    On Error GoTo 0
+
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+
+    MsgBox "Cleanup completed successfully!", vbInformation
+End Sub
+          ')">Copy Code làm gọn file</button>
+  <button class="btn" onclick="copyText('
+Sub CreateExpectedSheets()
+    Dim ws As Worksheet, wsNew As Worksheet
+    Dim lastCol As Long, lastRow As Long
+    Dim i As Long, j As Long
+    Dim tagStartCol As Long: tagStartCol = 4 ' Column D
+    Dim baseName As String, newSheetName As String
+    Dim nameExists As Boolean
+    Dim suffix As Integer
+    Dim s As Worksheet
+    Dim newRow As Long
+
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
+    For Each ws In ThisWorkbook.Worksheets
+        If ws.Name Like "Expected*" Then GoTo SkipSheet
+
+        ' Construct base name (strip invalid characters)
+        baseName = "Expected - " & CleanSheetName(Left(ws.Name, 22))
+        newSheetName = Left(baseName, 31)
+        nameExists = True
+        suffix = 1
+
+        ' Ensure name is unique and within 31 char limit
+        Do While nameExists
+            nameExists = False
+            For Each s In ThisWorkbook.Sheets
+                If Trim(s.Name) = Trim(newSheetName) Then
+                    nameExists = True
+                    suffix = suffix + 1
+                    newSheetName = Left(baseName, 31 - Len(" (" & suffix & ")")) & " (" & suffix & ")"
+                    Exit For
+                End If
+            Next s
+        Loop
+
+        ' Add and name new sheet safely
+        Set wsNew = ThisWorkbook.Sheets.Add(After:=ws)
+        On Error Resume Next
+        wsNew.Name = newSheetName
+        If Err.Number <> 0 Then
+            MsgBox "Error: Could not rename the new sheet to '" & newSheetName & "'. Skipping this sheet.", vbExclamation
+            Err.Clear
+            GoTo SkipSheet
+        End If
+        On Error GoTo 0
+
+        ' Process data
+        With ws
+            lastRow = .Cells(.Rows.Count, 1).End(xlUp).Row
+            lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+            newRow = 2
+
+            ' Headers
+            With wsNew
+                .Range("A1").Value = "Wayfair Listing"
+                .Range("B1").Value = "Manufacturer Part Number"
+                .Range("C1").Value = "Su Part Number"
+                .Range("D1").Value = "stagid"
+                .Range("E1").Value = "schema tag priority"
+                .Range("F1").Value = "Tag Name"
+                .Range("G1").Value = "Tag Value"
+            End With
+
+            ' Copy values only (skip formulas)
+            For i = 4 To lastRow
+                For j = tagStartCol To lastCol
+                    With wsNew
+                        .Cells(newRow, 1).Value = GetCellValue(ws.Cells(i, 1))
+                        .Cells(newRow, 2).Value = GetCellValue(ws.Cells(i, 2))
+                        .Cells(newRow, 3).Value = GetCellValue(ws.Cells(i, 3))
+                        .Cells(newRow, 4).Value = GetCellValue(ws.Cells(1, j))
+                        .Cells(newRow, 5).Value = GetCellValue(ws.Cells(2, j))
+                        .Cells(newRow, 6).Value = GetCellValue(ws.Cells(3, j))
+                        .Cells(newRow, 7).Value = GetCellValue(ws.Cells(i, j))
+                    End With
+                    newRow = newRow + 1
+                Next j
+            Next i
+        End With
+
+SkipSheet:
+    Next ws
+
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+    MsgBox "Expected sheets created successfully!"
+End Sub
+
+Private Function CleanSheetName(sheetName As String) As String
+    ' Remove invalid Excel sheet name characters
+    Dim invalidChars As Variant
+    Dim ch As Variant
+    invalidChars = Array(":", "\", "/", "?", "*", "[", "]")
+
+    For Each ch In invalidChars
+        sheetName = Replace(sheetName, ch, "")
+    Next ch
+
+    CleanSheetName = sheetName
+End Function
+
+Private Function GetCellValue(cell As Range) As Variant
+    On Error Resume Next
+    If cell.HasFormula Then
+        GetCellValue = cell.Value
+    Else
+        GetCellValue = cell.Value2
+    End If
+    On Error GoTo 0
+End Function                                
+                                        ')">Copy Code chuyển đổi</button>
+  <div class="msg" id="msg"></div>
+
+  <script>
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById("msg").textContent = "✅ Đã copy: " + text;
+      }).catch(err => {
+        document.getElementById("msg").textContent = "❌ Lỗi khi copy!";
+        console.error("Error copying text: ", err);
+      });
+    }
+  </script>
+</body>
+</html>
