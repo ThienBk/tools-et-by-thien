@@ -7,96 +7,84 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-      } 
-       body, html {
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-      padding: 0;
-    }
-    Video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-      .container {
-        max-width: 800px;
-        margin-left: 40%;
-        margin-top: 50px;
-        padding: 20px;
       }
-      .box {
-        position: absolute;
-        top: 10px;
-        left: 20px;
-        width: 300px;
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
       }
-      textarea {
+      video {
         width: 100%;
-        height: 150px;
-        margin-bottom: 10px;
+        height: 100%;
+        object-fit: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
       }
-      button {
+      .container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 12px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 40px;
+      }
+      .links a {
         display: block;
-        margin: 10px auto;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 10px;
+        padding: 6px 10px;
+        color: #000;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.3s;
       }
-      .fastButton {
-        position: absolute;
-        top: 274px;
-        right: 300px;
-        position: absolute;
-        left: 300px;
-      }
-      .fastButton .result {
-        margin-top: 20px;
-        font-weight: bold;
-        white-space: pre-line;
-      }
-      a{
-        display: flex;
-        position: relative;
-        left: -300px;
-        margin: 10px;
-        color: black;
+      .links a:hover {
+        background: rgba(0, 0, 0, 0.1);
       }
     </style>
   </head>
   <body>
-     <video width="320" height="240" autoplay muted loop>
-      <source src="https://static.moewalls.com/videos/preview/2023/fantasy-girl-chinese-calligraphy-preview.mp4" />
+    <video autoplay muted loop>
+      <source
+        src="https://static.moewalls.com/videos/preview/2023/fantasy-girl-chinese-calligraphy-preview.mp4"
+      />
       Your browser does not support the video tag.
     </video>
     <div class="container">
-      <h1>
-        Tools 
-      </h1>
-      <a href="dimentions.html">Tools tách Dimentions từ Schematags 1</a>
-      <a href="schemaTags.html">Tools tách Dimentions từ Schematags 2</a>
-      <a href="tagsEdit.html">Sửa tags trên PMP</a>
-      <a href="formatSchemaTags.html">Tool xử lý Schematags</a></br>
-      <a href="chiaDong.html">Tools chia 300 dòng</a>
-      <a href="toolsTach2000Dong.html">Tools tách 2000 dòng </a></br>
-      <a href="xuLyFeatureAndTags.html">Xử lý FEATURES </a>
-      <a href="phanLoai.html">Phân Loại SKU - PNBs </a>
-      <a href="TachSKU.html">Tách SKU, PNB từ link </a>
-      <a href="inchConvert.html">Convert to Inch </a>
-      <a href="soSanhDoanVan.html">So sánh văn bản </a>
-      <a href="boDup.html">Bỏ lặp văn bản</a>
-      <a href="codeTieTo.html">Code Link To</a>
-      <a href="phanChiaFeature.html">Tách Features</a>
-      <a href="themDauPhay.html">Thêm dấu phẩy</a>
-      <a href="codeChonYesInFormQA.html">Code chọn toàn bộ Yes trong form QA</a>
-      <a href="optionCaculMulti.html">Tính chiều rectangle </a>
-      
-
-      <a href="tools.html">Tổng hợp Tools</a>
-      <a href="index.html">Về trang chủ </a>
+      <h1>Tools</h1>
+      <div class="links">
+        <a href="dimentions.html">Tools tách Dimentions từ Schematags 1</a>
+        <a href="schemaTags.html">Tools tách Dimentions từ Schematags 2</a>
+        <a href="tagsEdit.html">Sửa tags trên PMP</a>
+        <a href="formatSchemaTags.html">Tool xử lý Schematags</a>
+        <a href="chiaDong.html">Tools chia 300 dòng</a>
+        <a href="toolsTach2000Dong.html">Tools tách 2000 dòng</a>
+        <a href="xuLyFeatureAndTags.html">Xử lý FEATURES</a>
+        <a href="phanLoai.html">Phân Loại SKU - PNBs</a>
+        <a href="TachSKU.html">Tách SKU, PNB từ link</a>
+        <a href="inchConvert.html">Convert to Inch</a>
+        <a href="soSanhDoanVan.html">So sánh văn bản</a>
+        <a href="boDup.html">Bỏ lặp văn bản</a>
+        <a href="codeTieTo.html">Code Link To</a>
+        <a href="phanChiaFeature.html">Tách Features</a>
+        <a href="themDauPhay.html">Thêm dấu phẩy</a>
+        <a href="codeChonYesInFormQA.html">Code chọn toàn bộ Yes trong form QA</a>
+        <a href="optionCaculMulti.html">Tính chiều rectangle</a>
+        <a href="PMPFileFormat.html">Code VBA làm gọn và chuyển file PMP</a>
+        
+        <a href="tools.html">Tổng hợp Tools</a>
+        <a href="index.html">Về trang chủ</a>
+      </div>
+    </div>
   </body>
 </html>
