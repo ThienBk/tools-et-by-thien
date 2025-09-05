@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Copy Text Tool</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Copy VBA Code</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      background: linear-gradient(135deg, #74ebd5, #9face6);
     }
     h1 {
       margin-bottom: 30px;
@@ -36,12 +36,18 @@
       margin-top: 20px;
       font-weight: bold;
       color: #333;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <h1>Copy Text Nhanh</h1>
-  <button class="btn" onclick="copyText('
+  <h1>Copy VBA Code Nhanh</h1>
+  <button class="btn" onclick="copyCode(1)">Format File</button>
+  <button class="btn" onclick="copyCode(2)">Convert File</button>
+  <div class="msg" id="msg"></div>
+
+  <script>
+    const code1 = `
 Sub CleanTemplateSheets()
     Dim ws As Worksheet
     Dim attrCol As Long
@@ -108,8 +114,9 @@ Sub CleanTemplateSheets()
 
     MsgBox "Cleanup completed successfully!", vbInformation
 End Sub
-          ')">Copy Code làm gọn file</button>
-  <button class="btn" onclick="copyText('
+`;
+
+    const code2 = `
 Sub CreateExpectedSheets()
     Dim ws As Worksheet, wsNew As Worksheet
     Dim lastCol As Long, lastRow As Long
@@ -203,7 +210,7 @@ Private Function CleanSheetName(sheetName As String) As String
     ' Remove invalid Excel sheet name characters
     Dim invalidChars As Variant
     Dim ch As Variant
-    invalidChars = Array(":", "\", "/", "?", "*", "[", "]")
+    invalidChars = Array(":", "\\", "/", "?", "*", "[", "]")
 
     For Each ch In invalidChars
         sheetName = Replace(sheetName, ch, "")
@@ -220,14 +227,13 @@ Private Function GetCellValue(cell As Range) As Variant
         GetCellValue = cell.Value2
     End If
     On Error GoTo 0
-End Function                                
-                                        ')">Copy Code chuyển đổi</button>
-  <div class="msg" id="msg"></div>
+End Function
+`;
 
-  <script>
-    function copyText(text) {
+    function copyCode(btn) {
+      let text = btn === 1 ? code1 : code2;
       navigator.clipboard.writeText(text).then(() => {
-        document.getElementById("msg").textContent = "✅ Đã copy: " + text;
+        document.getElementById("msg").textContent = "✅ Đã copy đoạn code " + btn;
       }).catch(err => {
         document.getElementById("msg").textContent = "❌ Lỗi khi copy!";
         console.error("Error copying text: ", err);
