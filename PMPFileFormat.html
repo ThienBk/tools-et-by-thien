@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -44,11 +44,14 @@
   <h1>Copy VBA Code Nhanh</h1>
   <button class="btn" onclick="copyCode(1)">Format File</button>
   <button class="btn" onclick="copyCode(2)">Convert File</button>
+  <button class="btn" onclick="copyCode(3)">Clean Multiple File Class</button>
+  <button class="btn" onclick="copyCode(4)">Format Multiple File Class</button>
+  <button class="btn" onclick="copyCode(5)">Convert Multiple File Class</button>
   <div class="msg" id="msg"></div>
 
   <script>
-    const code1 = `
-Sub CleanTemplateSheets()
+    /* --- Các đoạn code VBA --- */
+    const code1 = `Sub CleanTemplateSheets()
     Dim ws As Worksheet
     Dim attrCol As Long
     Dim c As Range
@@ -114,10 +117,8 @@ Sub CleanTemplateSheets()
 
     MsgBox "Cleanup completed successfully!", vbInformation
 End Sub
-`;
-
-    const code2 = `
-Sub CreateExpectedSheets()
+`; // giữ nguyên nội dung code1 (bạn có thể dán lại đoạn code đầy đủ)
+    const code2 = `Sub CreateExpectedSheets()
     Dim ws As Worksheet, wsNew As Worksheet
     Dim lastCol As Long, lastRow As Long
     Dim i As Long, j As Long
@@ -210,7 +211,7 @@ Private Function CleanSheetName(sheetName As String) As String
     ' Remove invalid Excel sheet name characters
     Dim invalidChars As Variant
     Dim ch As Variant
-    invalidChars = Array(":", "\\", "/", "?", "*", "[", "]")
+    invalidChars = Array(":", "\", "/", "?", "*", "[", "]")
 
     For Each ch In invalidChars
         sheetName = Replace(sheetName, ch, "")
@@ -228,16 +229,289 @@ Private Function GetCellValue(cell As Range) As Variant
     End If
     On Error GoTo 0
 End Function
-`;
+`; // tương tự cho code2
+    const code3 = `Sub CleanTemplateSheets()
+    Dim ws As Worksheet
+    Dim attrCol As Long
+    Dim c As Range
+    Dim deleteStartCol As Long
+    Dim lastCol As Long
+    Dim sheetName As String
+    Dim toDelete As Variant
+    Dim i As Long
 
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
+    ' Loop through all sheets
+    For Each ws In ThisWorkbook.Worksheets
+        sheetName = ws.Name
+
+        ' Skip the sheet "DropDownOptions" (delete it at the end instead)
+        If sheetName <> "DropDownOptions" Then
+            With ws
+                ' Unhide all rows and columns
+                .Rows.Hidden = False
+                .Columns.Hidden = False
+
+                ' Delete rows 2, 5, and 7
+                On Error Resume Next
+                .Rows(7).Delete
+                .Rows(5).Delete
+                .Rows(2).Delete
+                On Error GoTo 0
+
+                ' Delete columns A, B, D, G
+                .Columns(7).Delete ' G
+                .Columns(4).Delete ' D
+                .Columns(2).Delete ' B
+                .Columns(1).Delete ' A
+
+                ' Recalculate last column
+                lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+
+                ' Look for the column that has "attributesWhy" in row 1
+                For attrCol = 1 To lastCol
+                    If Trim(LCase(.Cells(1, attrCol).Value)) = "attributeswhy" Then
+                        deleteStartCol = attrCol
+                        Exit For
+                    End If
+                Next attrCol
+
+                ' If found, delete all columns from that point onward
+                If deleteStartCol > 0 Then
+                    .Range(.Cells(1, deleteStartCol), .Cells(1, .Columns.Count)).EntireColumn.Delete
+                End If
+            End With
+        End If
+    Next ws
+
+    ' Delete the DropDownOptions sheet if it exists
+    On Error Resume Next
+    ThisWorkbook.Sheets("DropDownOptions").Delete
+    On Error GoTo 0
+
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+
+    MsgBox "Cleanup completed successfully!", vbInformation
+End Sub
+`; // tương tự cho code3
+    const code4 = `Sub CreateExpectedSheets()
+    Dim ws As Worksheet, wsNew As Worksheet
+    Dim lastCol As Long, lastRow As Long
+    Dim i As Long, j As Long
+    Dim tagStartCol As Long: tagStartCol = 4 ' Column D
+    Dim baseName As String, newSheetName As String
+    Dim nameExists As Boolean
+    Dim suffix As Integer
+    Dim s As Worksheet
+    Dim newRow As Long
+
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
+    For Each ws In ThisWorkbook.Worksheets
+        If ws.Name Like "Expected*" Then GoTo SkipSheet
+
+        ' Construct base name (strip invalid characters)
+        baseName = "Expected - " & CleanSheetName(Left(ws.Name, 22))
+        newSheetName = Left(baseName, 31)
+        nameExists = True
+        suffix = 1
+
+        ' Ensure name is unique and within 31 char limit
+        Do While nameExists
+            nameExists = False
+            For Each s In ThisWorkbook.Sheets
+                If Trim(s.Name) = Trim(newSheetName) Then
+                    nameExists = True
+                    suffix = suffix + 1
+                    newSheetName = Left(baseName, 31 - Len(" (" & suffix & ")")) & " (" & suffix & ")"
+                    Exit For
+                End If
+            Next s
+        Loop
+
+        ' Add and name new sheet safely
+        Set wsNew = ThisWorkbook.Sheets.Add(After:=ws)
+        On Error Resume Next
+        wsNew.Name = newSheetName
+        If Err.Number <> 0 Then
+            MsgBox "Error: Could not rename the new sheet to '" & newSheetName & "'. Skipping this sheet.", vbExclamation
+            Err.Clear
+            GoTo SkipSheet
+        End If
+        On Error GoTo 0
+
+        ' Process data
+        With ws
+            lastRow = .Cells(.Rows.Count, 1).End(xlUp).Row
+            lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+            newRow = 2
+
+            ' Headers
+            With wsNew
+                .Range("A1").Value = "Wayfair Listing"
+                .Range("B1").Value = "Manufacturer Part Number"
+                .Range("C1").Value = "Su Part Number"
+                .Range("D1").Value = "stagid"
+                .Range("E1").Value = "schema tag priority"
+                .Range("F1").Value = "Tag Name"
+                .Range("G1").Value = "Tag Value"
+                .Range("H1").Value = "How to fill tag"
+            End With
+
+            ' Copy values only (skip formulas)
+            For i = 5 To lastRow
+                For j = tagStartCol To lastCol
+                    With wsNew
+                        .Cells(newRow, 1).Value = GetCellValue(ws.Cells(i, 1))
+                        .Cells(newRow, 2).Value = GetCellValue(ws.Cells(i, 2))
+                        .Cells(newRow, 3).Value = GetCellValue(ws.Cells(i, 3))
+                        .Cells(newRow, 4).Value = GetCellValue(ws.Cells(1, j))
+                        .Cells(newRow, 5).Value = GetCellValue(ws.Cells(2, j))
+                        .Cells(newRow, 6).Value = GetCellValue(ws.Cells(3, j))
+                        .Cells(newRow, 7).Value = GetCellValue(ws.Cells(i, j))
+                        .Cells(newRow, 8).Value = GetCellValue(ws.Cells(4, j))
+                    End With
+                    newRow = newRow + 1
+                Next j
+            Next i
+        End With
+
+SkipSheet:
+    Next ws
+
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+    MsgBox "Expected sheets created successfully!"
+End Sub
+
+Private Function CleanSheetName(sheetName As String) As String
+    ' Remove invalid Excel sheet name characters
+    Dim invalidChars As Variant
+    Dim ch As Variant
+    invalidChars = Array(":", "\", "/", "?", "*", "[", "]")
+
+    For Each ch In invalidChars
+        sheetName = Replace(sheetName, ch, "")
+    Next ch
+
+    CleanSheetName = sheetName
+End Function
+
+Private Function GetCellValue(cell As Range) As Variant
+    On Error Resume Next
+    If cell.HasFormula Then
+        GetCellValue = cell.Value
+    Else
+        GetCellValue = cell.Value2
+    End If
+    On Error GoTo 0
+End Function
+`; // tương tự cho code4
+    const code5 = `Sub Combine_Expected_Sheets()
+    Dim ws As Worksheet, destSheet As Worksheet
+    Dim destRow As Long, lastRow As Long, lastCol As Long
+    Dim headerCopied As Boolean
+    Dim cell As Range
+
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
+    ' Delete "Combined" sheet if it exists
+    On Error Resume Next
+    ThisWorkbook.Sheets("Combined").Delete
+    On Error GoTo 0
+
+    ' Create a new sheet for combined data
+    Set destSheet = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+    destSheet.Name = "Combined"
+    destRow = 1
+    headerCopied = False
+
+    ' Loop through all sheets
+    For Each ws In ThisWorkbook.Sheets
+        If ws.Name Like "Expected -*" Then
+            ' Find last row and column with data
+            lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+            lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+
+            If lastRow > 1 Then ' Make sure there's data beyond headers
+                ' Copy headers only once
+                If Not headerCopied Then
+                    ws.Range(ws.Cells(1, 1), ws.Cells(1, lastCol)).Copy destSheet.Cells(destRow, 1)
+                    destRow = destRow + 1
+                    headerCopied = True
+                End If
+
+                ' Copy data (from row 2 to lastRow)
+                ws.Range(ws.Cells(2, 1), ws.Cells(lastRow, lastCol)).Copy destSheet.Cells(destRow, 1)
+                destRow = destSheet.Cells(destSheet.Rows.Count, 1).End(xlUp).Row + 1
+            End If
+        End If
+    Next ws
+
+    Application.ScreenUpdating = True
+    MsgBox "Sheets starting with 'Expected -' have been combined into the 'Combined' sheet.", vbInformation
+End Sub
+`; // tương tự cho code5
+
+    /* --- Hàm copy được sửa (mapping + fallback) --- */
     function copyCode(btn) {
-      let text = btn === 1 ? code1 : code2;
-      navigator.clipboard.writeText(text).then(() => {
-        document.getElementById("msg").textContent = "✅ Đã copy đoạn code " + btn;
-      }).catch(err => {
-        document.getElementById("msg").textContent = "❌ Lỗi khi copy!";
-        console.error("Error copying text: ", err);
-      });
+      const codes = {
+        1: code1,
+        2: code2,
+        3: code3,
+        4: code4,
+        5: code5
+      };
+
+      const text = codes[btn] || '';
+      const msgEl = document.getElementById("msg");
+
+      if (!text) {
+        msgEl.textContent = "❌ Không tìm thấy đoạn code cho nút " + btn;
+        return;
+      }
+
+      // navigator.clipboard chỉ hoạt động trên origin an toàn (https hoặc localhost).
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          msgEl.textContent = "✅ Đã copy đoạn code " + btn;
+        }).catch(err => {
+          // nếu API hiện đại bị chặn, thử fallback
+          fallbackCopy(text, msgEl);
+          console.error("navigator.clipboard failed:", err);
+        });
+      } else {
+        // fallback cho trình duyệt cũ
+        fallbackCopy(text, msgEl);
+      }
+    }
+
+    function fallbackCopy(text, msgEl) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      // tránh ảnh hưởng layout
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+      try {
+        const ok = document.execCommand("copy");
+        if (ok) {
+          msgEl.textContent = "✅ Đã copy (fallback)";
+        } else {
+          msgEl.textContent = "❌ Không thể copy tự động (fallback thất bại)";
+        }
+      } catch (err) {
+        msgEl.textContent = "❌ Trình duyệt không cho phép copy tự động";
+        console.error("Fallback copy failed:", err);
+      }
+      document.body.removeChild(ta);
     }
   </script>
 </body>
