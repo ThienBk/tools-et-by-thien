@@ -1,167 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Value Separator Form</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Value Separator — Vintage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Classic serif fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Ripple effect styles */
-        .ripple-btn {
-            position: relative;
-            overflow: hidden;
-            transform: translate3d(0,0,0);
+        :root{
+            --paper:#efe6d6; /* warm paper */
+            --accent:#8b5e34; /* brown/gold */
+            --muted:#6b4b2d;
+            --card:#fffaf4;
+            --shadow: rgba(20,12,8,0.15);
         }
-        
-        .ripple-effect {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.7);
-            transform: scale(0);
-            animation: ripple 600ms linear;
-            pointer-events: none;
+
+        /* page texture & tone */
+        body{
+            background: radial-gradient(circle at 10% 10%, rgba(255,247,236,0.6), transparent 15%),
+                        linear-gradient(180deg, #fbf6ee 0%, #f3eadc 100%);
+            font-family: 'Lora', Georgia, serif;
+            color: var(--muted);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:32px;
         }
-        
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+
+        /* container style like an old book page */
+        .vintage-card{
+            width:100%;
+            max-width:980px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,251,244,0.98));
+            border-radius:14px;
+            box-shadow: 0 10px 30px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.6);
+            border:1px solid rgba(139,94,52,0.08);
+            padding:30px;
+            position:relative;
+            overflow:hidden;
+            border-left:6px solid rgba(139,94,52,0.12);
         }
-        
-        /* Button styles */
-        button {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+
+        /* decorative corners */
+        .vintage-card:before, .vintage-card:after{
+            content:'';
+            position:absolute;
+            width:120px;height:120px;
+            background: radial-gradient(circle at 30% 30%, rgba(139,94,52,0.04), transparent 40%);
+            pointer-events:none;
         }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        .vintage-card:before{left:-40px;top:-40px;transform:rotate(-12deg)}
+        .vintage-card:after{right:-40px;bottom:-40px;transform:rotate(6deg)}
+
+        h1{
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight:700;
+            letter-spacing:0.6px;
+            color:var(--accent);
+            margin-bottom:10px;
         }
-        
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .subtitle{
+            font-size:14px;
+            color:#7a5a3a;
+            margin-bottom:24px;
         }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
+
+        label{font-weight:600;color:#5a3f27}
+
+        textarea, input, select{font-family: 'Lora', Georgia, serif;}
+
+        /* input/card look */
+        .field-card{
+            background: linear-gradient(180deg, rgba(255,251,246,0.9), rgba(250,244,236,0.9));
+            border:1px solid rgba(139,94,52,0.08);
+            padding:12px;
+            border-radius:8px;
         }
+
+        textarea#input-values, textarea#output{
+            background: transparent;
+            border:none;resize:vertical;
+            font-family: 'Courier New', monospace;
+            min-height:120px; max-height:400px;
+            outline:none;
+        }
+
+        /* vintage buttons */
+        .btn-vintage{
+            background: linear-gradient(180deg, #f6e9d9, #f0dfc7);
+            border:1px solid rgba(139,94,52,0.22);
+            color:var(--muted);
+            padding:10px 18px;
+            border-radius:8px;
+            box-shadow: 0 4px 0 rgba(139,94,52,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
+            transition:transform .12s ease, box-shadow .12s ease;
+            font-weight:600;
+            letter-spacing:0.4px;
+        }
+        .btn-vintage:hover{transform:translateY(-3px); box-shadow: 0 10px 20px rgba(20,12,8,0.08)}
+
+        /* small icon buttons */
+        .icon-btn{
+            display:inline-flex;align-items:center;justify-content:center;padding:8px;border-radius:6px;border:1px solid rgba(139,94,52,0.07);background:linear-gradient(180deg,#fffafa,#f6efe0);
+        }
+
+        /* ripple softened to glow */
+        .ripple-effect{background:radial-gradient(circle,#fde9c6 0%, rgba(255,255,255,0.6) 30%, rgba(139,94,52,0.08) 60%);opacity:0.9}
+
+        /* counts badge */
+        .badge{
+            background:linear-gradient(180deg,var(--accent), #7a4f2a);
+            color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08)
+        }
+
+        /* grid tweaks */
+        @media (min-width:768px){
+            .two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+        }
+
+        /* footer action area */
+        .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+
+        /* subtle decorative separators */
+        .ornament{
+            height:2px;background:linear-gradient(90deg, transparent, rgba(139,94,52,0.12), transparent);margin:18px 0;border-radius:2px
+        }
+
+        /* subtle pulse animation for copy feedback */
+        .pulse{animation:pulse 900ms ease}
+        @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+        /* small helpers */
+        .muted{color:#7a5a3a;font-size:13px}
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Value Separator Tool</h1>
-        
-        <div class="flex flex-col md:flex-row gap-6">
-            <!-- Left Column -->
-            <div class="flex-1 space-y-4">
-            <!-- Input Textarea -->
-            <div>
-                <div class="flex justify-between items-center mb-1">
-                    <label class="block text-sm font-medium text-gray-700">Input Values</label>
-                    <span id="line-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 lines</span>
-                </div>
-                <textarea id="input-values" class="w-full border border-gray-300 rounded px-3 py-2 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" placeholder="Enter values separated by new lines"></textarea>
-            </div>
+<body>
+    <div class="vintage-card">
+        <header>
+            <h1>Value Separator Tool</h1>
+            <div class="subtitle">Chuyển các giá trị theo dạng, phong cách cổ điển — giấy cũ, tông nâu vàng và họa tiết tinh xảo.</div>
+        </header>
 
-            <!-- Options -->
-            <div class="space-y-2">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Separator</label>
-                    <select id="separator" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value=",">Comma ( , )</option>
-                        <option value=";">Semicolon ( ; )</option>
-                        <option value="|">Pipe ( | )</option>
-                        <option value=" ">Space (   )</option>
-                        <option value="\t">Tab (    )</option>
-                        <option value="-">Hyphen ( - )</option>
-                        <option value="\n">New Line</option>
-                        <option value="custom">Custom</option>
-                    </select>
+        <div class="two-col">
+            <div class="space-y-4">
+                <div class="field-card">
+                    <div class="flex justify-between items-start mb-2">
+                        <label for="input-values">Input Values</label>
+                        <span id="line-count" class="badge hidden">0 lines</span>
+                    </div>
+                    <textarea id="input-values" placeholder="Nhập mỗi giá trị trên 1 dòng..."></textarea>
                 </div>
-                <div id="custom-separator-container" class="hidden">
-                    <input type="text" id="custom-separator" placeholder="Enter custom separator" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="numerical-order" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                    <label for="numerical-order" class="ml-2 block text-sm text-gray-700">Numerical Order</label>
-                  <a style="margin-left: 20px" href="index.html">Home </a>
-                </div>
-            </div>
 
-            </div>
-
-            <!-- Right Column -->
-            <div class="flex-1 space-y-4">
-                <!-- Output -->
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="block text-sm font-medium text-gray-700">Result</label>
-                        <div class="flex items-center gap-2">
-                            <span id="value-count" class="bg-black text-white text-xs font-bold px-2 py-1 rounded-full hidden">0 values</span>
-                            <button onclick="reverseConversion()" class="text-gray-600 hover:text-blue-500 transition-colors" title="Reverse conversion">
-                                <i class="fas fa-exchange-alt"></i>
-                            </button>
+                <div class="field-card">
+                    <label for="separator">Separator</label>
+                    <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+                        <select id="separator" class="p-2 rounded border" style="border:1px solid rgba(139,94,52,0.06);background:transparent;">
+                            <option value=",">Comma ( , )</option>
+                            <option value=";">Semicolon ( ; )</option>
+                            <option value="|">Pipe ( | )</option>
+                            <option value=" ">Space</option>
+                            <option value="\t">Tab</option>
+                            <option value="-">Hyphen</option>
+                            <option value="\n">New Line</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <div id="custom-separator-container" style="flex:1;display:none">
+                            <input id="custom-separator" placeholder="Custom separator" class="p-2 rounded border" style="width:100%;border:1px solid rgba(139,94,52,0.06);background:transparent">
                         </div>
                     </div>
-                    <div class="relative">
-                        <textarea id="output" readonly class="w-full border border-gray-300 rounded px-3 py-2 h-64 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
-                        <div class="absolute right-2 top-2 flex flex-col gap-1">
-                            <button onclick="copyToClipboard()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button onclick="reverseConversion()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 p-1 rounded" title="Reverse conversion">
-                                <i class="fas fa-exchange-alt"></i>
-                            </button>
+
+                    <div style="margin-top:12px;display:flex;align-items:center;gap:12px">
+                        <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="numerical-order"> <span class="muted">Numerical Order</span></label>
+                        <a href="index.html" class="muted">Home</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="field-card" style="min-height:240px;position:relative">
+                    <div class="flex justify-between items-start mb-2">
+                        <label>Result</label>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <span id="value-count" class="badge hidden">0 values</span>
+                            <button onclick="reverseConversion()" class="icon-btn" title="Reverse conversion"><i class="fas fa-exchange-alt"></i></button>
                         </div>
+                    </div>
+
+                    <textarea id="output" readonly></textarea>
+
+                    <div style="position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:8px">
+                        <button onclick="copyToClipboard(event)" class="icon-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                        <button onclick="reverseConversion()" class="icon-btn" title="Reverse"><i class="fas fa-undo"></i></button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ornament"></div>
+                    <div class="actions">
+                        <button onclick="generateOutput(event)" class="btn-vintage">Generate</button>
+                        <button onclick="copyToClipboard(event)" class="btn-vintage"><i class="fas fa-copy"></i> Copy</button>
+                        <button onclick="clearAll(event)" class="btn-vintage"><i class="fas fa-trash"></i> Clear</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="grid grid-cols-3 gap-2 mt-6">
-                <button onclick="generateOutput(event)" class="ripple-btn bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    Generate
-                </button>
-                <button onclick="copyToClipboard(event)" class="ripple-btn bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
-                <button onclick="clearAll(event)" class="ripple-btn bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                    <i class="fas fa-trash"></i> Clear
-                </button>
-            </div>
-        </div>
+        <footer style="margin-top:18px;text-align:center;color:#a07a58;font-size:12px">© Giáo diện cổ điển — tuỳ chỉnh bởi bạn</footer>
     </div>
 
     <script>
-        function clearAll(event) {
-            createRipple(event);
-            const inputArea = document.getElementById('input-values');
-            const outputArea = document.getElementById('output');
-            
-            // Add fade out effect
-            inputArea.classList.add('opacity-0');
-            outputArea.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                inputArea.value = '';
-                outputArea.value = '';
-                document.getElementById('line-count').classList.add('hidden');
-                document.getElementById('value-count').classList.add('hidden');
-                document.getElementById('numerical-order').checked = false;
-                
-                // Add fade in effect
-                inputArea.classList.remove('opacity-0');
-                outputArea.classList.remove('opacity-0');
-            }, 300);
-        }
-        // Update line count when input changes
+        // --- behavior (kept and slightly adapted from your original) ---
         document.getElementById('input-values').addEventListener('input', function() {
             const lines = this.value.split('\n').filter(line => line.trim() !== '');
             const lineCount = document.getElementById('line-count');
@@ -169,146 +223,105 @@
             lineCount.classList.toggle('hidden', lines.length === 0);
         });
 
-        // Toggle custom separator input
         document.getElementById('separator').addEventListener('change', function() {
             const customContainer = document.getElementById('custom-separator-container');
-            if (this.value === 'custom') {
-                customContainer.classList.remove('hidden');
-            } else {
-                customContainer.classList.add('hidden');
-            }
+            if (this.value === 'custom') customContainer.style.display = 'block';
+            else customContainer.style.display = 'none';
         });
 
-        // Generate the output
-        function generateOutput(event) {
-            createRipple(event);
-            const inputs = document.querySelectorAll('.input-field');
+        function generateOutput(event){
+            softenRipple(event);
             const separatorSelect = document.getElementById('separator');
             const customSeparator = document.getElementById('custom-separator');
             const numericalOrder = document.getElementById('numerical-order').checked;
             const output = document.getElementById('output');
 
-            // Get input values and split by new lines
             const inputText = document.getElementById('input-values').value;
             let lines = inputText.split('\n').filter(line => line.trim() !== '');
-            
-            // For display in textarea (shows line numbers)
+
             if (numericalOrder) {
-                document.getElementById('input-values').value = 
-                    lines.map((line, i) => `${i+1}. ${line}`).join('\n');
+                document.getElementById('input-values').value = lines.map((line,i) => `${i+1}. ${line}`).join('\n');
             }
 
-            // For processing (remove line numbers if present)
-            let values = lines.map(line => line.replace(/^\d+\.\s*/, '').trim())
-                            .filter(value => value !== '');
+            let values = lines.map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(v=>v!=='');
 
-            // Apply numerical order to output if enabled
-            if (numericalOrder) {
-                values.sort((a, b) => {
-                    const numA = parseFloat(a);
-                    const numB = parseFloat(b);
-                    if (!isNaN(numA) && !isNaN(numB)) {
-                        return numA - numB;
-                    }
+            if (numericalOrder){
+                values.sort((a,b)=>{
+                    const numA = parseFloat(a); const numB = parseFloat(b);
+                    if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
                     return a.localeCompare(b);
                 });
             }
 
-            // Determine separator
             let separator = separatorSelect.value;
-            if (separator === 'custom') {
-                separator = customSeparator.value;
-            } else if (separator === '\\n') {
-                separator = '\n';
-            } else if (separator === '\\t') {
-                separator = '\t';
-            }
+            if (separator === 'custom') separator = customSeparator.value || ',';
+            else if (separator === '\\n') separator = '\n';
+            else if (separator === '\\t') separator = '\t';
 
-            // Join with separator
             output.value = values.join(separator);
-            
-            // Count values in output (may be different due to empty values)
-            const outputValues = output.value.split(separator).filter(v => v.trim() !== '');
-            document.getElementById('value-count').textContent = 
-                `${outputValues.length} value${outputValues.length !== 1 ? 's' : ''}`;
+            const outputValues = output.value.split(separator).filter(v=>v.trim()!== '');
+            document.getElementById('value-count').textContent = `${outputValues.length} value${outputValues.length !== 1 ? 's' : ''}`;
             document.getElementById('value-count').classList.toggle('hidden', outputValues.length === 0);
         }
 
-        // Copy to clipboard
-        // Ripple effect function
-        function createRipple(event) {
+        function clearAll(event){
+            softenRipple(event);
+            const inputArea = document.getElementById('input-values');
+            const outputArea = document.getElementById('output');
+            inputArea.classList.add('opacity-0'); outputArea.classList.add('opacity-0');
+            setTimeout(()=>{
+                inputArea.value=''; outputArea.value='';
+                document.getElementById('line-count').classList.add('hidden');
+                document.getElementById('value-count').classList.add('hidden');
+                document.getElementById('numerical-order').checked=false;
+                inputArea.classList.remove('opacity-0'); outputArea.classList.remove('opacity-0');
+            },250);
+        }
+
+        function softenRipple(event){
             const button = event.currentTarget;
-            const circle = document.createElement("span");
+            if(!button) return;
+            const circle = document.createElement('span');
             const diameter = Math.max(button.clientWidth, button.clientHeight);
-            const radius = diameter / 2;
-            
-            circle.style.width = circle.style.height = `${diameter}px`;
-            circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-            circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-            circle.classList.add("ripple-effect");
-            
-            const ripple = button.getElementsByClassName("ripple-effect")[0];
-            if (ripple) {
-                ripple.remove();
-            }
-            
+            const radius = diameter/2;
+            circle.style.width = circle.style.height = diameter + 'px';
+            circle.style.left = (event.clientX - button.getBoundingClientRect().left - radius) + 'px';
+            circle.style.top = (event.clientY - button.getBoundingClientRect().top - radius) + 'px';
+            circle.className = 'ripple-effect';
+            const old = button.getElementsByClassName('ripple-effect')[0]; if(old) old.remove();
             button.appendChild(circle);
+            setTimeout(()=>circle.remove(),700);
         }
 
-        function copyToClipboard(event) {
-            createRipple(event);
+        function copyToClipboard(event){
+            softenRipple(event);
             const output = document.getElementById('output');
-            if (output.value.trim() === '') return;
-            
-            // Add pulse effect
-            output.classList.add('pulse');
-            setTimeout(() => output.classList.remove('pulse'), 500);
-            
-            output.select();
-            document.execCommand('copy');
-            
-            // Show feedback with animation
-            const copyButton = document.querySelector('button.bg-green-500');
-            copyButton.classList.add('pulse');
-            const originalHTML = copyButton.innerHTML;
-            copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            setTimeout(() => {
-                copyButton.innerHTML = originalHTML;
-                copyButton.classList.remove('pulse');
-            }, 2000);
+            if(!output.value.trim()) return;
+            output.select(); document.execCommand('copy');
+            const copyButton = event.currentTarget;
+            if(copyButton){
+                const original = copyButton.innerHTML;
+                copyButton.innerHTML = '<i class="fas fa-check"></i> Đã sao chép';
+                copyButton.classList.add('pulse');
+                setTimeout(()=>{copyButton.innerHTML = original; copyButton.classList.remove('pulse');},1500);
+            }
         }
 
-        // Reverse conversion function
-        function reverseConversion() {
-            const output = document.getElementById('output').value;
-            if (!output.trim()) return;
-            
-            // Get current separator
-            const separatorSelect = document.getElementById('separator');
-            let separator = separatorSelect.value;
-            if (separator === 'custom') {
-                separator = document.getElementById('custom-separator').value;
-            } else if (separator === '\\n') {
-                separator = '\n';
-            } else if (separator === '\\t') {
-                separator = '\t';
-            }
-            
-            // Convert back while maintaining separator consistency
-            const values = output.split(separator).filter(v => v.trim());
-            // Use the same separator that was used for output
-            document.getElementById('input-values').value = values.join(separator);
-            
-            // Update line count based on actual lines
-            const lines = document.getElementById('input-values').value.split('\n').filter(line => line.trim());
-            const lineCount = document.getElementById('line-count');
-            lineCount.textContent = `${lines.length} line${lines.length !== 1 ? 's' : ''}`;
+        function reverseConversion(){
+            const output = document.getElementById('output').value; if(!output.trim()) return;
+            let separator = document.getElementById('separator').value;
+            if (separator === 'custom') separator = document.getElementById('custom-separator').value || ',';
+            else if(separator === '\\n') separator='\n'; else if(separator === '\\t') separator='\t';
+            const values = output.split(separator).filter(v=>v.trim());
+            document.getElementById('input-values').value = values.join('\n');
+            const lines = document.getElementById('input-values').value.split('\n').filter(l=>l.trim());
+            const lineCount = document.getElementById('line-count'); lineCount.textContent = `${lines.length} line${lines.length!==1?'s':''}`;
             lineCount.classList.remove('hidden');
         }
 
-        // Add fade-in effect on load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelector('div.bg-white').classList.add('fade-in');
+        // small entrance
+        document.addEventListener('DOMContentLoaded', ()=>{
+            document.querySelector('.vintage-card').style.transform='translateY(0)';
         });
     </script>
 </body>
