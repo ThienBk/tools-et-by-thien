@@ -1,327 +1,72 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Value Separator — Vintage</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Classic serif fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Thêm dấu ; giữa các cột</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f7f7f7;
+    }
 
-    <style>
-        :root{
-            --paper:#efe6d6; /* warm paper */
-            --accent:#8b5e34; /* brown/gold */
-            --muted:#6b4b2d;
-            --card:#fffaf4;
-            --shadow: rgba(20,12,8,0.15);
-        }
+    textarea {
+      width: 100%;
+      height: 180px;
+      margin-top: 10px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
 
-        /* page texture & tone */
-        body{
-            background: radial-gradient(circle at 10% 10%, rgba(255,247,236,0.6), transparent 15%),
-                        linear-gradient(180deg, #fbf6ee 0%, #f3eadc 100%);
-            font-family: 'Lora', Georgia, serif;
-            color: var(--muted);
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:32px;
-        }
+    button {
+      margin: 15px 0;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
-        /* container style like an old book page */
-        .vintage-card{
-            width:100%;
-            max-width:980px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,251,244,0.98));
-            border-radius:14px;
-            box-shadow: 0 10px 30px var(--shadow), inset 0 1px 0 rgba(255,255,255,0.6);
-            border:1px solid rgba(139,94,52,0.08);
-            padding:30px;
-            position:relative;
-            overflow:hidden;
-            border-left:6px solid rgba(139,94,52,0.12);
-        }
-
-        /* decorative corners */
-        .vintage-card:before, .vintage-card:after{
-            content:'';
-            position:absolute;
-            width:120px;height:120px;
-            background: radial-gradient(circle at 30% 30%, rgba(139,94,52,0.04), transparent 40%);
-            pointer-events:none;
-        }
-        .vintage-card:before{left:-40px;top:-40px;transform:rotate(-12deg)}
-        .vintage-card:after{right:-40px;bottom:-40px;transform:rotate(6deg)}
-
-        h1{
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight:700;
-            letter-spacing:0.6px;
-            color:var(--accent);
-            margin-bottom:10px;
-        }
-        .subtitle{
-            font-size:14px;
-            color:#7a5a3a;
-            margin-bottom:24px;
-        }
-
-        label{font-weight:600;color:#5a3f27}
-
-        textarea, input, select{font-family: 'Lora', Georgia, serif;}
-
-        /* input/card look */
-        .field-card{
-            background: linear-gradient(180deg, rgba(255,251,246,0.9), rgba(250,244,236,0.9));
-            border:1px solid rgba(139,94,52,0.08);
-            padding:12px;
-            border-radius:8px;
-        }
-
-        textarea#input-values, textarea#output{
-            background: transparent;
-            border:none;resize:vertical;
-            font-family: 'Courier New', monospace;
-            min-height:120px; max-height:400px;
-            outline:none;
-        }
-
-        /* vintage buttons */
-        .btn-vintage{
-            background: linear-gradient(180deg, #f6e9d9, #f0dfc7);
-            border:1px solid rgba(139,94,52,0.22);
-            color:var(--muted);
-            padding:10px 18px;
-            border-radius:8px;
-            box-shadow: 0 4px 0 rgba(139,94,52,0.06), inset 0 1px 0 rgba(255,255,255,0.6);
-            transition:transform .12s ease, box-shadow .12s ease;
-            font-weight:600;
-            letter-spacing:0.4px;
-        }
-        .btn-vintage:hover{transform:translateY(-3px); box-shadow: 0 10px 20px rgba(20,12,8,0.08)}
-
-        /* small icon buttons */
-        .icon-btn{
-            display:inline-flex;align-items:center;justify-content:center;padding:8px;border-radius:6px;border:1px solid rgba(139,94,52,0.07);background:linear-gradient(180deg,#fffafa,#f6efe0);
-        }
-
-        /* ripple softened to glow */
-        .ripple-effect{background:radial-gradient(circle,#fde9c6 0%, rgba(255,255,255,0.6) 30%, rgba(139,94,52,0.08) 60%);opacity:0.9}
-
-        /* counts badge */
-        .badge{
-            background:linear-gradient(180deg,var(--accent), #7a4f2a);
-            color:#fff;padding:6px 10px;border-radius:999px;font-weight:700;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08)
-        }
-
-        /* grid tweaks */
-        @media (min-width:768px){
-            .two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-        }
-
-        /* footer action area */
-        .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
-
-        /* subtle decorative separators */
-        .ornament{
-            height:2px;background:linear-gradient(90deg, transparent, rgba(139,94,52,0.12), transparent);margin:18px 0;border-radius:2px
-        }
-
-        /* subtle pulse animation for copy feedback */
-        .pulse{animation:pulse 900ms ease}
-        @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
-
-        /* small helpers */
-        .muted{color:#7a5a3a;font-size:13px}
-    </style>
+    h2 {
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
 <body>
-    <div class="vintage-card">
-        <header>
-            <h1>Value Separator Tool</h1>
-        </header>
 
-        <div class="two-col">
-            <div class="space-y-4">
-                <div class="field-card">
-                    <div class="flex justify-between items-start mb-2">
-                        <label for="input-values">Input Values</label>
-                        <span id="line-count" class="badge hidden">0 lines</span>
-                    </div>
-                    <textarea id="input-values" placeholder="Nhập mỗi giá trị trên 1 dòng..."></textarea>
-                </div>
+  <h2>Input</h2>
+  <textarea id="input">
+SEDQ4560	Dup	xóa opt Black
+WUNZ5797	meo	
+WUNZ5805	gau	meo
+SEDQ4531	meo	
+  </textarea>
 
-                <div class="field-card">
-                    <label for="separator">Separator</label>
-                    <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-                        <select id="separator" class="p-2 rounded border" style="border:1px solid rgba(139,94,52,0.06);background:transparent;">
-                            <option value=",">Comma ( , )</option>
-                            <option value=";">Semicolon ( ; )</option>
-                            <option value="|">Pipe ( | )</option>
-                            <option value=" ">Space</option>
-                            <option value="\t">Tab</option>
-                            <option value="-">Hyphen</option>
-                            <option value="\n">New Line</option>
-                            <option value="custom">Custom</option>
-                        </select>
-                        <div id="custom-separator-container" style="flex:1;display:none">
-                            <input id="custom-separator" placeholder="Custom separator" class="p-2 rounded border" style="width:100%;border:1px solid rgba(139,94,52,0.06);background:transparent">
-                        </div>
-                    </div>
+  <button onclick="processText()">Xử lý</button>
 
-                    <div style="margin-top:12px;display:flex;align-items:center;gap:12px">
-                        <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="numerical-order"> <span class="muted">Numerical Order</span></label>
-                        <a href="index.html" class="muted">Home</a>
-                    </div>
-                </div>
-            </div>
+  <h2>Output</h2>
+  <textarea id="output"></textarea>
 
-            <div class="space-y-4">
-                <div class="field-card" style="min-height:240px;position:relative">
-                    <div class="flex justify-between items-start mb-2">
-                        <label>Result</label>
-                        <div style="display:flex;gap:8px;align-items:center">
-                            <span id="value-count" class="badge hidden">0 values</span>
-                            <button onclick="reverseConversion()" class="icon-btn" title="Reverse conversion"><i class="fas fa-exchange-alt"></i></button>
-                        </div>
-                    </div>
+  <script>
+    function processText() {
+      const input = document.getElementById("input").value;
 
-                    <textarea id="output" readonly></textarea>
+      const result = input
+        .split("\n")
+        .map(line => {
+          // Tách theo TAB (chuẩn khi copy từ Excel)
+          const parts = line.split(/\t+/).filter(p => p.trim() !== "");
 
-                    <div style="position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:8px">
-                        <button onclick="copyToClipboard(event)" class="icon-btn" title="Copy"><i class="fas fa-copy"></i></button>
-                        <button onclick="reverseConversion()" class="icon-btn" title="Reverse"><i class="fas fa-undo"></i></button>
-                    </div>
-                </div>
+          // Nếu có từ 3 cột trở lên → thêm dấu ;
+          if (parts.length >= 3) {
+            parts[1] = parts[1] + ";";
+          }
 
-                <div>
-                    <div class="ornament"></div>
-                    <div class="actions">
-                        <button onclick="generateOutput(event)" class="btn-vintage">Generate</button>
-                        <button onclick="copyToClipboard(event)" class="btn-vintage"><i class="fas fa-copy"></i> Copy</button>
-                        <button onclick="clearAll(event)" class="btn-vintage"><i class="fas fa-trash"></i> Clear</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+          return parts.join("\t");
+        })
+        .join("\n");
 
-        <footer style="margin-top:18px;text-align:center;color:#a07a58;font-size:12px">© Giáo diện cổ điển — tuỳ chỉnh bởi bạn</footer>
-    </div>
+      document.getElementById("output").value = result;
+    }
+  </script>
 
-    <script>
-        // --- behavior (kept and slightly adapted from your original) ---
-        document.getElementById('input-values').addEventListener('input', function() {
-            const lines = this.value.split('\n').filter(line => line.trim() !== '');
-            const lineCount = document.getElementById('line-count');
-            lineCount.textContent = `${lines.length} line${lines.length !== 1 ? 's' : ''}`;
-            lineCount.classList.toggle('hidden', lines.length === 0);
-        });
-
-        document.getElementById('separator').addEventListener('change', function() {
-            const customContainer = document.getElementById('custom-separator-container');
-            if (this.value === 'custom') customContainer.style.display = 'block';
-            else customContainer.style.display = 'none';
-        });
-
-        function generateOutput(event){
-            softenRipple(event);
-            const separatorSelect = document.getElementById('separator');
-            const customSeparator = document.getElementById('custom-separator');
-            const numericalOrder = document.getElementById('numerical-order').checked;
-            const output = document.getElementById('output');
-
-            const inputText = document.getElementById('input-values').value;
-            let lines = inputText.split('\n').filter(line => line.trim() !== '');
-
-            if (numericalOrder) {
-                document.getElementById('input-values').value = lines.map((line,i) => `${i+1}. ${line}`).join('\n');
-            }
-
-            let values = lines.map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(v=>v!=='');
-
-            if (numericalOrder){
-                values.sort((a,b)=>{
-                    const numA = parseFloat(a); const numB = parseFloat(b);
-                    if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-                    return a.localeCompare(b);
-                });
-            }
-
-            let separator = separatorSelect.value;
-            if (separator === 'custom') separator = customSeparator.value || ',';
-            else if (separator === '\\n') separator = '\n';
-            else if (separator === '\\t') separator = '\t';
-
-            output.value = values.join(separator);
-            const outputValues = output.value.split(separator).filter(v=>v.trim()!== '');
-            document.getElementById('value-count').textContent = `${outputValues.length} value${outputValues.length !== 1 ? 's' : ''}`;
-            document.getElementById('value-count').classList.toggle('hidden', outputValues.length === 0);
-        }
-
-        function clearAll(event){
-            softenRipple(event);
-            const inputArea = document.getElementById('input-values');
-            const outputArea = document.getElementById('output');
-            inputArea.classList.add('opacity-0'); outputArea.classList.add('opacity-0');
-            setTimeout(()=>{
-                inputArea.value=''; outputArea.value='';
-                document.getElementById('line-count').classList.add('hidden');
-                document.getElementById('value-count').classList.add('hidden');
-                document.getElementById('numerical-order').checked=false;
-                inputArea.classList.remove('opacity-0'); outputArea.classList.remove('opacity-0');
-            },250);
-        }
-
-        function softenRipple(event){
-            const button = event.currentTarget;
-            if(!button) return;
-            const circle = document.createElement('span');
-            const diameter = Math.max(button.clientWidth, button.clientHeight);
-            const radius = diameter/2;
-            circle.style.width = circle.style.height = diameter + 'px';
-            circle.style.left = (event.clientX - button.getBoundingClientRect().left - radius) + 'px';
-            circle.style.top = (event.clientY - button.getBoundingClientRect().top - radius) + 'px';
-            circle.className = 'ripple-effect';
-            const old = button.getElementsByClassName('ripple-effect')[0]; if(old) old.remove();
-            button.appendChild(circle);
-            setTimeout(()=>circle.remove(),700);
-        }
-
-        function copyToClipboard(event){
-            softenRipple(event);
-            const output = document.getElementById('output');
-            if(!output.value.trim()) return;
-            output.select(); document.execCommand('copy');
-            const copyButton = event.currentTarget;
-            if(copyButton){
-                const original = copyButton.innerHTML;
-                copyButton.innerHTML = '<i class="fas fa-check"></i> Đã sao chép';
-                copyButton.classList.add('pulse');
-                setTimeout(()=>{copyButton.innerHTML = original; copyButton.classList.remove('pulse');},1500);
-            }
-        }
-
-        function reverseConversion(){
-            const output = document.getElementById('output').value; if(!output.trim()) return;
-            let separator = document.getElementById('separator').value;
-            if (separator === 'custom') separator = document.getElementById('custom-separator').value || ',';
-            else if(separator === '\\n') separator='\n'; else if(separator === '\\t') separator='\t';
-            const values = output.split(separator).filter(v=>v.trim());
-            document.getElementById('input-values').value = values.join('\n');
-            const lines = document.getElementById('input-values').value.split('\n').filter(l=>l.trim());
-            const lineCount = document.getElementById('line-count'); lineCount.textContent = `${lines.length} line${lines.length!==1?'s':''}`;
-            lineCount.classList.remove('hidden');
-        }
-
-        // small entrance
-        document.addEventListener('DOMContentLoaded', ()=>{
-            document.querySelector('.vintage-card').style.transform='translateY(0)';
-        });
-    </script>
 </body>
 </html>
