@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Thêm dấu ; giữa các cột</title>
+  <title>Excel Safe Semicolon Formatter</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,53 +18,69 @@
       font-size: 14px;
     }
 
-    button {
+    .buttons {
       margin: 15px 0;
-      padding: 10px 20px;
-      font-size: 14px;
-      cursor: pointer;
     }
 
-    h2 {
-      margin-bottom: 5px;
+    button {
+      padding: 10px 18px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
 
   <h2>Input</h2>
-  <textarea id="input">
-SEDQ4560	Dup	xóa opt Black
-WUNZ5797	meo	
-WUNZ5805	gau	meo
-SEDQ4531	meo	
-  </textarea>
+  <textarea id="input" placeholder="Dán dữ liệu từ Excel vào đây..."></textarea>
 
-  <button onclick="processText()">Xử lý</button>
+  <div class="buttons">
+    <button onclick="processText()">Xử lý</button>
+    <button onclick="copyOutput()">Copy Output</button>
+    <button onclick="clearAll()">Xóa toàn bộ</button>
+  </div>
 
-  <h2>Output</h2>
-  <textarea id="output"></textarea>
+  <h2>Output (; only – Excel Safe)</h2>
+  <textarea id="output" placeholder="Chỉ dùng dấu ; – không space, không tab"></textarea>
 
   <script>
+    function cleanValue(text) {
+      return text
+        .replace(/\s+/g, " ") // gom space trong text
+        .trim();              // xóa space đầu cuối
+    }
+
     function processText() {
       const input = document.getElementById("input").value;
 
       const result = input
         .split("\n")
         .map(line => {
-          // Tách theo TAB (chuẩn khi copy từ Excel)
-          const parts = line.split(/\t+/).filter(p => p.trim() !== "");
+          // tách theo TAB hoặc nhiều SPACE
+          const parts = line.split(/\t+|\s{2,}/)
+                            .map(cleanValue)
+                            .filter(Boolean);
 
-          // Nếu có từ 3 cột trở lên → thêm dấu ;
-          if (parts.length >= 3) {
-            parts[1] = parts[1] + ";";
-          }
-
-          return parts.join("\t");
+          // GHÉP BẰNG DẤU ;
+          return parts.join(";");
         })
         .join("\n");
 
       document.getElementById("output").value = result;
+    }
+
+    function copyOutput() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+    }
+
+    function clearAll() {
+      if (confirm("Xóa toàn bộ dữ liệu?")) {
+        document.getElementById("input").value = "";
+        document.getElementById("output").value = "";
+      }
     }
   </script>
 
