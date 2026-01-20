@@ -7,74 +7,155 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background: #f4f6f8;
+        background: linear-gradient(135deg, #eef2f7, #d9e2ec);
         padding: 40px;
     }
 
     .box {
-        max-width: 500px;
+        max-width: 520px;
         margin: auto;
         background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        padding: 24px;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        transition: 0.3s ease;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
     }
 
     textarea {
         width: 100%;
-        height: 100px;
-        padding: 10px;
+        height: 110px;
+        padding: 12px;
         font-size: 16px;
-        margin-bottom: 15px;
-        border-radius: 6px;
+        border-radius: 8px;
         border: 1px solid #ccc;
+        resize: none;
+        transition: border 0.2s;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
     }
 
     button {
-        padding: 10px 20px;
-        font-size: 16px;
+        flex: 1;
+        padding: 11px;
+        font-size: 15px;
         border: none;
-        border-radius: 6px;
-        background: #007bff;
-        color: white;
+        border-radius: 8px;
         cursor: pointer;
+        transition: all 0.25s ease;
     }
 
-    button:hover {
+    .btn-convert {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-convert:hover {
         background: #0056b3;
     }
 
+    .btn-copy {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-copy:hover {
+        background: #1e7e34;
+    }
+
+    .btn-clear {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-clear:hover {
+        background: #b52a37;
+    }
+
     .result {
-        margin-top: 15px;
+        margin-top: 16px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        font-size: 17px;
         font-weight: bold;
-        font-size: 18px;
+        min-height: 40px;
+        word-break: break-all;
+        color: #333;
+    }
+
+    .copied {
+        color: #28a745;
+        font-size: 14px;
+        margin-top: 6px;
+        text-align: right;
     }
 </style>
 </head>
 
 <body>
 <div class="box">
-    <h2>Chuyển sang Camel Case</h2>
+    <h2>Chuyển sang CamelCase</h2>
 
-    <textarea id="inputText" placeholder="Nhập chữ HOA hoặc thường..."></textarea>
+    <textarea id="inputText" placeholder="Nhập chữ, có thể có _ - hoặc nhiều khoảng trắng..."></textarea>
 
-    <button onclick="toCamelCase()">Chuyển đổi</button>
+    <div class="btn-group">
+        <button class="btn-convert" onclick="toCamelCase()">Chuyển đổi</button>
+        <button class="btn-copy" onclick="copyResult()">Copy</button>
+        <button class="btn-clear" onclick="clearAll()">Xóa</button>
+    </div>
 
     <div class="result" id="outputText"></div>
+    <div class="copied" id="copyStatus"></div>
 </div>
 
 <script>
 function toCamelCase() {
-    let text = document.getElementById("inputText").value;
+    const text = document.getElementById("inputText").value;
 
-    let camelCaseText = text
+    const result = text
         .toLowerCase()
-        .split(" ")
-        .filter(word => word !== "")
+        .trim()
+        .split(/[\s_\-]+/)
+        .filter(Boolean)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 
-    document.getElementById("outputText").innerText = camelCaseText;
+    document.getElementById("outputText").innerText = result;
+    document.getElementById("copyStatus").innerText = "";
+}
+
+
+function copyResult() {
+    const output = document.getElementById("outputText").innerText;
+    if (!output) return;
+
+    navigator.clipboard.writeText(output).then(() => {
+        document.getElementById("copyStatus").innerText = "✓ Đã copy vào clipboard";
+        setTimeout(() => {
+            document.getElementById("copyStatus").innerText = "";
+        }, 1500);
+    });
+}
+
+function clearAll() {
+    document.getElementById("inputText").value = "";
+    document.getElementById("outputText").innerText = "";
+    document.getElementById("copyStatus").innerText = "";
 }
 </script>
 </body>
