@@ -1,97 +1,1622 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Extract Product IDs</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 150px;
-      margin-bottom: 10px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: vertical;
-    }
-
-    button {
-      padding: 8px 16px;
-      margin-right: 10px;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      background-color: #007bff;
-      color: #fff;
-      font-size: 14px;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    #result {
-      width: 100%;
-      height: 150px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      resize: vertical;
-    }
-  </style>
-</head>
-<body>
-  <textarea id="inputData" placeholder="Nhập các URL vào đây"></textarea>
-  <br>
-  <button onclick="extractIDs()">Tách kết quả</button>
-  <button onclick="copyConvertedData()">Sao chép kết quả</button>
-  <button onclick="clearAll()">Xóa dữ liệu trên trang</button>
-  <br>
-  <textarea id="result" placeholder="Kết quả sẽ xuất hiện ở đây" readonly></textarea>
-
-  <script>
-    function extractIDs() {
-      const inputData = document.getElementById('inputData').value;
-      const productIDs = extractProductIDs(inputData.split('\n'));
-      const result = document.getElementById('result');
-      result.value = productIDs.join('\n').toUpperCase(); // Chuyển đổi kết quả thành chữ hoa
-    }
-
-    function extractProductIDs(urls) {
-      const productIDs = [];
-      const regex = /-(\w+)\.html/g;
-
-      urls.forEach(url => {
-        const matches = url.match(regex);
-        
-        if (matches) {
-          matches.forEach(match => {
-            const parts = match.split('-');
-            if (parts.length === 2) {
-              const productID = parts[1].replace('.html', '');
-              productIDs.push(productID);
-            }
-          });
-        }
-      });
-
-      return productIDs;
-    }
-
-    function copyConvertedData() {
-      const result = document.getElementById('result');
-      result.select();
-      document.execCommand('copy');
-      alert('Đã sao chép kết quả sau khi chuyển đổi!');
-    }
-
-    function clearAll() {
-      document.getElementById('inputData').value = '';
-      document.getElementById('result').value = '';
-    }
-  </script>
-</body>
+<html lang="vi">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Copy VBA Code</title>
+      <style>
+         body {
+         font-family: Arial, sans-serif;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         height: 100vh;
+         margin: 0;
+         background: linear-gradient(135deg, #74ebd5, #9face6);
+         }
+         h1 {
+         margin-bottom: 20px;
+         }
+         .container {
+         display: flex;
+         gap: 25px;
+         flex-wrap: wrap;
+         justify-content: center;
+         }
+         .group {
+         background: rgba(255,255,255,0.25);
+         padding: 18px;
+         border-radius: 16px;
+         min-width: 230px;
+         }
+         .group-header {
+         display: flex;
+         align-items: center;
+         margin-bottom: 12px;
+         }
+         .group-label {
+         writing-mode: vertical-rl;
+         text-orientation: mixed;
+         font-weight: bold;
+         margin-right: 10px;
+         color: #2c3e50;
+         letter-spacing: 2px;
+         }
+         .group-buttons {
+         display: flex;
+         flex-direction: column;
+         }
+         .btn {
+         padding: 10px 18px;
+         margin: 6px 0;
+         font-size: 14px;
+         border: none;
+         border-radius: 10px;
+         cursor: pointer;
+         background: #4CAF50;
+         color: white;
+         transition: background 0.25s;
+         }
+         .btn:hover {
+         background: #45a049;
+         }
+         .msg {
+         margin-top: 18px;
+         font-weight: bold;
+         color: #333;
+         text-align: center;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>Copy VBA Code Nhanh</h1>
+      <div class="container">
+         <!-- FORMAT -->
+         <div class="group">
+            <div class="group-header">
+               <div class="group-label">FORMAT</div>
+               <strong>Format</strong>
+               </br>
+                  <h1 style="color: red">RB Only</h1>
+                 </br>
+            </div>
+            <div class="group-buttons">
+               <button class="btn" onclick="copyCode(1)">Code_Combine all sheet</button>
+               <button class="btn" onclick="copyCode(4)">Code_Clean-up</button>
+               <button class="btn" onclick="copyCode(6)">Code_Extract Data</button>
+               <button class="btn" onclick="copyCode(7)">Waiting for Update</button>
+               <button class="btn" onclick="copyCode(8)">Waiting for Update</button>
+            </div>
+         </div>
+         <!-- CONVERT -->
+         <div class="group">
+            <div class="group-header">
+               <div class="group-label">CONVERT</div>
+               <strong>FILL RC/FT/PRNAME</strong>
+               </br>
+               <p>
+                     </br>
+                      <h1>RB Only</h1>
+                     </br>
+                   <a href="https://docs.google.com/spreadsheets/d/1dvlm9RUuD3Jkn6qz-WlAblLiHmilSEV_3mAL4R8_eFI/edit?gid=719714362#gid=719714362">FILL RC/FT/PRNAME</a>
+                   </br>
+                   <a href="https://docs.google.com/spreadsheets/d/1EAObo-y07YQj5proYvGpXrD76JaqYWjEmaMtPfJ5AL0/edit?gid=1388731343#gid=1388731343">FILL SCHEMA</a>
+                   </br>
+                   <a href="https://docs.google.com/spreadsheets/d/1EAObo-y07YQj5proYvGpXrD76JaqYWjEmaMtPfJ5AL0/edit?gid=1388731343#gid=1388731343">FILL SCHEMA</a>
+               </p>
+            </div>
+            <div class="group-buttons">
+               <button class="btn" onclick="copyCode(2)">code fill tag PMP RCFT nhanh</button>
+               <button class="btn" onclick="copyCode(5)">code_fill schema PMP</button>
+               <button class="btn" onclick="copyCode(9)">Code_RCFT</button>
+               <button class="btn" onclick="copyCode(10)">Waiting for Update</button>
+               <button class="btn" onclick="copyCode(11)">Waiting for Update</button>
+            </div>
+         </div>
+         <!-- CLEAN -->
+         <div class="group">
+            <div class="group-header">
+               <div class="group-label">CLEAN</div>
+               <strong>Format file thành dọc</strong>
+            </div>
+            <div class="group-buttons">
+               <button class="btn" onclick="copyCode(3)">Format File</button>
+               <button class="btn" onclick="copyCode(12)">Convert File</button>
+               <button class="btn" onclick="copyCode(13)">Clean Multiple File Class</button>
+               <button class="btn" onclick="copyCode(14)">Format Multiple File Class</button>
+               <button class="btn" onclick="copyCode(15)">Convert Multiple File Class</button>
+            </div>
+         </div>
+         <!-- EXTRA -->
+         <div class="group">
+            <div class="group-header">
+               <div class="group-label">EXTRA</div>
+               <strong>SCHEMA TAGS_DROPLIST</strong>
+               </br>
+                  <h1>RB Only</h1>
+                 </br>
+            </div>
+            <div class="group-buttons">
+               <button class="btn" onclick="copyCode(16)">Code_Clean</button>
+               <button class="btn" onclick="copyCode(17)">Code_Create Expect</button>
+               <button class="btn" onclick="copyCode(18)">Code_Combined</button>
+               <button class="btn" onclick="copyCode(19)">Code_Tag ID</button>
+               <button class="btn" onclick="copyCode(20)">Waiting for update</button>
+            </div>
+         </div>
+      </div>
+      <div class="msg" id="msg"></div>
+      <script>
+         /* ===== VBA CODE ===== */
+         const code1 = `Sub GopFileExcel()
+         Dim FilesToOpen
+         Dim x As Integer
+         On Error GoTo ErrHandler
+         Application.ScreenUpdating = False
+         FilesToOpen = Application.GetOpenFilename _
+         (FileFilter:="Microsoft Excel Files (*.xlsx), *.xlsx", MultiSelect:=True, Title:="Files to Merge")
+         If TypeName(FilesToOpen) = "Boolean" Then
+         MsgBox "No Files were selected"
+         GoTo ExitHandler
+         End If
+         x = 1
+         While x <= UBound(FilesToOpen)
+         Workbooks.Open Filename:=FilesToOpen(x)
+         Sheets().Move After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count)
+         x = x + 1
+         Wend
+         ExitHandler:
+         Application.ScreenUpdating = True
+         Exit Sub
+         ErrHandler:
+         MsgBox Err.Description
+         Resume ExitHandler
+         End Sub`;
+         const code2 = `Option Explicit
+         
+         Sub ApplyDataUpdatesWithLog()
+         Dim wsData As Worksheet, wsProd As Worksheet, wsAdd As Worksheet
+         Dim lastData As Long, i As Long
+         Dim sku As String, ident As String, fieldName As String
+         Dim curVal As String, newVal As String, actionType As String
+         Dim logCol As Long
+         Dim statusMsg As String
+         
+         Set wsData = ThisWorkbook.Worksheets("Data")
+         Set wsProd = ThisWorkbook.Worksheets("Products")
+         Set wsAdd = ThisWorkbook.Worksheets("Additional Feature Bullets")
+         
+         ' Cột Update Log trên sheet Data
+         logCol = 7
+         If wsData.Cells(1, logCol).Value <> "Update Log" Then wsData.Cells(1, logCol).Value = "Update Log"
+         
+         lastData = wsData.Cells(wsData.Rows.Count, "A").End(xlUp).Row
+         
+         Application.ScreenUpdating = False
+         Application.EnableEvents = False
+         
+         For i = 2 To lastData
+         sku = Trim(wsData.Cells(i, "A").Value)
+         ident = Trim(wsData.Cells(i, "B").Value)
+         fieldName = Trim(wsData.Cells(i, "C").Value)
+         curVal = Trim(wsData.Cells(i, "D").Value)
+         newVal = Trim(wsData.Cells(i, "E").Value)
+         actionType = UCase(Trim(wsData.Cells(i, "F").Value))
+         
+         If sku = "" Or fieldName = "" Then
+            statusMsg = "Skipped (Missing SKU/Field)"
+            wsData.Cells(i, logCol).Value = statusMsg
+            wsData.Cells(i, logCol).Interior.Color = RGB(255, 255, 0) ' Vàng
+            GoTo NextRow
+         End If
+         
+         ' Xử lý cập nhật
+         statusMsg = ProcessRowUpdate(wsProd, wsAdd, sku, ident, fieldName, curVal, newVal, actionType)
+         wsData.Cells(i, logCol).Value = statusMsg
+         
+         ' Highlight màu theo status
+         Select Case True
+            Case InStr(statusMsg, "✔") > 0
+                wsData.Cells(i, logCol).Interior.Color = RGB(144, 238, 144) ' Xanh lá
+            Case InStr(statusMsg, "❌") > 0
+                wsData.Cells(i, logCol).Interior.Color = RGB(255, 99, 71) ' Đỏ
+            Case InStr(statusMsg, "Skipped") > 0
+                wsData.Cells(i, logCol).Interior.Color = RGB(255, 255, 0) ' Vàng
+            Case Else
+                wsData.Cells(i, logCol).Interior.Color = RGB(255, 255, 255) ' Trắng
+         End Select
+         
+         NextRow:
+         Next i
+         
+         Application.EnableEvents = True
+         Application.ScreenUpdating = True
+         
+         MsgBox "Hoàn tất cập nhật. Trạng thái và màu highlight được ghi vào cột 'Update Log' trên sheet Data.", vbInformation
+         End Sub
+         
+         ' =========================
+         ' PROCESS ROW
+         ' =========================
+         Function ProcessRowUpdate(wsProd As Worksheet, wsAdd As Worksheet, _
+                          sku As String, ident As String, fieldName As String, _
+                          curVal As String, newVal As String, actionType As String) As String
+         On Error GoTo ErrHandler
+         
+         Select Case LCase(fieldName)
+         Case "product name", "prname", "pr name", "name"
+            If UpdatePrName(wsProd, sku, ident, newVal, actionType) Then
+                ProcessRowUpdate = "✔ Updated PrName"
+            Else
+                ProcessRowUpdate = "❌ PrName NOT FOUND"
+            End If
+            
+         Case "marketing copy", "marketing", "marketingcopy"
+            If UpdateMarketingCopy(wsProd, sku, newVal, actionType) Then
+                ProcessRowUpdate = "✔ Updated Marketing"
+            Else
+                ProcessRowUpdate = "❌ Marketing NOT FOUND"
+            End If
+            
+         Case Else
+            If InStr(1, fieldName, "feature", vbTextCompare) > 0 Then
+                If UpdateFeature(wsProd, wsAdd, sku, curVal, newVal, actionType) Then
+                    ProcessRowUpdate = "✔ Feature Updated"
+                Else
+                    ProcessRowUpdate = "❌ Feature NOT FOUND"
+                End If
+            Else
+                ProcessRowUpdate = "Skipped (Unknown Field)"
+            End If
+         End Select
+         Exit Function
+         
+         ErrHandler:
+         ProcessRowUpdate = "Error: " & Err.Description
+         End Function
+         
+         ' =========================
+         ' UPDATE PRNAME (SKU & Option Level)
+         ' =========================
+         Function UpdatePrName(wsProd As Worksheet, sku As String, ident As String, newVal As String, actionType As String) As Boolean
+         Dim lastRow As Long, r As Long
+         lastRow = wsProd.Cells(wsProd.Rows.Count, 3).End(xlUp).Row
+         
+         For r = 7 To lastRow
+         If Trim(UCase(wsProd.Cells(r, 3).Value)) = UCase(sku) Then
+            ' SKU-level
+            If (Trim(UCase(ident)) = UCase(sku) And Trim(UCase(wsProd.Cells(r, 4).Value)) = UCase(sku)) _
+            Or (Trim(UCase(ident)) <> UCase(sku) And Trim(UCase(wsProd.Cells(r, 4).Value)) = UCase(ident)) Then
+                If actionType = "DELETE" Then
+                    wsProd.Cells(r, 9).Value = ""
+                Else
+                    wsProd.Cells(r, 9).Value = newVal
+                End If
+                UpdatePrName = True
+                Exit Function
+            End If
+         End If
+         Next r
+         
+         UpdatePrName = False
+         End Function
+         
+         ' =========================
+         ' UPDATE MARKETING COPY (SKU-Level đầu tiên)
+         ' =========================
+         Function UpdateMarketingCopy(wsProd As Worksheet, sku As String, newVal As String, actionType As String) As Boolean
+         Dim lastRow As Long, r As Long
+         lastRow = wsProd.Cells(wsProd.Rows.Count, 3).End(xlUp).Row
+         
+         For r = 7 To lastRow
+         ' Lấy row đầu tiên có cột C = SKU (SKU-level row)
+         If Trim(UCase(wsProd.Cells(r, 3).Value)) = UCase(sku) Then
+           If actionType = "DELETE" Then
+               wsProd.Cells(r, 10).Value = ""
+           Else
+               wsProd.Cells(r, 10).Value = newVal
+           End If
+           UpdateMarketingCopy = True
+           Exit Function
+         End If
+         Next r
+         
+         UpdateMarketingCopy = False
+         End Function
+         
+         ' =========================
+         ' UPDATE FEATURE BULLETS (SKU-Level đầu tiên)
+         ' =========================
+         Function UpdateFeature(wsProd As Worksheet, wsAdd As Worksheet, sku As String, curVal As String, newVal As String, actionType As String) As Boolean
+         Dim prodRow As Long, lastProd As Long, c As Long
+         lastProd = wsProd.Cells(wsProd.Rows.Count, 3).End(xlUp).Row
+         prodRow = 0
+         
+         ' Lấy row đầu tiên có cột C = SKU (SKU-level)
+         For c = 7 To lastProd
+         If Trim(UCase(wsProd.Cells(c, 3).Value)) = UCase(sku) Then
+            prodRow = c
+            Exit For
+         End If
+         Next c
+         
+         If prodRow = 0 Then UpdateFeature = False: Exit Function
+         
+         Dim updated As Boolean: updated = False
+         Dim col As Long
+         
+         Select Case UCase(actionType)
+         Case "ADD"
+            ' Cột K-O (11-15)
+            For col = 11 To 15
+                If wsProd.Cells(prodRow, col).Value = "" Then
+                    wsProd.Cells(prodRow, col).Value = newVal
+                    updated = True: Exit For
+                End If
+            Next col
+            
+            ' Nếu đầy → Additional Feature Bullets
+            If Not updated Then
+                Dim lastAddRow As Long
+                lastAddRow = wsAdd.Cells(wsAdd.Rows.Count, 1).End(xlUp).Row
+                If lastAddRow < 7 Then lastAddRow = 7 Else lastAddRow = lastAddRow + 1
+                wsAdd.Cells(lastAddRow, 1).Value = sku
+                wsAdd.Cells(lastAddRow, 3).Value = newVal
+                updated = True
+            End If
+            
+         Case "DELETE"
+            ' Xóa K-O
+            For col = 11 To 15
+                If wsProd.Cells(prodRow, col).Value = curVal Then
+                    wsProd.Cells(prodRow, col).Value = "": updated = True: Exit For
+                End If
+            Next col
+            
+            ' Xóa Additional Feature Bullets
+            Dim ar As Long, lastAddRowDel As Long
+            lastAddRowDel = wsAdd.Cells(wsAdd.Rows.Count, 1).End(xlUp).Row
+            For ar = 7 To lastAddRowDel
+                If Trim(UCase(wsAdd.Cells(ar, 1).Value)) = UCase(sku) And _
+                   Trim(UCase(wsAdd.Cells(ar, 3).Value)) = UCase(curVal) Then
+                    wsAdd.Cells(ar, 3).Value = "": updated = True: Exit For
+                End If
+            Next ar
+            
+         Case "UPDATE"
+            updated = UpdateFeature(wsProd, wsAdd, sku, curVal, "", "DELETE")
+            updated = UpdateFeature(wsProd, wsAdd, sku, "", newVal, "ADD") Or updated
+         End Select
+         
+         UpdateFeature = updated
+         End Function`;
+         const code3 = `Sub CleanTemplateSheets()
+         Dim ws As Worksheet
+         Dim attrCol As Long
+         Dim c As Range
+         Dim deleteStartCol As Long
+         Dim lastCol As Long
+         Dim sheetName As String
+         Dim toDelete As Variant
+         Dim i As Long
+         
+         Application.ScreenUpdating = False
+         Application.DisplayAlerts = False
+         
+         ' Loop through all sheets
+         For Each ws In ThisWorkbook.Worksheets
+             sheetName = ws.Name
+         
+             ' Skip the sheet "DropDownOptions" (delete it at the end instead)
+             If sheetName <> "DropDownOptions" Then
+                 With ws
+                     ' Unhide all rows and columns
+                     .Rows.Hidden = False
+                     .Columns.Hidden = False
+         
+                     ' Delete rows 2, 5, 6, and 7
+                     On Error Resume Next
+                     .Rows(7).Delete
+                     .Rows(6).Delete
+                     .Rows(5).Delete
+                     .Rows(2).Delete
+                     On Error GoTo 0
+         
+                     ' Delete columns A, B, F
+                     .Columns(6).Delete ' F
+                     .Columns(2).Delete ' B
+                     .Columns(1).Delete ' A
+         
+                     ' Recalculate last column
+                     lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+         
+                     ' Look for the column that has "attributesWhy" in row 1
+                     For attrCol = 1 To lastCol
+                         If Trim(LCase(.Cells(1, attrCol).Value)) = "attributeswhy" Then
+                             deleteStartCol = attrCol
+                             Exit For
+                         End If
+                     Next attrCol
+         
+                     ' If found, delete all columns from that point onward
+                     If deleteStartCol > 0 Then
+                         .Range(.Cells(1, deleteStartCol), .Cells(1, .Columns.Count)).EntireColumn.Delete
+                     End If
+                 End With
+             End If
+         Next ws
+         
+         ' Delete the DropDownOptions sheet if it exists
+         On Error Resume Next
+         ThisWorkbook.Sheets("DropDownOptions").Delete
+         On Error GoTo 0
+         
+         Application.DisplayAlerts = True
+         Application.ScreenUpdating = True
+         
+         MsgBox "Cleanup completed successfully!", vbInformation
+         End Sub`;
+         const code4 = `Sub CleanUpMergedSheets()
+         Dim ws As Worksheet
+         
+         Application.ScreenUpdating = False
+         
+         For Each ws In ThisWorkbook.Sheets
+         ' Unhide the first row
+         ws.Rows(1).Hidden = False
+         
+         ' Delete all rows from row 7 downwards
+         ws.Rows("7:" & ws.Rows.Count).Delete
+         
+         ' Delete columns A to F
+         ws.Range("A:F").Delete
+         Next ws
+         
+         Application.ScreenUpdating = True
+         
+         MsgBox "Cleanup complete: First row unhidden, rows from 7 down deleted, and columns A-F removed on all sheets.", vbInformation
+         End Sub`;
+         const code5 = `Option Explicit
+         
+         Sub UpdateSheetsFromDATA()
+         Dim wsData As Worksheet
+         Dim wb As Workbook
+         Dim lastRow As Long, r As Long
+         Dim sku As String, mfrId As String, stagID As String
+         Dim newVal As Variant, changeType As String, curVal As Variant
+         Dim logMsg As String
+         Dim sheetsChecked As Long, sheetsMatched As Long
+         Dim startTime As String
+         
+         Set wb = ThisWorkbook
+         On Error Resume Next
+         Set wsData = wb.Worksheets("DATA")
+         If wsData Is Nothing Then
+         MsgBox "Không tìm thấy sheet 'DATA'. Vui lòng đổi tên sheet nguồn thành DATA hoặc báo tôi.", vbCritical
+         Exit Sub
+         End If
+         On Error GoTo 0
+         
+         Application.ScreenUpdating = False
+         Application.EnableEvents = False
+         
+         startTime = Format(Now, "yyyy-mm-dd HH:NN:SS")
+         
+         ' Last used row in DATA (col A chứa Wayfair Listing)
+         lastRow = wsData.Cells(wsData.Rows.Count, "A").End(xlUp).Row
+         If lastRow < 2 Then
+         MsgBox "Không có dữ liệu trong sheet DATA.", vbInformation
+         GoTo Cleanup
+         End If
+         
+         ' Loop through each row in DATA (from row 2)
+         For r = 2 To lastRow
+         sku = Trim(CStr(wsData.Cells(r, "A").Value))
+         mfrId = Trim(CStr(wsData.Cells(r, "B").Value))
+         stagID = Trim(CStr(wsData.Cells(r, "D").Value)) ' full stag id string
+         newVal = wsData.Cells(r, "I").Value
+         changeType = Trim(LCase(CStr(wsData.Cells(r, "J").Value)))
+         
+         ' initialize log
+         logMsg = ""
+         sheetsChecked = 0
+         sheetsMatched = 0
+         
+         If sku = "" Then
+            logMsg = "SKUs trống ở DATA! (Dòng " & r & ")"
+            wsData.Cells(r, "K").Value = logMsg
+            GoTo NextRow
+         End If
+         
+         If stagID = "" Then
+            logMsg = "StagID trống ở cột D"
+            wsData.Cells(r, "K").Value = logMsg
+            GoTo NextRow
+         End If
+         
+         If changeType = "" Then
+            logMsg = "Change Type trống"
+            wsData.Cells(r, "K").Value = logMsg
+            GoTo NextRow
+         End If
+         
+         ' Search through candidate sheets (those with "sku" in C1)
+         Dim ws As Worksheet
+         For Each ws In wb.Worksheets
+            If ws.Name <> wsData.Name Then
+                On Error Resume Next
+                Dim headerSku As String
+                headerSku = LCase(Trim(CStr(ws.Range("C1").Value)))
+                On Error GoTo 0
+                If headerSku = "sku" Then
+                    sheetsChecked = sheetsChecked + 1
+                    ' find rows where column C = sku
+                    Dim foundRng As Range, firstAddress As String
+                    With ws.Columns("C")
+                        Set foundRng = .Find(What:=sku, LookIn:=xlValues, LookAt:=xlWhole, MatchCase:=False)
+                    End With
+                    If Not foundRng Is Nothing Then
+                        firstAddress = foundRng.Address
+                        Do
+                            Dim rowFound As Long
+                            rowFound = foundRng.Row
+                            ' check manufacturerPartId in column E
+                            Dim sheetMfrId As String
+                            sheetMfrId = Trim(CStr(ws.Cells(rowFound, "E").Value))
+                            
+                            If mfrId = "" Then
+                                ' nếu DATA không có manufacturerPartId, hãy xử lý mọi row có cùng SKU
+                                ' nhưng theo mô tả, dữ liệu B thường có manufacturerPartId => ưu tiên match
+                                ' Ở đây, nếu DATA.B rỗng, treat as match if sheet has any manufacturerPartId (or even blank)
+                                ' For safety, treat as match for any row with the same SKU
+                                sheetsMatched = sheetsMatched + 1
+                                Call ProcessCellForStag(ws, rowFound, stagID, changeType, newVal, curVal, logMsg)
+                            Else
+                                ' nếu mfrId không rỗng, so khớp chính xác
+                                If sheetMfrId = mfrId Then
+                                    sheetsMatched = sheetsMatched + 1
+                                    Call ProcessCellForStag(ws, rowFound, stagID, changeType, newVal, curVal, logMsg)
+                                End If
+                            End If
+                            
+                            Set foundRng = ws.Columns("C").FindNext(foundRng)
+                            If foundRng Is Nothing Then Exit Do
+                            If foundRng.Address = firstAddress Then Exit Do
+                        Loop
+                    End If
+                End If
+            End If
+         Next ws
+         
+         ' nếu không tìm thấy sheet chứa SKU
+         If sheetsChecked = 0 Then
+            logMsg = AppendLog(logMsg, "Không tìm thấy sheet template có C1='sku' trong workbook.")
+         End If
+         If sheetsMatched = 0 Then
+            logMsg = AppendLog(logMsg, "Không có hàng tương ứng (SKU+ManufacturerPartId) được tìm thấy trong các sheet class.")
+         End If
+         
+         ' Ghi log cuối cùng (thêm timestamp)
+         If logMsg = "" Then logMsg = "Không có thay đổi (không có log chi tiết)."
+         wsData.Cells(r, "K").Value = "[" & startTime & "] " & logMsg
+         
+         NextRow:
+         ' reset for next iteration
+         logMsg = ""
+         Next r
+         
+         MsgBox "Hoàn tất chạy macro. Vui lòng kiểm tra cột Update Logs trên sheet DATA.", vbInformation
+         
+         Cleanup:
+         Application.ScreenUpdating = True
+         Application.EnableEvents = True
+         End Sub
+         
+         ' ---------- Helper: Process cell given ws and row, stagID, changeType ----------
+         Private Sub ProcessCellForStag(ws As Worksheet, rowFound As Long, stagID As String, changeType As String, newVal As Variant, ByRef curVal As Variant, ByRef logMsg As String)
+         Dim col As Long, lastCol As Long
+         Dim hdr As Variant
+         Dim foundCol As Long
+         foundCol = 0
+         
+         ' find last used column in header row 1
+         lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+         Dim c As Long
+         For c = 8 To lastCol ' stagid start from H (col 8)
+         hdr = Trim(CStr(ws.Cells(1, c).Value))
+         If hdr <> "" Then
+            ' Compare stagID exactly
+            If StrComp(hdr, stagID, vbBinaryCompare) = 0 Then
+                foundCol = c
+                Exit For
+            End If
+         End If
+         Next c
+         
+         If foundCol = 0 Then
+         logMsg = AppendLog(logMsg, "Sheet '" & ws.Name & "' (row " & rowFound & "): StagID '" & stagID & "' không tồn tại trong header.")
+         Exit Sub
+         End If
+         
+         ' get current value in target cell
+         curVal = ws.Cells(rowFound, foundCol).Value
+         
+         Select Case LCase(changeType)
+         Case "update"
+            ' Always overwrite with newVal (even nếu cur khác)
+            ws.Cells(rowFound, foundCol).Value = newVal
+            logMsg = AppendLog(logMsg, "Sheet '" & ws.Name & "' (r" & rowFound & ", c" & foundCol & "): UPDATE. Giá trị cũ='" & SafeStr(curVal) & "' => Mới='" & SafeStr(newVal) & "'.")
+         Case "add"
+            ' Only add if cell blank
+            If Trim(CStr(curVal)) = "" Then
+                ws.Cells(rowFound, foundCol).Value = newVal
+                logMsg = AppendLog(logMsg, "Sheet '" & ws.Name & "' (r" & rowFound & ", c" & foundCol & "): ADD. Đã gán='" & SafeStr(newVal) & "'.")
+            Else
+                logMsg = AppendLog(logMsg, "Sheet '" & ws.Name & "' (r" & rowFound & "): ADD skipped - ô đã có giá trị '" & SafeStr(curVal) & "'.")
+            End If
+         Case "delete"
+            If Trim(CStr(curVal)) <> "" Then
+                ws.Cells(rowFound, foundCol).ClearContents
+                logMsg = AppendLog(logMsg, "Sheet '" & ws.Name & "' (r" & rowFound & "): DELETE. Giá trị trước='" & SafeStr(curVal) & "' đã xóa.")
+            Else
+                logMsg = AppendLog(logMsg, "Sheet '" & ws.Name & "' (r" & rowFound & "): DELETE skipped - ô đã trống.")
+            End If
+         Case Else
+            logMsg = AppendLog(logMsg, "Change Type '" & changeType & "' không hợp lệ (cần Update/Add/Delete).")
+         End Select
+         End Sub
+         
+         ' ---------- Utility: append to log with separator ----------
+         Private Function AppendLog(existing As String, addition As String) As String
+         If Trim(existing) = "" Then
+         AppendLog = addition
+         Else
+         AppendLog = existing & " | " & addition
+         End If
+         End Function
+         
+         ' ---------- Utility: Safe string for nulls ----------
+         Private Function SafeStr(v As Variant) As String
+         If IsError(v) Then
+         SafeStr = "[ERROR]"
+         ElseIf IsEmpty(v) Then
+         SafeStr = ""
+         Else
+         SafeStr = CStr(v)
+         End If
+         End Function`;
+         
+         const code6  = `Sub CombineSheetsData()
+         Dim ws As Worksheet
+         Dim combinedWS As Worksheet
+         Dim lastCol As Long
+         Dim i As Long, outputRow As Long
+         
+         ' Create or clear "Combined" sheet
+         On Error Resume Next
+         Set combinedWS = ThisWorkbook.Sheets("Combined")
+         If combinedWS Is Nothing Then
+         Set combinedWS = ThisWorkbook.Sheets.Add
+         combinedWS.Name = "Combined"
+         Else
+         combinedWS.Cells.Clear
+         End If
+         On Error GoTo 0
+         
+         ' Set headers
+         combinedWS.Range("A1:G1").Value = Array("Sheet Name", "Tag ID", "Schema Tag Priority", _
+                                            "Tag Name", "Tag Definition", "Droplist", "Type")
+         
+         outputRow = 2
+         
+         ' Loop through all sheets except "Combined"
+         For Each ws In ThisWorkbook.Sheets
+         If ws.Name <> combinedWS.Name Then
+            ' Find last used column in this sheet (row 1)
+            lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+            
+            ' Loop through each column with data
+            For i = 1 To lastCol
+                combinedWS.Cells(outputRow, 1).Value = ws.Name
+                combinedWS.Cells(outputRow, 2).Value = ws.Cells(1, i).Value  ' Tag ID
+                combinedWS.Cells(outputRow, 3).Value = ws.Cells(2, i).Value  ' Schema Tag Priority
+                combinedWS.Cells(outputRow, 4).Value = ws.Cells(3, i).Value  ' Tag Name
+                combinedWS.Cells(outputRow, 5).Value = ws.Cells(4, i).Value  ' Tag Definition
+                combinedWS.Cells(outputRow, 6).Value = ws.Cells(5, i).Value  ' Droplist
+                combinedWS.Cells(outputRow, 7).Value = ws.Cells(6, i).Value  ' Type
+                outputRow = outputRow + 1
+            Next i
+         End If
+         Next ws
+         
+         MsgBox "Data from all sheets has been combined into 'Combined' sheet.", vbInformation
+         End Sub`;
+         const code7  = `Sub Format_Class_B(): End Sub`;
+         const code8  = `Sub Format_Class_C(): End Sub`;
+         const code9  = `Sub BuildCombinedSheet()
+         
+         Dim wsP As Worksheet, wsA As Worksheet, wsC As Worksheet
+         Dim lastP As Long, lastA As Long, outRow As Long
+         Dim r As Long
+         Dim sku As String, mfgFlag As String
+         Dim mktCopy As String
+         Dim FB(1 To 5) As String
+         Dim addFB As String
+         Dim dict As Object
+         Set dict = CreateObject("Scripting.Dictionary")
+         
+         Set wsP = ThisWorkbook.Sheets("Products")
+         Set wsA = ThisWorkbook.Sheets("Additional Feature Bullets")
+         Set wsC = ThisWorkbook.Sheets("Combined")
+         
+         wsC.Range("A2:E99999").ClearContents
+         outRow = 2
+         
+         '--------------------------
+         ' 1. Load Additional FB to Dictionary: dict(SKU) = concatenated string
+         '--------------------------
+         lastA = wsA.Cells(wsA.Rows.Count, "A").End(xlUp).Row
+         For r = 2 To lastA
+         If wsA.Cells(r, "A").Value <> "" Then
+            sku = wsA.Cells(r, "A").Value
+            addFB = wsA.Cells(r, "C").Value
+         
+            If Not dict.exists(sku) Then
+                dict.Add sku, addFB
+            Else
+                dict(sku) = dict(sku) & "||" & addFB   'dùng || để ngăn cách
+            End If
+         End If
+         Next r
+         
+         '--------------------------
+         ' 2. Loop Products sheet (only rows where Column D = "Wayfair SKU")
+         '--------------------------
+         lastP = wsP.Cells(wsP.Rows.Count, "A").End(xlUp).Row
+         
+         For r = 7 To lastP
+         
+         If Trim(wsP.Cells(r, "D").Value) = "Wayfair SKU" Then
+         
+            sku = wsP.Cells(r, "C").Value
+         
+            ' Marketing Copy (column J)
+            mktCopy = Trim(wsP.Cells(r, "J").Value)
+         
+            ' Feature bullets (K–O)
+            FB(1) = Trim(wsP.Cells(r, "K").Value)
+            FB(2) = Trim(wsP.Cells(r, "L").Value)
+            FB(3) = Trim(wsP.Cells(r, "M").Value)
+            FB(4) = Trim(wsP.Cells(r, "N").Value)
+            FB(5) = Trim(wsP.Cells(r, "O").Value)
+         
+            '-------------------------------------
+            ' Fill Marketing Copy row ALWAYS (D blank if missing)
+            '-------------------------------------
+            wsC.Cells(outRow, "A").Value = sku
+            wsC.Cells(outRow, "B").Value = "Marketing Copy"
+            wsC.Cells(outRow, "C").Value = "Marketing Copy"
+            wsC.Cells(outRow, "D").Value = mktCopy
+            outRow = outRow + 1
+         
+            '-------------------------------------
+            ' Feature Bullets (only if at least 1 exists)
+            '-------------------------------------
+            Dim i As Integer, hasFB As Boolean
+            For i = 1 To 5
+                If FB(i) <> "" Then hasFB = True
+            Next i
+         
+            If hasFB = True Then
+                ' 5 Feature Bullets
+                For i = 1 To 5
+                    If FB(i) <> "" Then
+                        wsC.Cells(outRow, "A").Value = sku
+                        wsC.Cells(outRow, "B").Value = "Feature Bullet"
+                        wsC.Cells(outRow, "C").Value = "Feature Bullet " & i
+                        wsC.Cells(outRow, "D").Value = FB(i)
+                        outRow = outRow + 1
+                    End If
+                Next i
+            End If
+         
+            '-------------------------------------
+            ' Additional Feature Bullets
+            '-------------------------------------
+            If dict.exists(sku) Then
+                Dim arr, x
+                arr = Split(dict(sku), "||")
+         
+                For Each x In arr
+                    wsC.Cells(outRow, "A").Value = sku
+                    wsC.Cells(outRow, "B").Value = "Feature Bullet"
+                    wsC.Cells(outRow, "C").Value = "Additional Feature Bullets"
+                    wsC.Cells(outRow, "D").Value = x
+                    outRow = outRow + 1
+                Next x
+            End If
+         
+         End If
+         
+         Next r
+         
+         MsgBox "Combined sheet has been generated successfully!", vbInformation
+         
+         End Sub`;
+         const code10 = `Sub Convert_Class_B(): End Sub`;
+         const code11 = `Sub Convert_Class_C(): End Sub`;
+         const code12 = `Sub CreateExpectedSheets()
+         Dim ws As Worksheet, wsNew As Worksheet
+         Dim lastCol As Long, lastRow As Long
+         Dim i As Long, j As Long
+         Dim tagStartCol As Long: tagStartCol = 4 ' Column D
+         Dim baseName As String, newSheetName As String
+         Dim nameExists As Boolean
+         Dim suffix As Integer
+         Dim s As Worksheet
+         Dim newRow As Long
+         
+         Application.ScreenUpdating = False
+         Application.DisplayAlerts = False
+         
+         For Each ws In ThisWorkbook.Worksheets
+             If ws.Name Like "Expected*" Then GoTo SkipSheet
+         
+             ' Construct base name (strip invalid characters)
+             baseName = "Expected - " & CleanSheetName(Left(ws.Name, 22))
+             newSheetName = Left(baseName, 31)
+             nameExists = True
+             suffix = 1
+         
+             ' Ensure name is unique and within 31 char limit
+             Do While nameExists
+                 nameExists = False
+                 For Each s In ThisWorkbook.Sheets
+                     If Trim(s.Name) = Trim(newSheetName) Then
+                         nameExists = True
+                         suffix = suffix + 1
+                         newSheetName = Left(baseName, 31 - Len(" (" & suffix & ")")) & " (" & suffix & ")"
+                         Exit For
+                     End If
+                 Next s
+             Loop
+         
+             ' Add and name new sheet safely
+             Set wsNew = ThisWorkbook.Sheets.Add(After:=ws)
+             On Error Resume Next
+             wsNew.Name = newSheetName
+             If Err.Number <> 0 Then
+                 MsgBox "Error: Could not rename the new sheet to '" & newSheetName & "'. Skipping this sheet.", vbExclamation
+                 Err.Clear
+                 GoTo SkipSheet
+             End If
+             On Error GoTo 0
+         
+             ' Process data
+             With ws
+                 lastRow = .Cells(.Rows.Count, 1).End(xlUp).Row
+                 lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+                 newRow = 2
+         
+                 ' Headers
+                 With wsNew
+                     .Range("A1").Value = "Wayfair Listing"
+                     .Range("B1").Value = "Manufacturer Part Number"
+                     .Range("C1").Value = "Su Part Number"
+                     .Range("D1").Value = "stagid"
+                     .Range("E1").Value = "schema tag priority"
+                     .Range("F1").Value = "Tag Name"
+                     .Range("G1").Value = "Tag Value"
+                 End With
+         
+                 ' Copy values only (skip formulas)
+                 For i = 4 To lastRow
+                     For j = tagStartCol To lastCol
+                         With wsNew
+                             .Cells(newRow, 1).Value = GetCellValue(ws.Cells(i, 1))
+                             .Cells(newRow, 2).Value = GetCellValue(ws.Cells(i, 2))
+                             .Cells(newRow, 3).Value = GetCellValue(ws.Cells(i, 3))
+                             .Cells(newRow, 4).Value = GetCellValue(ws.Cells(1, j))
+                             .Cells(newRow, 5).Value = GetCellValue(ws.Cells(2, j))
+                             .Cells(newRow, 6).Value = GetCellValue(ws.Cells(3, j))
+                             .Cells(newRow, 7).Value = GetCellValue(ws.Cells(i, j))
+                         End With
+                         newRow = newRow + 1
+                     Next j
+                 Next i
+             End With
+         
+         SkipSheet:
+         Next ws
+         
+         Application.DisplayAlerts = True
+         Application.ScreenUpdating = True
+         MsgBox "Expected sheets created successfully!"
+         End Sub
+         
+         Private Function CleanSheetName(sheetName As String) As String
+         ' Remove invalid Excel sheet name characters
+         Dim invalidChars As Variant
+         Dim ch As Variant
+         invalidChars = Array(":", "", "/", "?", "*", "[", "]")
+         
+         For Each ch In invalidChars
+             sheetName = Replace(sheetName, ch, "")
+         Next ch
+         
+         CleanSheetName = sheetName
+         End Function
+         
+         Private Function GetCellValue(cell As Range) As Variant
+         On Error Resume Next
+         If cell.HasFormula Then
+             GetCellValue = cell.Value
+         Else
+             GetCellValue = cell.Value2
+         End If
+         On Error GoTo 0
+         End Function`;
+         const code13 = `Sub CleanTemplateSheets()
+         Dim ws As Worksheet
+         Dim attrCol As Long
+         Dim c As Range
+         Dim deleteStartCol As Long
+         Dim lastCol As Long
+         Dim sheetName As String
+         Dim toDelete As Variant
+         Dim i As Long
+         
+         Application.ScreenUpdating = False
+         Application.DisplayAlerts = False
+         
+         ' Loop through all sheets
+         For Each ws In ThisWorkbook.Worksheets
+             sheetName = ws.Name
+         
+             ' Skip the sheet "DropDownOptions" (delete it at the end instead)
+             If sheetName <> "DropDownOptions" Then
+                 With ws
+                     ' Unhide all rows and columns
+                     .Rows.Hidden = False
+                     .Columns.Hidden = False
+         
+                     ' Delete rows 2, 5, and 7
+                     On Error Resume Next
+                     .Rows(7).Delete
+                     .Rows(5).Delete
+                     .Rows(2).Delete
+                     On Error GoTo 0
+         
+                     ' Delete columns A, B, D, G
+                     .Columns(7).Delete ' G
+                     .Columns(4).Delete ' D
+                     .Columns(2).Delete ' B
+                     .Columns(1).Delete ' A
+         
+                     ' Recalculate last column
+                     lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+         
+                     ' Look for the column that has "attributesWhy" in row 1
+                     For attrCol = 1 To lastCol
+                         If Trim(LCase(.Cells(1, attrCol).Value)) = "attributeswhy" Then
+                             deleteStartCol = attrCol
+                             Exit For
+                         End If
+                     Next attrCol
+         
+                     ' If found, delete all columns from that point onward
+                     If deleteStartCol > 0 Then
+                         .Range(.Cells(1, deleteStartCol), .Cells(1, .Columns.Count)).EntireColumn.Delete
+                     End If
+                 End With
+             End If
+         Next ws
+         
+         ' Delete the DropDownOptions sheet if it exists
+         On Error Resume Next
+         ThisWorkbook.Sheets("DropDownOptions").Delete
+         On Error GoTo 0
+         
+         Application.DisplayAlerts = True
+         Application.ScreenUpdating = True
+         
+         MsgBox "Cleanup completed successfully!", vbInformation
+         End Sub`;
+         const code14 = `Sub CreateExpectedSheets()
+         Dim ws As Worksheet, wsNew As Worksheet
+         Dim lastCol As Long, lastRow As Long
+         Dim i As Long, j As Long
+         Dim tagStartCol As Long: tagStartCol = 4 ' Column D
+         Dim baseName As String, newSheetName As String
+         Dim nameExists As Boolean
+         Dim suffix As Integer
+         Dim s As Worksheet
+         Dim newRow As Long
+         
+         Application.ScreenUpdating = False
+         Application.DisplayAlerts = False
+         
+         For Each ws In ThisWorkbook.Worksheets
+             If ws.Name Like "Expected*" Then GoTo SkipSheet
+         
+             ' Construct base name (strip invalid characters)
+             baseName = "Expected - " & CleanSheetName(Left(ws.Name, 22))
+             newSheetName = Left(baseName, 31)
+             nameExists = True
+             suffix = 1
+         
+             ' Ensure name is unique and within 31 char limit
+             Do While nameExists
+                 nameExists = False
+                 For Each s In ThisWorkbook.Sheets
+                     If Trim(s.Name) = Trim(newSheetName) Then
+                         nameExists = True
+                         suffix = suffix + 1
+                         newSheetName = Left(baseName, 31 - Len(" (" & suffix & ")")) & " (" & suffix & ")"
+                         Exit For
+                     End If
+                 Next s
+             Loop
+         
+             ' Add and name new sheet safely
+             Set wsNew = ThisWorkbook.Sheets.Add(After:=ws)
+             On Error Resume Next
+             wsNew.Name = newSheetName
+             If Err.Number <> 0 Then
+                 MsgBox "Error: Could not rename the new sheet to '" & newSheetName & "'. Skipping this sheet.", vbExclamation
+                 Err.Clear
+                 GoTo SkipSheet
+             End If
+             On Error GoTo 0
+         
+             ' Process data
+             With ws
+                 lastRow = .Cells(.Rows.Count, 1).End(xlUp).Row
+                 lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+                 newRow = 2
+         
+                 ' Headers
+                 With wsNew
+                     .Range("A1").Value = "Wayfair Listing"
+                     .Range("B1").Value = "Manufacturer Part Number"
+                     .Range("C1").Value = "Su Part Number"
+                     .Range("D1").Value = "stagid"
+                     .Range("E1").Value = "schema tag priority"
+                     .Range("F1").Value = "Tag Name"
+                     .Range("G1").Value = "Tag Value"
+                     .Range("H1").Value = "How to fill tag"
+                 End With
+         
+                 ' Copy values only (skip formulas)
+                 For i = 5 To lastRow
+                     For j = tagStartCol To lastCol
+                         With wsNew
+                             .Cells(newRow, 1).Value = GetCellValue(ws.Cells(i, 1))
+                             .Cells(newRow, 2).Value = GetCellValue(ws.Cells(i, 2))
+                             .Cells(newRow, 3).Value = GetCellValue(ws.Cells(i, 3))
+                             .Cells(newRow, 4).Value = GetCellValue(ws.Cells(1, j))
+                             .Cells(newRow, 5).Value = GetCellValue(ws.Cells(2, j))
+                             .Cells(newRow, 6).Value = GetCellValue(ws.Cells(3, j))
+                             .Cells(newRow, 7).Value = GetCellValue(ws.Cells(i, j))
+                             .Cells(newRow, 8).Value = GetCellValue(ws.Cells(4, j))
+                         End With
+                         newRow = newRow + 1
+                     Next j
+                 Next i
+             End With
+         
+         SkipSheet:
+         Next ws
+         
+         Application.DisplayAlerts = True
+         Application.ScreenUpdating = True
+         MsgBox "Expected sheets created successfully!"
+         End Sub
+         
+         Private Function CleanSheetName(sheetName As String) As String
+         ' Remove invalid Excel sheet name characters
+         Dim invalidChars As Variant
+         Dim ch As Variant
+         invalidChars = Array(":", "", "/", "?", "*", "[", "]")
+         
+         For Each ch In invalidChars
+             sheetName = Replace(sheetName, ch, "")
+         Next ch
+         
+         CleanSheetName = sheetName
+         End Function
+         
+         Private Function GetCellValue(cell As Range) As Variant
+         On Error Resume Next
+         If cell.HasFormula Then
+             GetCellValue = cell.Value
+         Else
+             GetCellValue = cell.Value2
+         End If
+         On Error GoTo 0
+         End Function`;
+         const code15 = `Sub Combine_Expected_Sheets()
+         Dim ws As Worksheet, destSheet As Worksheet
+         Dim destRow As Long, lastRow As Long, lastCol As Long
+         Dim headerCopied As Boolean
+         Dim cell As Range
+         
+         Application.ScreenUpdating = False
+         Application.DisplayAlerts = False
+         
+         ' Delete "Combined" sheet if it exists
+         On Error Resume Next
+         ThisWorkbook.Sheets("Combined").Delete
+         On Error GoTo 0
+         
+         ' Create a new sheet for combined data
+         Set destSheet = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+         destSheet.Name = "Combined"
+         destRow = 1
+         headerCopied = False
+         
+         ' Loop through all sheets
+         For Each ws In ThisWorkbook.Sheets
+             If ws.Name Like "Expected -*" Then
+                 ' Find last row and column with data
+                 lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+                 lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+         
+                 If lastRow > 1 Then ' Make sure there's data beyond headers
+                     ' Copy headers only once
+                     If Not headerCopied Then
+                         ws.Range(ws.Cells(1, 1), ws.Cells(1, lastCol)).Copy destSheet.Cells(destRow, 1)
+                         destRow = destRow + 1
+                         headerCopied = True
+                     End If
+         
+                     ' Copy data (from row 2 to lastRow)
+                     ws.Range(ws.Cells(2, 1), ws.Cells(lastRow, lastCol)).Copy destSheet.Cells(destRow, 1)
+                     destRow = destSheet.Cells(destSheet.Rows.Count, 1).End(xlUp).Row + 1
+                 End If
+             End If
+         Next ws
+         
+         Application.ScreenUpdating = True
+         MsgBox "Sheets starting with 'Expected -' have been combined into the 'Combined' sheet.", vbInformation
+         End Sub`;
+         const code16 = `Sub CleanAllSheets_Processed()
+         
+         Dim ws As Worksheet
+         Dim lastRow As Long
+         Dim lastCol As Long
+         Dim colFound As Long
+         Dim c As Long
+         Dim sName As String
+         
+         Application.ScreenUpdating = False
+         Application.DisplayAlerts = False
+         
+         For Each ws In ThisWorkbook.Worksheets
+         sName = LCase(Trim(ws.Name))
+         
+         ' Skip the DropDownOptions sheet entirely
+         If sName <> "dropdownoptions" Then
+         
+            With ws
+         
+                '========================================
+                ' 1. Unhide row 1
+                '========================================
+                .Rows("1:1").Hidden = False
+         
+                '========================================
+                ' 2. Unhide all columns
+                '========================================
+                .Columns.EntireColumn.Hidden = False
+         
+                '========================================
+                ' 3. Delete columns A → G
+                '========================================
+                On Error Resume Next
+                .Range("A:G").Delete Shift:=xlToLeft
+                On Error GoTo 0
+         
+                '========================================
+                ' 4. Delete all rows from row 8 downward
+                '========================================
+                lastRow = .Cells(.Rows.Count, "A").End(xlUp).Row
+                If lastRow >= 8 Then
+                    .Rows("8:" & lastRow).Delete
+                End If
+         
+                '========================================
+                ' 5. Delete row 2
+                '========================================
+                .Rows("2:2").Delete
+         
+                '========================================
+                ' 6. Delete all columns starting from the
+                '    first column where row 1 = "attributesWhy"
+                '========================================
+                lastCol = .Cells(1, .Columns.Count).End(xlToLeft).Column
+                colFound = 0
+         
+                For c = 1 To lastCol
+                    If Trim(LCase(.Cells(1, c).Value)) = "attributeswhy" Then
+                        colFound = c
+                        Exit For
+                    End If
+                Next c
+         
+                If colFound > 0 Then
+                    .Range(.Columns(colFound), .Columns(lastCol)).Delete
+                End If
+         
+            End With
+         End If
+         Next ws
+         
+         Application.DisplayAlerts = True
+         Application.ScreenUpdating = True
+         
+         MsgBox "All sheets have been processed successfully (DropDownOptions sheet was preserved).", vbInformation
+         
+         End Sub`;
+         const code17 = `Option Explicit
+         
+         ' Create Expected sheets that transpose the horizontal header block (rows 1..6)
+         ' into a vertical table with columns:
+         ' A: Class ID
+         ' B: TagName_Tag ID   (row 1)
+         ' C: Tag Type         (row 2)
+         ' D: Tag Name         (row 3)
+         ' E: Tag Definition   (row 4)
+         ' F: Input Type       (row 5)
+         ' G: Dropdown Value   (row 6; joined with "; ")
+         '
+         ' New sheet name: "Expected - <ClassID>" where ClassID is left of " - " in original sheet name.
+         Public Sub CreateExpectedSheets()
+         Dim ws As Worksheet
+         Dim tgt As Worksheet
+         Dim lastCol As Long, c As Long
+         Dim outRow As Long
+         Dim classID As String
+         Dim expectedName As String
+         Dim v1 As String, v2 As String, v3 As String, v4 As String, v5 As String, ddResult As String
+         
+         Application.ScreenUpdating = False
+         Application.EnableEvents = False
+         Application.DisplayAlerts = False
+         
+         On Error GoTo CleanUp
+         
+         For Each ws In ThisWorkbook.Worksheets
+         ' skip sheets that already are Expected sheets to avoid recursion
+         If Left(ws.Name, 10) <> "Expected - " Then
+            ' extract classID from sheet name: left of " - "
+            If InStr(ws.Name, " - ") > 0 Then
+                classID = Trim(Left(ws.Name, InStr(ws.Name, " - ") - 1))
+            Else
+                classID = ws.Name
+            End If
+            
+            expectedName = "Expected - " & classID
+            
+            ' if expected sheet exists already, delete it (fresh output)
+            On Error Resume Next
+            ThisWorkbook.Worksheets(expectedName).Delete
+            On Error GoTo 0
+            
+            ' add new sheet at end
+            Set tgt = ThisWorkbook.Worksheets.Add(After:=ThisWorkbook.Worksheets(ThisWorkbook.Worksheets.Count))
+            tgt.Name = expectedName
+            
+            ' write header row (optional - keeps structure readable)
+            With tgt
+                .Cells(1, "A").Value = "Class ID"
+                .Cells(1, "B").Value = "TagName_Tag ID"
+                .Cells(1, "C").Value = "Tag Type"
+                .Cells(1, "D").Value = "Tag Name"
+                .Cells(1, "E").Value = "Tag Definition"
+                .Cells(1, "F").Value = "Input Type"
+                .Cells(1, "G").Value = "Dropdown Value"
+            End With
+            
+            outRow = 2 ' start writing data from row 2
+            
+            ' determine last used column in row 1 (header row) - fallback to row 6 if needed
+            lastCol = ws.Cells(1, ws.Columns.Count).End(xlToLeft).Column
+            If lastCol < ws.Cells(6, ws.Columns.Count).End(xlToLeft).Column Then
+                lastCol = ws.Cells(6, ws.Columns.Count).End(xlToLeft).Column
+            End If
+            
+            ' iterate each column left-to-right
+            For c = 1 To lastCol
+                v1 = Trim(CStr(ws.Cells(1, c).Value)) ' TagName_Tag ID
+                v2 = Trim(CStr(ws.Cells(2, c).Value)) ' Tag Type
+                v3 = Trim(CStr(ws.Cells(3, c).Value)) ' Tag Name
+                v4 = Trim(CStr(ws.Cells(4, c).Value)) ' Tag Definition
+                v5 = Trim(CStr(ws.Cells(5, c).Value)) ' Input Type
+                
+                ' skip columns that appear entirely empty (no heading info)
+                If Len(v1) = 0 And Len(v2) = 0 And Len(v3) = 0 And Len(v4) = 0 And Len(v5) = 0 Then
+                    ' but still check if row6 contains a validation list or text (rare); include if so
+                    If IsEmptyCellOrValidationEmpty(ws.Cells(6, c)) Then
+                        GoTo NextCol
+                    End If
+                End If
+                
+                ' get Dropdown value aggregation from row 6
+                ddResult = GetDropdownValuesAsString(ws, 6, c)
+                
+                ' if both header cells and dropdown are empty, skip
+                If Len(v1) = 0 And Len(v2) = 0 And Len(v3) = 0 And Len(v4) = 0 And Len(v5) = 0 And Len(ddResult) = 0 Then
+                    GoTo NextCol
+                End If
+                
+                ' write to target sheet
+                With tgt
+                    .Cells(outRow, "A").Value = classID
+                    .Cells(outRow, "B").Value = v1
+                    .Cells(outRow, "C").Value = v2
+                    .Cells(outRow, "D").Value = v3
+                    .Cells(outRow, "E").Value = v4
+                    .Cells(outRow, "F").Value = v5
+                    .Cells(outRow, "G").Value = ddResult
+                End With
+                
+                outRow = outRow + 1
+         NextCol:
+            Next c
+            
+            ' Autofit columns for readability
+            tgt.Columns("A:G").AutoFit
+         End If
+         Next ws
+         
+         MsgBox "Expected sheets created successfully.", vbInformation
+         
+         CleanUp:
+         Application.DisplayAlerts = True
+         Application.EnableEvents = True
+         Application.ScreenUpdating = True
+         End Sub
+         
+         ' Helper: returns True if a cell is empty and has no list validation
+         Private Function IsEmptyCellOrValidationEmpty(cell As Range) As Boolean
+         On Error Resume Next
+         Dim v As Variant
+         If Trim(CStr(cell.Value)) <> "" Then
+         IsEmptyCellOrValidationEmpty = False
+         Exit Function
+         End If
+         If cell.Validation.Type = xlValidateList Then
+         If Len(Trim(CStr(cell.Validation.Formula1))) > 0 Then
+            IsEmptyCellOrValidationEmpty = False
+            Exit Function
+         End If
+         End If
+         IsEmptyCellOrValidationEmpty = True
+         End Function
+         
+         ' Helper: Returns dropdown/list values as a single string separated by "; "
+         ' Handles:
+         ' - DataValidation list with inline values (e.g. "A,B,C" or "A;B;C")
+         ' - DataValidation pointing to a range (e.g. =Sheet2!$A$1:$A$10 or ='My Sheet'!$A$2:$A$20)
+         ' - Plain text inside the cell (already semicolon/comma separated)
+         ' If nothing found, returns empty string.
+         Private Function GetDropdownValuesAsString(ws As Worksheet, rowNum As Long, colNum As Long) As String
+         Dim theCell As Range
+         Set theCell = ws.Cells(rowNum, colNum)
+         
+         Dim dd As String
+         dd = ""
+         
+         On Error GoTo FallbackToCellText
+         If theCell.Validation.Type = xlValidateList Then
+         Dim formula As String
+         formula = theCell.Validation.Formula1 ' can be: "A,B,C" or "=Sheet2!$A$1:$A$10" or "='Sheet Name'!$A$2:$A$10"
+         If Len(formula) = 0 Then GoTo FallbackToCellText
+         
+         ' If formula starts with "=" -> points to a range
+         If Left(formula, 1) = "=" Then
+            Dim addr As String, shtName As String, rngPart As String
+            addr = Mid(formula, 2) ' remove "="
+            
+            ' parse sheet name and range
+            If InStr(addr, "!") > 0 Then
+                Dim parts() As String
+                parts = Split(addr, "!")
+                shtName = parts(0)
+                rngPart = parts(1)
+                
+                ' remove surrounding single quotes from sheet name if present
+                If Left(shtName, 1) = "'" And Right(shtName, 1) = "'" Then
+                    shtName = Mid(shtName, 2, Len(shtName) - 2)
+                End If
+                
+                On Error Resume Next
+                Dim rng As Range
+                Set rng = ThisWorkbook.Worksheets(shtName).Range(rngPart)
+                If Not rng Is Nothing Then
+                    Dim cel As Range
+                    For Each cel In rng.Cells
+                        If Trim(CStr(cel.Value)) <> "" Then
+                            If dd = "" Then
+                                dd = Trim(CStr(cel.Value))
+                            Else
+                                dd = dd & "; " & Trim(CStr(cel.Value))
+                            End If
+                        End If
+                    Next cel
+                End If
+                On Error GoTo 0
+            Else
+                ' If no "!" found, attempt to treat as a local range on same sheet
+                On Error Resume Next
+                Set rng = ws.Range(addr)
+                If Not rng Is Nothing Then
+                    Dim cel2 As Range
+                    For Each cel2 In rng.Cells
+                        If Trim(CStr(cel2.Value)) <> "" Then
+                            If dd = "" Then
+                                dd = Trim(CStr(cel2.Value))
+                            Else
+                                dd = dd & "; " & Trim(CStr(cel2.Value))
+                            End If
+                        End If
+                    Next cel2
+                End If
+                On Error GoTo 0
+            End If
+         Else
+            ' formula is inline list string like "A,B,C" or "A;B;C"
+            Dim partsList() As String
+            If InStr(formula, ";") > 0 Then
+                partsList = Split(formula, ";")
+            Else
+                partsList = Split(formula, ",")
+            End If
+            Dim i As Long
+            For i = LBound(partsList) To UBound(partsList)
+                If Trim(partsList(i)) <> "" Then
+                    If dd = "" Then
+                        dd = Trim(partsList(i))
+                    Else
+                        dd = dd & "; " & Trim(partsList(i))
+                    End If
+                End If
+            Next i
+         End If
+         Else
+         FallbackToCellText:
+         ' If no validation or above failed, take the cell text itself
+         Dim vText As String
+         vText = Trim(CStr(theCell.Value))
+         If Len(vText) > 0 Then
+            ' normalize separators to "; "
+            If InStr(vText, ";") > 0 Then
+                ' assume already semicolon separated
+                dd = Join(Split(vText, ";"), "; ")
+            ElseIf InStr(vText, ",") > 0 Then
+                dd = Join(Split(vText, ","), "; ")
+            Else
+                dd = vText
+            End If
+         End If
+         End If
+         
+         GetDropdownValuesAsString = dd
+         End Function`;
+         const code18 = `Option Explicit
+         
+         Public Sub CombineExpectedSheets()
+         Dim ws As Worksheet
+         Dim combined As Worksheet
+         Dim firstExpected As Worksheet
+         Dim tgtRow As Long
+         Dim lastRow As Long
+         
+         Application.ScreenUpdating = False
+         Application.EnableEvents = False
+         Application.DisplayAlerts = False
+         
+         ' --- Delete old Combined if exists ---
+         On Error Resume Next
+         ThisWorkbook.Worksheets("Combined").Delete
+         On Error GoTo 0
+         
+         ' --- Create new Combined ---
+         Set combined = ThisWorkbook.Worksheets.Add(Before:=ThisWorkbook.Worksheets(1))
+         combined.Name = "Combined"
+         tgtRow = 1
+         
+         ' --- Find the first Expected sheet ---
+         For Each ws In ThisWorkbook.Worksheets
+         If LCase(Left(Trim(ws.Name), 8)) = "expected" Then
+            Set firstExpected = ws
+            Exit For
+         End If
+         Next ws
+         
+         If firstExpected Is Nothing Then
+         MsgBox "No Expected sheets found.", vbExclamation
+         GoTo CleanUp
+         End If
+         
+         ' --- Copy Header row (row 1) ---
+         firstExpected.Rows(1).Copy Destination:=combined.Rows(1)
+         tgtRow = 2
+         
+         ' --- Copy data from all Expected sheets ---
+         For Each ws In ThisWorkbook.Worksheets
+         If LCase(Left(Trim(ws.Name), 8)) = "expected" Then
+            lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+         
+            If lastRow > 1 Then
+                ws.Range("A2:G" & lastRow).Copy _
+                    Destination:=combined.Cells(tgtRow, 1)
+                tgtRow = tgtRow + (lastRow - 1)
+            End If
+         End If
+         Next ws
+         
+         combined.Columns("A:G").AutoFit
+         
+         MsgBox "All Expected sheets have been combined into 'Combined'.", vbInformation
+         
+         CleanUp:
+         Application.ScreenUpdating = True
+         Application.EnableEvents = True
+         Application.DisplayAlerts = True
+         End Sub`;
+         const code19 = `Sub ExtractTagID()
+         Dim ws As Worksheet
+         Dim lastRow As Long
+         Dim i As Long
+         Dim fullText As String
+         Dim arr As Variant
+         Dim tagID As String
+         
+         ' Sheet Combined
+         Set ws = ThisWorkbook.Sheets("Combined")
+         
+         ' Xác định dòng cuối có dữ liệu ở cột B
+         lastRow = ws.Cells(ws.Rows.Count, "B").End(xlUp).Row
+         
+         For i = 2 To lastRow   ' Giả sử có header, bắt đầu từ dòng 2
+         fullText = ws.Cells(i, "B").Value
+         
+         If InStr(fullText, "::") > 0 Then
+            arr = Split(fullText, "::")
+            tagID = arr(UBound(arr))   ' Lấy phần cuối cùng
+            ws.Cells(i, "H").Value = tagID
+         Else
+            ws.Cells(i, "H").Value = "" ' Không đúng format thì để trống
+         End If
+         Next i
+         
+         MsgBox "Đã tách xong Tag ID và điền vào cột H!", vbInformation
+         End Sub`;
+         const code20 = `Sub Helper_5(): End Sub`;
+         
+         function copyCode(btn) {
+           const codes = {
+             1: code1, 2: code2, 3: code3, 4: code4, 5: code5,
+             6: code6, 7: code7, 8: code8, 9: code9, 10: code10,
+             11: code11, 12: code12, 13: code13, 14: code14, 15: code15,
+             16: code16, 17: code17, 18: code18, 19: code19, 20: code20
+           };
+         
+           const text = codes[btn];
+           const msg = document.getElementById("msg");
+         
+           if (!text) {
+             msg.textContent = "❌ Không tìm thấy code";
+             return;
+           }
+         
+           navigator.clipboard.writeText(text).then(() => {
+             msg.textContent = "✅ Đã copy code " + btn;
+           });
+         }
+      </script>
+   </body>
 </html>
