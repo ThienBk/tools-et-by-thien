@@ -1,0 +1,520 @@
+# Wayfair SchemaTag Extractor Tool ```html
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wayfair SchemaTag Extractor</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+      body {
+        background: linear-gradient(135deg, #f9a8d4, #d8b4fe, #93c5fd);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.55);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      }
+
+      .table-scroll::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      .table-scroll::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.25);
+        border-radius: 999px;
+      }
+
+      .fade-in {
+        animation: fade 0.35s ease;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="text-slate-800">
+    <div class="max-w-[1450px] mx-auto px-5 py-6">
+      <!-- HEADER -->
+      <div
+        class="glass rounded-3xl px-6 py-5 mb-6 flex items-center justify-between"
+      >
+        <div>
+          <h1
+            class="text-3xl font-black tracking-tight bg-gradient-to-r from-fuchsia-700 to-purple-700 bg-clip-text text-transparent"
+          >
+            Wayfair SchemaTag Extractor
+          </h1>
+
+          <p class="text-sm mt-1 text-slate-600 font-medium">
+            Extract SKU + SchemaTag + Value từ file Excel Wayfair
+          </p>
+        </div>
+
+        <div
+          class="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-700 font-semibold text-sm"
+        >
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          Ready
+        </div>
+      </div>
+
+      <!-- UPLOAD -->
+      <label
+        class="glass rounded-3xl border-2 border-dashed border-white/50 hover:border-fuchsia-400 transition-all p-12 flex flex-col items-center justify-center cursor-pointer text-center group"
+      >
+        <div
+          class="w-24 h-24 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-700 flex items-center justify-center shadow-xl group-hover:scale-105 transition-all"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-12 h-12 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            />
+          </svg>
+        </div>
+
+        <h2 class="mt-6 text-2xl font-extrabold">Kéo thả file Excel vào đây</h2>
+
+        <p class="mt-2 text-slate-600 font-medium">
+          Hỗ trợ .xlsx • Tự động extract SKU + SchemaTag + Value
+        </p>
+
+        <!-- GUIDE -->
+        <div class="max-w-4xl mx-auto w-full glass rounded-3xl p-8 mt-8">
+          <h3 class="text-2xl font-extrabold text-slate-800 mb-6">
+            Hướng dẫn sử dụng
+          </h3>
+
+          <ul class="space-y-4 text-slate-600 font-medium">
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-1 w-2.5 h-2.5 rounded-full bg-fuchsia-500 shrink-0"
+              ></span>
+              <span>
+                Upload file
+                <code
+                  class="bg-white/70 px-2 py-1 rounded-lg text-fuchsia-700 font-bold"
+                >
+                  .xlsx
+                </code>
+                xuất từ Wayfair Portal.
+              </span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-1 w-2.5 h-2.5 rounded-full bg-fuchsia-500 shrink-0"
+              ></span>
+              <span>
+                Hệ thống tự động lấy
+                <strong class="text-fuchsia-700"> SKU ở cột C </strong>
+                và
+                <strong class="text-fuchsia-700"> SchemaTag ở dòng 4 </strong>.
+              </span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span
+                class="mt-1 w-2.5 h-2.5 rounded-full bg-fuchsia-500 shrink-0"
+              ></span>
+              <span>
+                Tool sẽ quét toàn bộ value trong file. Ô nào có dữ liệu sẽ tự
+                động extract thành:
+              </span>
+            </li>
+          </ul>
+
+          <!-- EXAMPLE -->
+          <div
+            class="mt-6 rounded-2xl bg-slate-900 text-green-400 p-5 overflow-auto border border-slate-700 shadow-inner"
+          >
+            <pre class="text-sm leading-7 font-mono">
+FLAP8729 | Wall Art Set Type | Single Piece Item
+FLAP8729 | Print Type        | Canvas Print
+FLAP8729 | Frame Color       | Black
+</pre
+            >
+          </div>
+
+          <!-- FEATURES -->
+          <div class="mt-8">
+            <h4 class="text-lg font-extrabold text-slate-800 mb-4">
+              Tính năng nổi bật
+            </h4>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-white/50 rounded-2xl p-4 border border-white/40">
+                ✨ UI glassmorphism enterprise
+              </div>
+
+              <div class="bg-white/50 rounded-2xl p-4 border border-white/40">
+                📊 Sticky table header
+              </div>
+
+              <div class="bg-white/50 rounded-2xl p-4 border border-white/40">
+                🔍 Search realtime cực nhanh
+              </div>
+
+              <div class="bg-white/50 rounded-2xl p-4 border border-white/40">
+                📋 Copy toàn bộ kết quả
+              </div>
+
+              <div class="bg-white/50 rounded-2xl p-4 border border-white/40">
+                📥 Export Excel sau xử lý
+              </div>
+
+              <div class="bg-white/50 rounded-2xl p-4 border border-white/40">
+                ⚡ Chạy local 100% không cần backend
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <input type="file" id="excelFile" class="hidden" accept=".xlsx,.xls" />
+      </label>
+
+      <!-- SUMMARY -->
+      <div
+        id="summary"
+        class="hidden fade-in mt-6 grid grid-cols-1 md:grid-cols-4 gap-5"
+      >
+        <div class="glass rounded-2xl p-5">
+          <div
+            class="text-sm font-bold text-slate-500 uppercase tracking-wider"
+          >
+            Total SKUs
+          </div>
+          <div id="skuCount" class="mt-2 text-4xl font-black text-fuchsia-700">
+            0
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div
+            class="text-sm font-bold text-slate-500 uppercase tracking-wider"
+          >
+            Total Rows
+          </div>
+          <div id="rowCount" class="mt-2 text-4xl font-black text-blue-700">
+            0
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5">
+          <div
+            class="text-sm font-bold text-slate-500 uppercase tracking-wider"
+          >
+            File Name
+          </div>
+          <div
+            id="fileName"
+            class="mt-2 text-lg font-bold break-all text-slate-700"
+          >
+            -
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-5 flex flex-col justify-between">
+          <div>
+            <div
+              class="text-sm font-bold text-slate-500 uppercase tracking-wider"
+            >
+              Export
+            </div>
+
+            <button
+              id="downloadBtn"
+              class="mt-4 w-full rounded-xl bg-gradient-to-r from-fuchsia-600 to-purple-700 hover:opacity-90 text-white font-bold py-3 shadow-lg transition-all"
+            >
+              Download Excel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div
+        id="tableWrap"
+        class="hidden fade-in mt-6 glass rounded-3xl overflow-hidden"
+      >
+        <!-- FILTER BAR -->
+        <div
+          class="p-5 border-b border-white/30 flex flex-col md:flex-row gap-4 bg-white/25 backdrop-blur-xl"
+        >
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Tìm SKU hoặc SchemaTag..."
+            class="flex-1 px-5 py-3 rounded-2xl border border-slate-300 bg-white/80 outline-none focus:ring-4 focus:ring-fuchsia-300 font-medium"
+          />
+
+          <button
+            id="copyBtn"
+            class="px-6 py-3 rounded-2xl bg-slate-900 text-white font-bold hover:opacity-90 transition-all"
+          >
+            Copy Result
+          </button>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-scroll overflow-auto max-h-[70vh]">
+          <table class="w-full text-sm border-collapse">
+            <thead class="sticky top-0 z-20 bg-black text-white">
+              <tr>
+                <th class="text-left px-5 py-4 font-extrabold uppercase">#</th>
+                <th class="text-left px-5 py-4 font-extrabold uppercase">
+                  SKU
+                </th>
+                <th class="text-left px-5 py-4 font-extrabold uppercase">
+                  SchemaTag
+                </th>
+                <th class="text-left px-5 py-4 font-extrabold uppercase">
+                  Value
+                </th>
+                <th class="text-left px-5 py-4 font-extrabold uppercase">
+                  Status
+                </th>
+              </tr>
+            </thead>
+
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let extractedData = [];
+      let filteredData = [];
+
+      const fileInput = document.getElementById("excelFile");
+      const tableBody = document.getElementById("tableBody");
+      const summary = document.getElementById("summary");
+      const tableWrap = document.getElementById("tableWrap");
+      const skuCount = document.getElementById("skuCount");
+      const rowCount = document.getElementById("rowCount");
+      const fileName = document.getElementById("fileName");
+      const searchInput = document.getElementById("searchInput");
+
+      fileInput.addEventListener("change", handleFile);
+      searchInput.addEventListener("input", filterTable);
+
+      document.getElementById("copyBtn").addEventListener("click", copyResults);
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", downloadExcel);
+
+      async function handleFile(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        fileName.textContent = file.name;
+
+        const data = await file.arrayBuffer();
+
+        const workbook = XLSX.read(data, {
+          type: "array",
+        });
+
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+        const rows = XLSX.utils.sheet_to_json(sheet, {
+          header: 1,
+          defval: "",
+        });
+
+        extractedData = processWayfairData(rows);
+        filteredData = [...extractedData];
+
+        renderTable(filteredData);
+        updateSummary();
+
+        summary.classList.remove("hidden");
+        tableWrap.classList.remove("hidden");
+      }
+
+      function processWayfairData(rows) {
+        const results = [];
+
+        // Cột C = index 2
+        // Dòng 4 chứa schematag
+
+        const schemaRow = rows[3] || [];
+
+        const schemaMap = {};
+
+        schemaRow.forEach((cell, index) => {
+          if (cell && String(cell).trim()) {
+            schemaMap[index] = String(cell).trim();
+          }
+        });
+
+        for (let i = 4; i < rows.length; i++) {
+          const row = rows[i];
+
+          if (!row || row.length === 0) continue;
+
+          const sku = row[2];
+
+          if (!sku || !String(sku).trim()) continue;
+
+          Object.keys(schemaMap).forEach((colIndex) => {
+            const value = row[colIndex];
+
+            if (value !== "" && value !== null && value !== undefined) {
+              results.push({
+                sku: String(sku).trim(),
+                schemaTag: schemaMap[colIndex],
+                value: String(value).trim(),
+                status: "OK",
+              });
+            }
+          });
+        }
+
+        return results;
+      }
+
+      function renderTable(data) {
+        tableBody.innerHTML = "";
+
+        if (data.length === 0) {
+          tableBody.innerHTML = `
+      <tr>
+        <td colspan="5" class="text-center py-12 text-slate-500 font-semibold">
+          Không có dữ liệu
+        </td>
+      </tr>
+    `;
+
+          return;
+        }
+
+        data.forEach((item, index) => {
+          const tr = document.createElement("tr");
+
+          tr.className =
+            index % 2 === 0
+              ? "bg-slate-50/80 hover:bg-fuchsia-50 transition-all"
+              : "bg-white/70 hover:bg-fuchsia-50 transition-all";
+
+          tr.innerHTML = `
+
+      <td class="px-5 py-4 border-b border-slate-200 font-semibold text-slate-500">
+        ${index + 1}
+      </td>
+
+      <td class="px-5 py-4 border-b border-slate-200 font-bold text-fuchsia-700 whitespace-nowrap">
+        ${escapeHtml(item.sku)}
+      </td>
+
+      <td class="px-5 py-4 border-b border-slate-200 font-semibold">
+        ${escapeHtml(item.schemaTag)}
+      </td>
+
+      <td class="px-5 py-4 border-b border-slate-200 max-w-[500px]">
+        <div class="truncate" title="${escapeHtml(item.value)}">
+          ${escapeHtml(item.value)}
+        </div>
+      </td>
+
+      <td class="px-5 py-4 border-b border-slate-200">
+        <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-black border border-emerald-300">
+          ${item.status}
+        </span>
+      </td>
+
+    `;
+
+          tableBody.appendChild(tr);
+        });
+      }
+
+      function updateSummary() {
+        const uniqueSkus = new Set(extractedData.map((item) => item.sku));
+
+        skuCount.textContent = uniqueSkus.size;
+        rowCount.textContent = extractedData.length;
+      }
+
+      function filterTable() {
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        filteredData = extractedData.filter((item) => {
+          return (
+            item.sku.toLowerCase().includes(keyword) ||
+            item.schemaTag.toLowerCase().includes(keyword) ||
+            item.value.toLowerCase().includes(keyword)
+          );
+        });
+
+        renderTable(filteredData);
+      }
+
+      function copyResults() {
+        if (!filteredData.length) return;
+
+        const text = filteredData
+          .map((item) => `${item.sku}\t${item.schemaTag}\t${item.value}`)
+          .join("\n");
+
+        navigator.clipboard.writeText(text);
+
+        alert("Đã copy kết quả");
+      }
+
+      function downloadExcel() {
+        if (!filteredData.length) return;
+
+        const exportData = filteredData.map((item) => ({
+          SKU: item.sku,
+          SchemaTag: item.schemaTag,
+          Value: item.value,
+          Status: item.status,
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
+        const wb = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(wb, ws, "Extracted");
+
+        XLSX.writeFile(wb, "wayfair_schema_extract.xlsx");
+      }
+
+      function escapeHtml(text) {
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+    </script>
+  </body>
+</html>
