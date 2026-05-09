@@ -1,88 +1,584 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Excel Safe Semicolon Formatter</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f7f7f7;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Value Separator — Vintage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Classic serif fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+    :root{
+        --bg1:#dff6ff;
+        --bg2:#b8e7ff;
+        --glass:rgba(255,255,255,0.18);
+        --glass-border:rgba(255,255,255,0.28);
+        --text:#0d3b66;
+        --primary:#4db8ff;
+        --primary-dark:#2496e6;
+        --shadow:rgba(0, 119, 182, 0.18);
     }
 
-    textarea {
-      width: 100%;
-      height: 180px;
-      margin-top: 10px;
-      font-family: Consolas, monospace;
-      font-size: 14px;
+    *{
+        box-sizing:border-box;
     }
 
-    .buttons {
-      margin: 15px 0;
+    body{
+        margin:0;
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:30px;
+
+        font-family:'Inter',sans-serif;
+        color:var(--text);
+
+        background:
+            radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent 30%),
+            radial-gradient(circle at bottom right, rgba(255,255,255,0.35), transparent 25%),
+            linear-gradient(135deg,var(--bg1),var(--bg2));
+
+        overflow:hidden;
     }
 
-    button {
-      padding: 10px 18px;
-      font-size: 14px;
-      cursor: pointer;
-      margin-right: 10px;
+    /* floating blur blobs */
+    body::before,
+    body::after{
+        content:'';
+        position:fixed;
+        width:420px;
+        height:420px;
+        border-radius:50%;
+        filter:blur(80px);
+        z-index:0;
+        animation:floatBlob 12s ease-in-out infinite;
     }
-  </style>
+
+    body::before{
+        background:#7ad7ff;
+        top:-120px;
+        left:-120px;
+    }
+
+    body::after{
+        background:#8fd3ff;
+        bottom:-140px;
+        right:-120px;
+        animation-delay:4s;
+    }
+
+    @keyframes floatBlob{
+        0%,100%{
+            transform:translateY(0px) translateX(0px);
+        }
+        50%{
+            transform:translateY(25px) translateX(20px);
+        }
+    }
+
+    .vintage-card{
+        position:relative;
+        z-index:2;
+
+        width:100%;
+        max-width:1000px;
+
+        padding:32px;
+
+        border-radius:30px;
+
+        background:var(--glass);
+
+        backdrop-filter:blur(22px);
+        -webkit-backdrop-filter:blur(22px);
+
+        border:1px solid var(--glass-border);
+
+        box-shadow:
+            0 8px 32px var(--shadow),
+            inset 0 1px 1px rgba(255,255,255,0.35);
+
+        overflow:hidden;
+
+        animation:fadeUp 0.7s ease;
+    }
+
+    .vintage-card::before{
+        content:'';
+        position:absolute;
+        inset:0;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255,255,255,0.18),
+                rgba(255,255,255,0.04)
+            );
+
+        pointer-events:none;
+    }
+
+    @keyframes fadeUp{
+        from{
+            opacity:0;
+            transform:translateY(20px) scale(0.98);
+        }
+        to{
+            opacity:1;
+            transform:translateY(0) scale(1);
+        }
+    }
+
+    h1{
+        font-size:40px;
+        font-weight:800;
+        margin-bottom:8px;
+
+        background:linear-gradient(90deg,#0b4f8a,#36b8ff);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+    }
+
+    .subtitle{
+        color:#3d6f94;
+        margin-bottom:28px;
+        font-size:15px;
+    }
+
+    .two-col{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:24px;
+    }
+
+    @media(max-width:768px){
+        .two-col{
+            grid-template-columns:1fr;
+        }
+
+        h1{
+            font-size:30px;
+        }
+
+        .vintage-card{
+            padding:22px;
+        }
+    }
+
+    .field-card{
+        background:rgba(255,255,255,0.16);
+
+        border:1px solid rgba(255,255,255,0.24);
+
+        border-radius:24px;
+
+        padding:18px;
+
+        backdrop-filter:blur(16px);
+
+        box-shadow:
+            inset 0 1px 1px rgba(255,255,255,0.25),
+            0 4px 18px rgba(0,0,0,0.06);
+
+        transition:0.35s ease;
+    }
+
+    .field-card:hover{
+        transform:translateY(-3px);
+        box-shadow:
+            0 12px 28px rgba(0,119,182,0.12),
+            inset 0 1px 1px rgba(255,255,255,0.25);
+    }
+
+    label{
+        font-weight:700;
+        color:#15507a;
+        font-size:15px;
+    }
+
+    textarea,
+    input,
+    select{
+        width:100%;
+        border:none;
+        outline:none;
+
+        background:rgba(255,255,255,0.12);
+
+        color:var(--text);
+
+        border-radius:16px;
+
+        padding:14px 16px;
+
+        margin-top:10px;
+
+        font-size:15px;
+
+        backdrop-filter:blur(10px);
+
+        transition:0.25s ease;
+    }
+
+    textarea{
+        min-height:180px;
+        resize:vertical;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus{
+        background:rgba(255,255,255,0.22);
+
+        box-shadow:
+            0 0 0 3px rgba(77,184,255,0.22);
+    }
+
+    textarea::placeholder,
+    input::placeholder{
+        color:#5b8aad;
+    }
+
+    .btn-vintage{
+        position:relative;
+
+        overflow:hidden;
+
+        border:none;
+
+        border-radius:18px;
+
+        padding:14px 18px;
+
+        cursor:pointer;
+
+        color:white;
+
+        font-weight:700;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary-dark)
+            );
+
+        box-shadow:
+            0 8px 18px rgba(77,184,255,0.3);
+
+        transition:0.28s ease;
+    }
+
+    .btn-vintage:hover{
+        transform:translateY(-4px) scale(1.02);
+
+        box-shadow:
+            0 14px 28px rgba(77,184,255,0.35);
+    }
+
+    .btn-vintage:active{
+        transform:scale(0.97);
+    }
+
+    .icon-btn{
+        width:42px;
+        height:42px;
+
+        border:none;
+
+        border-radius:14px;
+
+        cursor:pointer;
+
+        background:rgba(255,255,255,0.2);
+
+        color:#15669c;
+
+        backdrop-filter:blur(10px);
+
+        transition:0.25s ease;
+    }
+
+    .icon-btn:hover{
+        transform:translateY(-2px);
+        background:rgba(255,255,255,0.3);
+    }
+
+    .badge{
+        background:
+            linear-gradient(
+                135deg,
+                #4db8ff,
+                #2196f3
+            );
+
+        color:white;
+
+        padding:7px 14px;
+
+        border-radius:999px;
+
+        font-size:12px;
+        font-weight:700;
+
+        box-shadow:
+            0 6px 16px rgba(33,150,243,0.25);
+    }
+
+    .actions{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:14px;
+        margin-top:18px;
+    }
+
+    .ornament{
+        height:1px;
+        margin:22px 0;
+
+        background:
+            linear-gradient(
+                to right,
+                transparent,
+                rgba(255,255,255,0.7),
+                transparent
+            );
+    }
+
+    footer{
+        margin-top:22px;
+        text-align:center;
+        color:#4e7da1;
+        font-size:13px;
+    }
+
+    .pulse{
+        animation:pulse 0.8s ease;
+    }
+
+    @keyframes pulse{
+        0%{
+            transform:scale(1);
+        }
+        50%{
+            transform:scale(1.05);
+        }
+        100%{
+            transform:scale(1);
+        }
+    }
+
+    .ripple-effect{
+        position:absolute;
+        border-radius:50%;
+        transform:scale(0);
+
+        animation:ripple 0.7s linear;
+
+        background:rgba(255,255,255,0.55);
+
+        pointer-events:none;
+    }
+
+    @keyframes ripple{
+        to{
+            transform:scale(4);
+            opacity:0;
+        }
+    }
+
+    .muted{
+        color:#46779b;
+        font-size:14px;
+    }
+</style>
 </head>
 <body>
+    <div class="vintage-card">
+        <header>
+            <h1>Value Separator Tool</h1>
+            <div class="subtitle">Chuyển các giá trị theo dạng, phong cách cổ điển — giấy cũ, tông nâu vàng và họa tiết tinh xảo.</div>
+        </header>
 
-  <h2>Input</h2>
-  <textarea id="input" placeholder="Dán dữ liệu từ Excel vào đây..."></textarea>
+        <div class="two-col">
+            <div class="space-y-4">
+                <div class="field-card">
+                    <div class="flex justify-between items-start mb-2">
+                        <label for="input-values">Input Values</label>
+                        <span id="line-count" class="badge hidden">0 lines</span>
+                    </div>
+                    <textarea id="input-values" placeholder="Nhập mỗi giá trị trên 1 dòng..."></textarea>
+                </div>
 
-  <div class="buttons">
-    <button onclick="processText()">Xử lý</button>
-    <button onclick="copyOutput()">Copy Output</button>
-    <button onclick="clearAll()">Xóa toàn bộ</button>
-  </div>
+                <div class="field-card">
+                    <label for="separator">Separator</label>
+                    <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+                        <select id="separator" class="p-2 rounded border" style="border:1px solid rgba(139,94,52,0.06);background:transparent;">
+                            <option value=",">Comma ( , )</option>
+                            <option value=";">Semicolon ( ; )</option>
+                            <option value="|">Pipe ( | )</option>
+                            <option value=" ">Space</option>
+                            <option value="\t">Tab</option>
+                            <option value="-">Hyphen</option>
+                            <option value="\n">New Line</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <div id="custom-separator-container" style="flex:1;display:none">
+                            <input id="custom-separator" placeholder="Custom separator" class="p-2 rounded border" style="width:100%;border:1px solid rgba(139,94,52,0.06);background:transparent">
+                        </div>
+                    </div>
 
-  <h2>Output (; only – Excel Safe)</h2>
-  <textarea id="output" placeholder="Chỉ dùng dấu ; – không space, không tab"></textarea>
+                    <div style="margin-top:12px;display:flex;align-items:center;gap:12px">
+                        <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="numerical-order"> <span class="muted">Numerical Order</span></label>
+                        <a href="index.html" class="muted">Home</a>
+                    </div>
+                </div>
+            </div>
 
-  <script>
-    function cleanValue(text) {
-      return text
-        .replace(/\s+/g, " ") // gom space trong text
-        .trim();              // xóa space đầu cuối
-    }
+            <div class="space-y-4">
+                <div class="field-card" style="min-height:240px;position:relative">
+                    <div class="flex justify-between items-start mb-2">
+                        <label>Result</label>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <span id="value-count" class="badge hidden">0 values</span>
+                            <button onclick="reverseConversion()" class="icon-btn" title="Reverse conversion"><i class="fas fa-exchange-alt"></i></button>
+                        </div>
+                    </div>
 
-    function processText() {
-      const input = document.getElementById("input").value;
+                    <textarea id="output" readonly></textarea>
 
-      const result = input
-        .split("\n")
-        .map(line => {
-          // tách theo TAB hoặc nhiều SPACE
-          const parts = line.split(/\t+|\s{2,}/)
-                            .map(cleanValue)
-                            .filter(Boolean);
+                    <div style="position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:8px">
+                        <button onclick="copyToClipboard(event)" class="icon-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                        <button onclick="reverseConversion()" class="icon-btn" title="Reverse"><i class="fas fa-undo"></i></button>
+                    </div>
+                </div>
 
-          // GHÉP BẰNG DẤU ;
-          return parts.join(";");
-        })
-        .join("\n");
+                <div>
+                    <div class="ornament"></div>
+                    <div class="actions">
+                        <button onclick="generateOutput(event)" class="btn-vintage">Generate</button>
+                        <button onclick="copyToClipboard(event)" class="btn-vintage"><i class="fas fa-copy"></i> Copy</button>
+                        <button onclick="clearAll(event)" class="btn-vintage"><i class="fas fa-trash"></i> Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-      document.getElementById("output").value = result;
-    }
+        <footer style="margin-top:18px;text-align:center;color:#a07a58;font-size:12px">© Giáo diện cổ điển — tuỳ chỉnh bởi bạn</footer>
+    </div>
 
-    function copyOutput() {
-      const output = document.getElementById("output");
-      output.select();
-      document.execCommand("copy");
-    }
+    <script>
+        // --- behavior (kept and slightly adapted from your original) ---
+        document.getElementById('input-values').addEventListener('input', function() {
+            const lines = this.value.split('\n').filter(line => line.trim() !== '');
+            const lineCount = document.getElementById('line-count');
+            lineCount.textContent = `${lines.length} line${lines.length !== 1 ? 's' : ''}`;
+            lineCount.classList.toggle('hidden', lines.length === 0);
+        });
 
-    function clearAll() {
-      if (confirm("Xóa toàn bộ dữ liệu?")) {
-        document.getElementById("input").value = "";
-        document.getElementById("output").value = "";
-      }
-    }
-  </script>
+        document.getElementById('separator').addEventListener('change', function() {
+            const customContainer = document.getElementById('custom-separator-container');
+            if (this.value === 'custom') customContainer.style.display = 'block';
+            else customContainer.style.display = 'none';
+        });
 
+        function generateOutput(event){
+            softenRipple(event);
+            const separatorSelect = document.getElementById('separator');
+            const customSeparator = document.getElementById('custom-separator');
+            const numericalOrder = document.getElementById('numerical-order').checked;
+            const output = document.getElementById('output');
+
+            const inputText = document.getElementById('input-values').value;
+            let lines = inputText.split('\n').filter(line => line.trim() !== '');
+
+            if (numericalOrder) {
+                document.getElementById('input-values').value = lines.map((line,i) => `${i+1}. ${line}`).join('\n');
+            }
+
+            let values = lines.map(line => line.replace(/^\d+\.\s*/, '').trim()).filter(v=>v!=='');
+
+            if (numericalOrder){
+                values.sort((a,b)=>{
+                    const numA = parseFloat(a); const numB = parseFloat(b);
+                    if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+                    return a.localeCompare(b);
+                });
+            }
+
+            let separator = separatorSelect.value;
+            if (separator === 'custom') separator = customSeparator.value || ',';
+            else if (separator === '\\n') separator = '\n';
+            else if (separator === '\\t') separator = '\t';
+
+            output.value = values.join(separator);
+            const outputValues = output.value.split(separator).filter(v=>v.trim()!== '');
+            document.getElementById('value-count').textContent = `${outputValues.length} value${outputValues.length !== 1 ? 's' : ''}`;
+            document.getElementById('value-count').classList.toggle('hidden', outputValues.length === 0);
+        }
+
+        function clearAll(event){
+            softenRipple(event);
+            const inputArea = document.getElementById('input-values');
+            const outputArea = document.getElementById('output');
+            inputArea.classList.add('opacity-0'); outputArea.classList.add('opacity-0');
+            setTimeout(()=>{
+                inputArea.value=''; outputArea.value='';
+                document.getElementById('line-count').classList.add('hidden');
+                document.getElementById('value-count').classList.add('hidden');
+                document.getElementById('numerical-order').checked=false;
+                inputArea.classList.remove('opacity-0'); outputArea.classList.remove('opacity-0');
+            },250);
+        }
+
+        function softenRipple(event){
+            const button = event.currentTarget;
+            if(!button) return;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter/2;
+            circle.style.width = circle.style.height = diameter + 'px';
+            circle.style.left = (event.clientX - button.getBoundingClientRect().left - radius) + 'px';
+            circle.style.top = (event.clientY - button.getBoundingClientRect().top - radius) + 'px';
+            circle.className = 'ripple-effect';
+            const old = button.getElementsByClassName('ripple-effect')[0]; if(old) old.remove();
+            button.appendChild(circle);
+            setTimeout(()=>circle.remove(),700);
+        }
+
+        function copyToClipboard(event){
+            softenRipple(event);
+            const output = document.getElementById('output');
+            if(!output.value.trim()) return;
+            output.select(); document.execCommand('copy');
+            const copyButton = event.currentTarget;
+            if(copyButton){
+                const original = copyButton.innerHTML;
+                copyButton.innerHTML = '<i class="fas fa-check"></i> Đã sao chép';
+                copyButton.classList.add('pulse');
+                setTimeout(()=>{copyButton.innerHTML = original; copyButton.classList.remove('pulse');},1500);
+            }
+        }
+
+        function reverseConversion(){
+            const output = document.getElementById('output').value; if(!output.trim()) return;
+            let separator = document.getElementById('separator').value;
+            if (separator === 'custom') separator = document.getElementById('custom-separator').value || ',';
+            else if(separator === '\\n') separator='\n'; else if(separator === '\\t') separator='\t';
+            const values = output.split(separator).filter(v=>v.trim());
+            document.getElementById('input-values').value = values.join('\n');
+            const lines = document.getElementById('input-values').value.split('\n').filter(l=>l.trim());
+            const lineCount = document.getElementById('line-count'); lineCount.textContent = `${lines.length} line${lines.length!==1?'s':''}`;
+            lineCount.classList.remove('hidden');
+        }
+
+        // small entrance
+        document.addEventListener('DOMContentLoaded', ()=>{
+            document.querySelector('.vintage-card').style.transform='translateY(0)';
+        });
+    </script>
 </body>
 </html>
